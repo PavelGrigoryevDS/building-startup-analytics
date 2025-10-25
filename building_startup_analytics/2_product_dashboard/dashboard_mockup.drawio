@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/27.0.9 Chrome/134.0.6998.205 Electron/35.4.0 Safari/537.36" version="27.0.9" pages="3">
   <diagram name="App Overview" id="-Usha2KoaQtZTeXLfwTG">
-    <mxGraphModel dx="1426" dy="874" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="1700" math="0" shadow="0">
+    <mxGraphModel dx="1678" dy="1028" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="1700" math="0" shadow="0">
       <root>
         <mxCell id="V2aYHXHg10h1eP0twKTM-0" />
         <mxCell id="V2aYHXHg10h1eP0twKTM-1" parent="V2aYHXHg10h1eP0twKTM-0" />
@@ -34,7 +34,7 @@
         <mxCell id="xAKZr4yDnGP40m0FSZbZ-0" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Filters: gender, age group, source, os, country, city&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="V2aYHXHg10h1eP0twKTM-1" vertex="1">
           <mxGeometry x="40" y="90" width="1030" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="xAKZr4yDnGP40m0FSZbZ-3" value="&lt;font size=&quot;3&quot;&gt;Table with all metrics by dimensions&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="V2aYHXHg10h1eP0twKTM-1" vertex="1">
+        <mxCell id="xAKZr4yDnGP40m0FSZbZ-3" value="&lt;font size=&quot;3&quot;&gt;Table with all metrics by dimensions&amp;nbsp;gender, age group, source, os, country, city&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="V2aYHXHg10h1eP0twKTM-1" vertex="1">
           <mxGeometry x="20" y="690" width="1050" height="360" as="geometry" />
         </mxCell>
         <mxCell id="U5YzzdkHZtp7U8F9QUIh-0" value="&lt;font size=&quot;3&quot;&gt;New Users + WoW&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="V2aYHXHg10h1eP0twKTM-1" vertex="1">
@@ -52,7 +52,7 @@
         <mxCell id="U5YzzdkHZtp7U8F9QUIh-4" value="&lt;font size=&quot;3&quot;&gt;&amp;nbsp;Retention 7D + WoW&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="V2aYHXHg10h1eP0twKTM-1" vertex="1">
           <mxGeometry x="300" y="420" width="120" height="110" as="geometry" />
         </mxCell>
-        <mxCell id="U5YzzdkHZtp7U8F9QUIh-5" value="&lt;font size=&quot;3&quot;&gt;Sparkline Rolling Retention 7D&amp;nbsp;for the last month by day + WoW&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="V2aYHXHg10h1eP0twKTM-1" vertex="1">
+        <mxCell id="U5YzzdkHZtp7U8F9QUIh-5" value="&lt;font size=&quot;3&quot;&gt;Sparkline Retention 7D&amp;nbsp;for the last month by day + WoW&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="V2aYHXHg10h1eP0twKTM-1" vertex="1">
           <mxGeometry x="300" y="550" width="230" height="110" as="geometry" />
         </mxCell>
         <mxCell id="U5YzzdkHZtp7U8F9QUIh-6" value="&lt;font size=&quot;3&quot;&gt;Messages per User + WoW&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="V2aYHXHg10h1eP0twKTM-1" vertex="1">
@@ -81,7 +81,7 @@
         <mxCell id="jSUKTYds6Nmssrg-Dd5i-5" value="&lt;font size=&quot;3&quot;&gt;&amp;nbsp;Retention 7D + WoW&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="jSUKTYds6Nmssrg-Dd5i-1" vertex="1">
           <mxGeometry x="560" y="150" width="120" height="110" as="geometry" />
         </mxCell>
-        <mxCell id="jSUKTYds6Nmssrg-Dd5i-6" value="&lt;font size=&quot;3&quot;&gt;Sparkline Rolling Retention 7D for the last month by day + WoW&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="jSUKTYds6Nmssrg-Dd5i-1" vertex="1">
+        <mxCell id="jSUKTYds6Nmssrg-Dd5i-6" value="&lt;font size=&quot;3&quot;&gt;Sparkline Retention 7D for the last month by day + WoW&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="jSUKTYds6Nmssrg-Dd5i-1" vertex="1">
           <mxGeometry x="560" y="280" width="225" height="110" as="geometry" />
         </mxCell>
         <mxCell id="jSUKTYds6Nmssrg-Dd5i-7" value="&lt;font size=&quot;3&quot;&gt;New Users + WoW&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="jSUKTYds6Nmssrg-Dd5i-1" vertex="1">
@@ -93,8 +93,8 @@
         <mxCell id="jSUKTYds6Nmssrg-Dd5i-11" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Filters: gender, age&amp;nbsp;group, source, os, country, city&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="jSUKTYds6Nmssrg-Dd5i-1" vertex="1">
           <mxGeometry x="40" y="90" width="1030" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="jSUKTYds6Nmssrg-Dd5i-12" value="&lt;font size=&quot;3&quot;&gt;Table with all metrics by dimensions&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="jSUKTYds6Nmssrg-Dd5i-1" vertex="1">
-          <mxGeometry x="25" y="1010" width="1050" height="360" as="geometry" />
+        <mxCell id="jSUKTYds6Nmssrg-Dd5i-12" value="&lt;font size=&quot;3&quot;&gt;Table with all metrics by dimensions gender, age group, source, os, country, city&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="jSUKTYds6Nmssrg-Dd5i-1" vertex="1">
+          <mxGeometry x="20" y="970" width="1050" height="360" as="geometry" />
         </mxCell>
         <mxCell id="jSUKTYds6Nmssrg-Dd5i-13" value="&lt;font size=&quot;3&quot;&gt;Unique Posts + WoW&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="jSUKTYds6Nmssrg-Dd5i-1" vertex="1">
           <mxGeometry x="40" y="420" width="110" height="110" as="geometry" />
@@ -144,10 +144,10 @@
         <mxCell id="i-AjGSLVSrjsFrswbrdm-13" value="&lt;font size=&quot;3&quot;&gt;Sparkline Views per User for the last month by day + WoW&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="jSUKTYds6Nmssrg-Dd5i-1" vertex="1">
           <mxGeometry x="295" y="830" width="230" height="110" as="geometry" />
         </mxCell>
-        <mxCell id="B7OmuDKaR-6QyyMXXNDR-0" value="&lt;font size=&quot;3&quot;&gt;CTR + WoW&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="jSUKTYds6Nmssrg-Dd5i-1">
+        <mxCell id="B7OmuDKaR-6QyyMXXNDR-0" value="&lt;font size=&quot;3&quot;&gt;CTR + WoW&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="jSUKTYds6Nmssrg-Dd5i-1" vertex="1">
           <mxGeometry x="820" y="150" width="125" height="110" as="geometry" />
         </mxCell>
-        <mxCell id="B7OmuDKaR-6QyyMXXNDR-1" value="&lt;font size=&quot;3&quot;&gt;Sparkline CTR for last month by day + WoW&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="jSUKTYds6Nmssrg-Dd5i-1">
+        <mxCell id="B7OmuDKaR-6QyyMXXNDR-1" value="&lt;font size=&quot;3&quot;&gt;Sparkline CTR for last month by day + WoW&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="jSUKTYds6Nmssrg-Dd5i-1" vertex="1">
           <mxGeometry x="820" y="280" width="230" height="110" as="geometry" />
         </mxCell>
       </root>
@@ -170,7 +170,7 @@
         <mxCell id="JMf-x56GhI6WisFEG_YD-5" value="&lt;font size=&quot;3&quot;&gt;&amp;nbsp;Retention 7D + WoW&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="JMf-x56GhI6WisFEG_YD-1" vertex="1">
           <mxGeometry x="820" y="150" width="120" height="110" as="geometry" />
         </mxCell>
-        <mxCell id="JMf-x56GhI6WisFEG_YD-6" value="&lt;font size=&quot;3&quot;&gt;Sparkline Rolling Retention 7D for the last month by day + WoW&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="JMf-x56GhI6WisFEG_YD-1" vertex="1">
+        <mxCell id="JMf-x56GhI6WisFEG_YD-6" value="&lt;font size=&quot;3&quot;&gt;Sparkline Retention 7D for the last month by day + WoW&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="JMf-x56GhI6WisFEG_YD-1" vertex="1">
           <mxGeometry x="820" y="280" width="225" height="110" as="geometry" />
         </mxCell>
         <mxCell id="JMf-x56GhI6WisFEG_YD-7" value="&lt;font size=&quot;3&quot;&gt;New Users + WoW&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="JMf-x56GhI6WisFEG_YD-1" vertex="1">
@@ -188,8 +188,8 @@
         <mxCell id="JMf-x56GhI6WisFEG_YD-11" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Filters: gender, age&amp;nbsp;group, source, os, country, city&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="JMf-x56GhI6WisFEG_YD-1" vertex="1">
           <mxGeometry x="40" y="90" width="1030" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="JMf-x56GhI6WisFEG_YD-12" value="&lt;font size=&quot;3&quot;&gt;Table with all metrics by dimensions&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="JMf-x56GhI6WisFEG_YD-1" vertex="1">
-          <mxGeometry x="20" y="720" width="1050" height="360" as="geometry" />
+        <mxCell id="JMf-x56GhI6WisFEG_YD-12" value="&lt;font size=&quot;3&quot;&gt;Table with all metrics by dimensions gender, age group, source, os, country, city&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="JMf-x56GhI6WisFEG_YD-1" vertex="1">
+          <mxGeometry x="25" y="690" width="1050" height="360" as="geometry" />
         </mxCell>
         <mxCell id="JMf-x56GhI6WisFEG_YD-13" value="&lt;font size=&quot;3&quot;&gt;Messages Sent + WoW&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="JMf-x56GhI6WisFEG_YD-1" vertex="1">
           <mxGeometry x="300" y="420" width="110" height="110" as="geometry" />

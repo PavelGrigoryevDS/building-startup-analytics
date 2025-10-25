@@ -1,3 +1,7 @@
+Пройти везде убедится что нет simulator_20250820 в отчетах
+И убедится что нигде нет русских букв
+Можно сделать прям через поиск в vs code
+
 # 🧩 Building Startup Analytics
 
 [![Python](https://img.shields.io/badge/Python-3.11+-blue?logo=python)](https://github.com/PavelGrigoryevDS/olist-deep-dive/blob/main/pyproject.toml)
@@ -114,7 +118,7 @@ The analysis uses the **Olist Brazilian E-Commerce Dataset** ([Kaggle](https://w
 
 ---
 
-### 2. Product Dashboard
+### 2. Product Dashboard: Design & Implementation
 
 **Objective:** To provide the product and management teams with a real-time, self-service view of key product metrics (DAU, Retention, Engagement).
 
@@ -133,7 +137,7 @@ The analysis uses the **Olist Brazilian E-Commerce Dataset** ([Kaggle](https://w
 
 ---
 
-### 3. Metric Deep Dive
+### 3. Retention Analysis & User Engagement Investigation
 
 **Objective:** To investigate two critical business events: a surge of new users from a marketing campaign and a sudden drop in active audience.
 

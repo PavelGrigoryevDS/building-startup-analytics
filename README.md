@@ -163,6 +163,8 @@ The analysis uses data from the product database in ClickHouse, which consists o
 
 [📓 View Notebook with Full Analysis](./building_startup_analytics/2_product_dashboard/product_dashboard.ipynb)
 
+[👉 Feed & Messenger Performance Dashboard](https://datalens.yandex/w5blxgwqvb4uh)
+
 **Context**
 
 - With the analytical database in place, the next critical step is to provide the product and management teams with intuitive, self-service access to key metrics through a comprehensive dashboard.
@@ -182,11 +184,9 @@ The analysis uses data from the product database in ClickHouse, which consists o
 
 - Empowered non-technical teams with self-service analytics capabilities, significantly reducing dependency on data team for routine metric monitoring.
 
-**Link to Final Dashboard:**  
-
-- [**Feed & Messenger Performance Dashboard**](https://datalens.yandex/w5blxgwqvb4uh)
-
 **Dashboard Screenshots:**  
+
+Here are the key screenshots of the implemented dashboard:
 
 #### 📱 App Overview Tab
 

@@ -151,7 +151,7 @@ The analysis uses data from the product database in ClickHouse, which consists o
 
 **Final Schema for the Analytical Database:**
 
-<img src="./building_startup_analytics/1_data_infrastructure/er.png"><br><br>
+<img src="./building_startup_analytics/1_data_infrastructure/er.png">
 
 [⬆ back to contents](#contents)
 
@@ -207,7 +207,7 @@ The analysis uses data from the product database in ClickHouse, which consists o
 
 <img src="./building_startup_analytics/2_product_dashboard/documentation_part_1.png" alt="">
 <img src="./building_startup_analytics/2_product_dashboard/documentation_part_2.png" alt="">
-<img src="./building_startup_analytics/2_product_dashboard/documentation_part_3.png" alt=""><br><br>
+<img src="./building_startup_analytics/2_product_dashboard/documentation_part_3.png" alt="">
 
 [⬆ back to contents](#contents)
 
@@ -293,7 +293,7 @@ To conduct a deep dive analysis addressing three critical business questions:
 **Dashboard Screenshots for Users Decomposition**
 
 <img src="./building_startup_analytics/3_metric_deep_dive/user_decomposition_part_1.png" alt="">
-<img src="./building_startup_analytics/3_metric_deep_dive/user_decomposition_part_2.png" alt=""><br><br>
+<img src="./building_startup_analytics/3_metric_deep_dive/user_decomposition_part_2.png" alt="">
 
 [⬆ back to contents](#contents)
 
@@ -465,7 +465,7 @@ Strategic Recommendations
 <img src="./building_startup_analytics/6_automated_reporting/app_report_telegram_part_2.jpg" width="600" height="auto">
 <img src="./building_startup_analytics/6_automated_reporting/app_report_telegram_part_3.jpg" width="600" height="auto">
 <img src="./building_startup_analytics/6_automated_reporting/app_report_telegram_part_4.jpg" width="600" height="auto">
-<img src="./building_startup_analytics/6_automated_reporting/app_report_telegram_part_5.jpg" width="600" height="auto"><br><br>
+<img src="./building_startup_analytics/6_automated_reporting/app_report_telegram_part_5.jpg" width="600" height="auto">
 
 [⬆ back to contents](#contents)
 
@@ -508,7 +508,7 @@ Strategic Recommendations
 **Anomaly Alert Screenshots**
 
 <img src="./building_startup_analytics/7_anomaly_detection/anomaly_detection_part_1.jpg" width="500" height="auto">
-<img src="./building_startup_analytics/7_anomaly_detection/anomaly_detection_part_2.jpg" width="500" height="auto"><br><br>
+<img src="./building_startup_analytics/7_anomaly_detection/anomaly_detection_part_2.jpg" width="500" height="auto">
 
 
 [⬆ back to contents](#contents)

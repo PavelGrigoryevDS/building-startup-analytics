@@ -15,14 +15,14 @@ QUERY_DAU = """
                 , user_id
                 , 'feed' as service
             FROM 
-                simulator_20250820.feed_actions
+                feed_actions
             UNION ALL
             SELECT
                 time
                 , user_id
                 , 'messenger' as service
             FROM 
-                simulator_20250820.message_actions 
+                message_actions 
         )
         WHERE 
             toDate(time) BETWEEN yesterday() - 13 AND yesterday()  
@@ -54,10 +54,10 @@ QUERY_NEW_USERS = """
             , toDate(minIf(time, service = 'messenger')) as first_messenger_date
         FROM (
             SELECT time, user_id, 'feed' as service
-            FROM simulator_20250820.feed_actions
+            FROM feed_actions
             UNION ALL
             SELECT time, user_id, 'messenger' as service  
-            FROM simulator_20250820.message_actions
+            FROM message_actions
         )
         GROUP BY user_id
     )
@@ -100,10 +100,10 @@ QUERY_NEW_USERS = """
         , user_id
         FROM (
             SELECT time, user_id, 'feed' as service
-            FROM simulator_20250820.feed_actions
+            FROM feed_actions
             UNION ALL
             SELECT time, user_id, 'messenger' as service  
-            FROM simulator_20250820.message_actions
+            FROM message_actions
         )
         GROUP BY 
         date
@@ -144,7 +144,7 @@ QUERY_ACTIVITY = """
             , countIf(action = 'like') as likes
             , ifNull(likes / nullIf(views, 0), 0) as ctr
         FROM 
-            simulator_20250820.feed_actions
+            feed_actions
         WHERE 
             date BETWEEN yesterday() - 13 AND yesterday()
         GROUP BY 
@@ -155,7 +155,7 @@ QUERY_ACTIVITY = """
             toDate(time) as date
             , count() as messages
         FROM 
-            simulator_20250820.message_actions 
+            message_actions 
         WHERE 
             date BETWEEN yesterday() - 13 AND yesterday()
         GROUP BY 
@@ -185,13 +185,13 @@ QUERY_RETENTION = """
                 time
                 , user_id
             FROM 
-                simulator_20250820.feed_actions
+                feed_actions
             UNION ALL 
             SELECT
                 time
                 , user_id
             FROM 
-                simulator_20250820.message_actions 
+                message_actions 
         )
         GROUP BY 
             user_id 
@@ -207,13 +207,13 @@ QUERY_RETENTION = """
                 time
                 , user_id
             FROM 
-                simulator_20250820.feed_actions
+                feed_actions
             UNION ALL  
             SELECT
                 time
                 , user_id
             FROM 
-                simulator_20250820.message_actions 
+                message_actions 
             )
         WHERE   
             date BETWEEN yesterday() - 14 AND yesterday()
@@ -248,13 +248,13 @@ QUERY_ROLL_RETENTION_7D = """
                 time
                 , user_id
             FROM 
-                simulator_20250820.feed_actions
+                feed_actions
             UNION ALL 
             SELECT
                 time
                 , user_id
             FROM 
-                simulator_20250820.message_actions 
+                message_actions 
         )
         WHERE 
             toDate(time) BETWEEN yesterday() - 7 AND yesterday()
@@ -279,7 +279,7 @@ QUERY_FEED_DETAILED = """
             , countIf(action = 'like') as likes
             , ifNull(likes / nullIf(views, 0), 0) as ctr
         FROM 
-            simulator_20250820.feed_actions
+            feed_actions
         WHERE 
             toDate(time) BETWEEN yesterday() - 13 AND yesterday()
         GROUP BY 
@@ -308,7 +308,7 @@ QUERY_MESSENGER_DETAILED = """
         , ifNull(sender_dau / nullIf(receiver_dau, 0), 0) as sender_to_receiver_ratio
         , ifNull(count() / nullIf(sender_dau, 0), 0) as messages_per_sender
     FROM 
-        simulator_20250820.message_actions
+        message_actions
     WHERE 
         toDate(time) BETWEEN yesterday() - 13 AND yesterday()
     GROUP BY 
@@ -332,7 +332,7 @@ QUERY_USERS_DAILY_BY_SOURCE = """
                 , 'feed' as service
                 , source
             FROM 
-                simulator_20250820.feed_actions
+                feed_actions
             UNION ALL
             SELECT
                 time
@@ -340,7 +340,7 @@ QUERY_USERS_DAILY_BY_SOURCE = """
                 , 'messenger' as service
                 , source
             FROM 
-                simulator_20250820.message_actions 
+                message_actions 
         )
         WHERE 
             toDate(time) BETWEEN yesterday() - 6 AND yesterday()  

@@ -14,12 +14,12 @@ Building analytics process for startup: infrastructure, dashboards, A/B testing,
 - [🗃️ Data Source](#data-source)
 - [📊 Project Components & Implementation](#project-components)
   - [1. Building Analytical Database](#analytical-database)
-  - [2. Product Dashboard: Design & Implementation](#product-dashboard)
-  - [3. Retention Analysis & User Engagement Investigation](#metric-deep-dive)
-  - [4. A/B Testing: Evaluating New Recommendation Algorithms](#ab-testing)
-  - [5. Metric Forecasting: Server Load Prediction](#metric-forecasting)
-  - [6. Automated Daily Reports to Telegram Chat](#automated-reporting)
-  - [7. Alert System: Real-time Anomaly Detection for Product Metrics](#alert-system)
+  - [2. Product Dashboard](#product-dashboard)
+  - [3. Product Metric Deep Dive](#metric-deep-dive)
+  - [4. A/B Testing](#ab-testing)
+  - [5. Metric Forecasting](#metric-forecasting)
+  - [6. Automated Daily Reports](#automated-reporting)
+  - [7. Alert System](#alert-system)
 - [🎯 Goal Delivered](#goal-delivered)
 - [📜 License](#license)
   
@@ -99,7 +99,7 @@ Building analytics process for startup: infrastructure, dashboards, A/B testing,
 
 **Expected Outcome:**
 
-A complete analytics ecosystem that provides real-time business visibility, enables data-driven product decisions, and automates stakeholder reporting through reliable, scalable data infrastructure.
+- A complete analytics ecosystem that provides real-time business visibility, enables data-driven product decisions, and automates stakeholder reporting through reliable, scalable data infrastructure.
 
 
 [⬆ back to contents](#contents)
@@ -127,7 +127,7 @@ The analysis uses data from the product database in ClickHouse, which consists o
 
 [📓 View Notebook with Full Analysis](./building_startup_analytics/1_data_infrastructure/analytical_database.ipynb)
 
-**Context**
+**Context:**
 
 - Startup's messenger and news feed app generates extensive user interaction data. To enable product monitoring, we need to build an optimized analytical database that will power our business intelligence dashboards.
 
@@ -159,13 +159,13 @@ The analysis uses data from the product database in ClickHouse, which consists o
 
 <a id="product-dashboard"></a>
 
-### 2. Product Dashboard: Design & Implementation
+### 2. Product Dashboard
 
 [📓 View Notebook with Full Analysis](./building_startup_analytics/2_product_dashboard/product_dashboard.ipynb)
 
 [👉 Feed & Messenger Performance Dashboard](https://datalens.yandex/w5blxgwqvb4uh)
 
-**Context**
+**Context:**
 
 - With the analytical database in place, the next critical step is to provide the product and management teams with intuitive, self-service access to key metrics through a comprehensive dashboard.
 
@@ -173,7 +173,7 @@ The analysis uses data from the product database in ClickHouse, which consists o
 
 - To design and implement an interactive product dashboard in Yandex DataLens that enables monitoring of user engagement, retention, and growth metrics across both messaging and news feed features.
 
-**Key Achievements**
+**Key Achievements:**
 
 - **Dashboard Canvas Completed:** Defined business questions, key metrics, and target audience for the product dashboard
 - **Dashboard Layout Designed:** Created comprehensive dashboard mockup with visualization types and layout structure
@@ -215,11 +215,11 @@ Here are the key screenshots of the implemented dashboard:
 
 <a id="metric-deep-dive"></a>
 
-### 3. Retention Analysis & User Engagement Investigation
+### 3. Product Metric Deep Dive
 
 [📓 View Notebook with Full Analysis](./building_startup_analytics/3_metric_deep_dive/metric_deep_dive.ipynb)
 
-**Context**
+**Context:**
 
 - Over the past several days, our startup experienced two significant events that impacted user metrics. 
 - First, marketing launched a major advertising campaign that brought a substantial number of new users to the application. 
@@ -233,7 +233,7 @@ To conduct a deep dive analysis addressing three critical business questions:
 2. Investigate the sudden audience drop by identifying users who experienced issues with the news feed and determining common characteristics among them
 3. Build weekly audience segmentation to track user lifecycle and identify trends in new, retained, and churned users
 
-**Key Achievements**
+**Key Achievements:**
 
 - **Retention Analysis Completed:** 
   - Conducted comprehensive cohort analysis of advertising campaign users versus organic users
@@ -248,7 +248,7 @@ To conduct a deep dive analysis addressing three critical business questions:
 - **Goal Achieved:** 
   - Provided data-driven insights that enabled marketing to optimize campaign strategies and engineering to address critical technical issues
   
-**Main Insights:**
+**Key Findings:**
 
 - Advertising Campaign Analysis
   - Campaign successfully attracted large volume of new users, significantly exceeding previous acquisition rates
@@ -301,11 +301,11 @@ To conduct a deep dive analysis addressing three critical business questions:
 
 <a id="ab-testing"></a>
 
-### 4. A/B Testing: Evaluating New Recommendation Algorithms
+### 4. A/B Testing
 
 [📓 View Notebook with Full Analysis](./building_startup_analytics/4_ab_testing/ab_testing.ipynb)
 
-**Context**
+**Context:**
 
 - The ML team has developed new algorithms for news feed recommendations. 
 - It is expected that these new algorithms will make users happier and the product more convenient/pleasant to use. 
@@ -321,15 +321,17 @@ To conduct a deep dive analysis addressing three critical business questions:
 - To design and execute a complete A/B testing pipeline that validates whether the new recommendation algorithms increase user engagement.
 - To provide data-driven recommendations on rolling out the algorithms to all users.
 
-**Main Insights:**
+**Key Findings:**
 
 Hypothesis 1 ("Similar to Liked Posts"):
+
 - **The new algorithm should not be rolled out to all users.**
 - The analysis revealed anomalies (bimodality) in the test group, indicating a high probability of technical problems during the experiment.
 - The main argument is that bimodality was present for the first 6 days but disappeared on the last day.
 - If the impact on the test group was consistent for all 7 days, this could not have happened. This is a clear signal of technical issues.
 
 Hypothesis 2 ("Posts Liked by Similar Users"):
+
 - **Limited rollout recommended**
 - Statistically significant CTR improvement observed (+0.0164)
 - No distribution anomalies detected - results are reliable
@@ -358,11 +360,11 @@ For Hypothesis 2:
 
 <a id="metric-forecasting"></a>
 
-### 5. Metric Forecasting: Server Load Prediction
+### 5. Metric Forecasting
 
 [📓 View Notebook with Full Analysis](./building_startup_analytics/5_metric_forecasting/metric_forecasting.ipynb)
 
-**Context**
+**Context:**
 
 - Recently, we've been receiving increasing complaints about application lag and performance issues. 
 - As user activity grows, server load intensifies, requiring proactive capacity planning. 
@@ -372,7 +374,7 @@ For Hypothesis 2:
 
 - To build reliable forecasting models that predict user activity patterns for the upcoming month, enabling proactive server capacity planning and preventing application performance issues.
 
-**Key Achievements**
+**Key Achievements:**
 
 - **Metric Selection & Analysis:** 
   - Selected total actions (feed + messenger) as primary load metric and total DAU as stability metric; conducted comprehensive EDA on 2 months of historical data
@@ -383,7 +385,7 @@ For Hypothesis 2:
 - **Forecasting Strategy:** 
   - Established 7-day forecasting as optimal horizon given data constraints; identified key limitations and model interpretation guidelines
 
-**Main Insights:**
+**Key Findings:**
 
 Total DAU Forecasting
 
@@ -428,11 +430,11 @@ Strategic Recommendations
 
 <a id="automated-reporting"></a>
 
-### 6. Automated Daily Reports to Telegram Chat
+### 6. Automated Daily Reports
 
 [📓 View Notebook with Full Analysis](./building_startup_analytics/6_automated_reporting/automated_reporting.ipynb)
 
-**Context**
+**Context:**
 
 - As our application grows, stakeholders need consistent, automated insights into product performance. 
 - Currently, manual reporting processes are time-consuming and lack standardization.
@@ -442,7 +444,7 @@ Strategic Recommendations
 
 - To build a complete automated pipeline that generates daily product reports and delivers them to a Telegram chat, providing stakeholders with regular business insights without manual intervention.
 
-**Key Achievements**
+**Key Achievements:**
 
 - **Data Pipeline Development:** 
   - Built SQL queries to extract and calculate key product metrics from ClickHouse database
@@ -473,11 +475,11 @@ Strategic Recommendations
 
 <a id="alert-system"></a>
 
-### 7. Alert System: Real-time Anomaly Detection for Product Metrics
+### 7. Alert System
 
 [📓 View Notebook with Full Analysis](./building_startup_analytics/7_anomaly_detection/alert_system.ipynb)
 
-**Context**
+**Context:**
 
 - To proactively identify issues before they impact users, we need a system that continuously monitors key product metrics and alerts the team about anomalies. 
 - This project implements an automated alert system that checks critical metrics every 15 minutes and sends immediate notifications when deviations are detected.
@@ -486,7 +488,7 @@ Strategic Recommendations
 
 - To build a robust anomaly detection system that monitors key product metrics in real-time, automatically alerts the team via Telegram when anomalies occur, and provides actionable insights for rapid investigation.
 
-**Key Achievements**
+**Key Achievements:**
 
 - **SQL Queries Developed:** 
   - Created optimized queries to extract and calculate key metrics from ClickHouse database

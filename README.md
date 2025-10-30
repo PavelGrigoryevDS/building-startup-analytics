@@ -1,9 +1,12 @@
 # 🧩 Building Startup Analytics
 
 [![Data Analytics](https://img.shields.io/badge/Data-Analytics-blue)](https://)
+[![Web Report](https://img.shields.io/badge/🌐_Web_Report-blue?logoColor=white)](https://pavelgrigoryevds.github.io/building-startup-analytics/)
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
 Building analytics process for startup: infrastructure, dashboards, A/B testing, forecasting, automated reports, and anomaly detection.
+
+**📖 For comfortable reading:** [Web version](https://pavelgrigoryevds.github.io/building-startup-analytics/)
 
 <a id="contents"></a>
 

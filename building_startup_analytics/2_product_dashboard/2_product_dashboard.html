@@ -1,0 +1,1065 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>2. Product Dashboard &#8212; 🧩 Building Startup Analytics</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=aa5847ba" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/custom.js?v=f9582d1e"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'building_startup_analytics/2_product_dashboard/2_product_dashboard';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="3. Product Metric Deep Dive" href="../3_metric_deep_dive/3_metric_deep_dive.html" />
+    <link rel="prev" title="1. Building Analytical Database" href="../1_data_infrastructure/1_analytical_database.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo-light.jpg" class="logo__image only-light" alt="🧩 Building Startup Analytics - Home"/>
+    <script>document.write(`<img src="../../_static/logo-dark.jpg" class="logo__image only-dark" alt="🧩 Building Startup Analytics - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    🧩 Building Startup Analytics
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../1_data_infrastructure/1_analytical_database.html">1. Building Analytical Database</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">2. Product Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_metric_deep_dive/3_metric_deep_dive.html">3. Product Metric Deep Dive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_ab_testing/4_ab_testing.html">4. A/B Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5_metric_forecasting/5_metric_forecasting.html">5. Metric Forecasting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6_automated_reporting/6_automated_reporting.html">6. Automated Daily Reports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../7_anomaly_detection/7_alert_system.html">7. Alert System</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/PavelGrigoryevDS/building-startup-analytics" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/building_startup_analytics/2_product_dashboard/2_product_dashboard.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>2. Product Dashboard</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> On this page </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-description">2.1 Data Description</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dashboard-canvas">2.2 Dashboard Canvas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dashboard-mock-up">2.3 Dashboard Mock-up</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dashboard-documentation">2.4 Dashboard Documentation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dashboard-implementation">2.5 Dashboard Implementation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#app-overview-tab">📱 App Overview Tab</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#feed-deep-dive-tab">📰 Feed Deep Dive Tab</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#messenger-deep-dive-tab">💬 Messenger Deep Dive Tab</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#documentation">📖 Documentation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-conclusion">2.6 General Conclusion</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="product-dashboard">
+<h1>2. Product Dashboard<a class="headerlink" href="#product-dashboard" title="Link to this heading">#</a></h1>
+<p><strong>Context:</strong></p>
+<ul class="simple">
+<li><p>With the analytical database in place, the next critical step is to provide the product and management teams with intuitive, self-service access to key metrics through a comprehensive dashboard.</p></li>
+</ul>
+<p><strong>Objectives:</strong></p>
+<ul class="simple">
+<li><p>To design and implement an interactive product dashboard in Yandex DataLens that enables monitoring of user engagement, retention, and growth metrics across both messaging and news feed features.</p></li>
+</ul>
+<p><strong>Data Sources:</strong></p>
+<p>The dashboard connects to folloing materialized views</p>
+<ul class="simple">
+<li><p>mv_app_daily_activity</p></li>
+<li><p>mv_feed_daily_activity</p></li>
+<li><p>mv_messenger_daily_activity</p></li>
+</ul>
+<p><strong>Project Resources:</strong></p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://datalens.yandex/w5blxgwqvb4uh"><strong>Feed &amp; Messenger Performance Dashboard</strong></a></p></li>
+</ul>
+<p><strong>Key Achievements:</strong></p>
+<ul class="simple">
+<li><p><strong>Dashboard Canvas Completed:</strong> Defined business questions, key metrics, and target audience for the product dashboard</p></li>
+<li><p><strong>Dashboard Layout Designed:</strong> Created comprehensive dashboard mockup with visualization types and layout structure</p></li>
+<li><p><strong>Yandex DataLens Dashboard Implemented:</strong> Built and deployed interactive dashboard in Yandex DataLens</p></li>
+<li><p><strong>Dashboard Documentation Written:</strong> Created comprehensive documentation including filter definitions and metric explanations</p></li>
+</ul>
+<p><strong>Business Impact:</strong></p>
+<ul class="simple">
+<li><p>Empowered non-technical teams with self-service analytics capabilities, significantly reducing dependency on data team for routine metric monitoring.</p></li>
+</ul>
+<section id="data-description">
+<h2>2.1 Data Description<a class="headerlink" href="#data-description" title="Link to this heading">#</a></h2>
+<p>In the analytical database on ClickHouse, the following materialized views have been created for optimized dashboard performance</p>
+<p>Materialized View <code class="docutils literal notranslate"><span class="pre">mv_app_daily_activity</span></code></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>date</p></td>
+<td><p>Date of activity</p></td>
+</tr>
+<tr class="row-odd"><td><p>gender</p></td>
+<td><p>User’s gender</p></td>
+</tr>
+<tr class="row-even"><td><p>age</p></td>
+<td><p>User’s age</p></td>
+</tr>
+<tr class="row-odd"><td><p>source</p></td>
+<td><p>Traffic source</p></td>
+</tr>
+<tr class="row-even"><td><p>os</p></td>
+<td><p>User’s operating system</p></td>
+</tr>
+<tr class="row-odd"><td><p>city</p></td>
+<td><p>User’s city</p></td>
+</tr>
+<tr class="row-even"><td><p>country</p></td>
+<td><p>User’s country</p></td>
+</tr>
+<tr class="row-odd"><td><p>total_users</p></td>
+<td><p>Total unique active users</p></td>
+</tr>
+<tr class="row-even"><td><p>feed_only_users</p></td>
+<td><p>Users who only used feed features</p></td>
+</tr>
+<tr class="row-odd"><td><p>messenger_only_users</p></td>
+<td><p>Users who only used messenger features</p></td>
+</tr>
+<tr class="row-even"><td><p>both_services_users</p></td>
+<td><p>Users who used both feed and messenger</p></td>
+</tr>
+<tr class="row-odd"><td><p>messenger_users</p></td>
+<td><p>Total users who used messenger</p></td>
+</tr>
+<tr class="row-even"><td><p>new_users_lifetime_0</p></td>
+<td><p>New users (first activity)</p></td>
+</tr>
+<tr class="row-odd"><td><p>users_lifetime_7d</p></td>
+<td><p>Users with 7+ days since first activity</p></td>
+</tr>
+<tr class="row-even"><td><p>new_users_7_days_ago</p></td>
+<td><p>New users from 7 days ago (for retention)</p></td>
+</tr>
+<tr class="row-odd"><td><p>views</p></td>
+<td><p>Total post views</p></td>
+</tr>
+<tr class="row-even"><td><p>likes</p></td>
+<td><p>Total post likes</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Materialized View <code class="docutils literal notranslate"><span class="pre">mv_feed_daily_activity</span></code></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>date</p></td>
+<td><p>Date of activity</p></td>
+</tr>
+<tr class="row-odd"><td><p>gender</p></td>
+<td><p>User’s gender</p></td>
+</tr>
+<tr class="row-even"><td><p>age</p></td>
+<td><p>User’s age</p></td>
+</tr>
+<tr class="row-odd"><td><p>source</p></td>
+<td><p>Traffic source</p></td>
+</tr>
+<tr class="row-even"><td><p>os</p></td>
+<td><p>User’s operating system</p></td>
+</tr>
+<tr class="row-odd"><td><p>city</p></td>
+<td><p>User’s city</p></td>
+</tr>
+<tr class="row-even"><td><p>country</p></td>
+<td><p>User’s country</p></td>
+</tr>
+<tr class="row-odd"><td><p>views</p></td>
+<td><p>Total post views</p></td>
+</tr>
+<tr class="row-even"><td><p>likes</p></td>
+<td><p>Total post likes</p></td>
+</tr>
+<tr class="row-odd"><td><p>posts</p></td>
+<td><p>Unique posts viewed</p></td>
+</tr>
+<tr class="row-even"><td><p>avg_view_to_like_seconds</p></td>
+<td><p>Average time from view to like (seconds)</p></td>
+</tr>
+<tr class="row-odd"><td><p>feed_users</p></td>
+<td><p>Unique feed users</p></td>
+</tr>
+<tr class="row-even"><td><p>feed_new_users_lifetime_0</p></td>
+<td><p>New feed users (first feed activity)</p></td>
+</tr>
+<tr class="row-odd"><td><p>feed_users_lifetime_7d</p></td>
+<td><p>Feed users with 7+ days since first activity</p></td>
+</tr>
+<tr class="row-even"><td><p>feed_new_users_7_days_ago</p></td>
+<td><p>New feed users from 7 days ago</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Materialized View: <code class="docutils literal notranslate"><span class="pre">mv_messenger_daily_activity</span></code></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>date</p></td>
+<td><p>Date of activity</p></td>
+</tr>
+<tr class="row-odd"><td><p>gender</p></td>
+<td><p>User’s gender</p></td>
+</tr>
+<tr class="row-even"><td><p>age</p></td>
+<td><p>User’s age</p></td>
+</tr>
+<tr class="row-odd"><td><p>source</p></td>
+<td><p>Traffic source</p></td>
+</tr>
+<tr class="row-even"><td><p>os</p></td>
+<td><p>User’s operating system</p></td>
+</tr>
+<tr class="row-odd"><td><p>city</p></td>
+<td><p>User’s city</p></td>
+</tr>
+<tr class="row-even"><td><p>country</p></td>
+<td><p>User’s country</p></td>
+</tr>
+<tr class="row-odd"><td><p>total_senders</p></td>
+<td><p>Unique users who sent messages</p></td>
+</tr>
+<tr class="row-even"><td><p>total_receivers</p></td>
+<td><p>Unique users who received messages</p></td>
+</tr>
+<tr class="row-odd"><td><p>new_users_lifetime_0</p></td>
+<td><p>New messenger users (first message)</p></td>
+</tr>
+<tr class="row-even"><td><p>users_lifetime_7d</p></td>
+<td><p>Messenger users with 7+ days since first activity</p></td>
+</tr>
+<tr class="row-odd"><td><p>new_messenger_users_7_days_ago</p></td>
+<td><p>New messenger users from 7 days ago</p></td>
+</tr>
+<tr class="row-even"><td><p>messages_sent</p></td>
+<td><p>Total messages sent</p></td>
+</tr>
+<tr class="row-odd"><td><p>avg_time_between_messages_sent</p></td>
+<td><p>Average time between consecutive messages (seconds)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="dashboard-canvas">
+<h2>2.2 Dashboard Canvas<a class="headerlink" href="#dashboard-canvas" title="Link to this heading">#</a></h2>
+<p>Define dashboard canvas for the product dashboard.</p>
+<ol class="arabic simple">
+<li><p>Users and Context</p>
+<ul class="simple">
+<li><p>Who will use it and their roles?</p>
+<ul>
+<li><p>Product Manager</p>
+<ul>
+<li><p>Responsible for the overall product health metric</p></li>
+</ul>
+</li>
+<li><p>Marketing Manager</p>
+<ul>
+<li><p>Evaluates the effectiveness of acquisition channels</p></li>
+</ul>
+</li>
+<li><p>Data Analyst</p>
+<ul>
+<li><p>Performs deep data analysis</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>How often will they use it?</p>
+<ul>
+<li><p>Regularly (daily/weekly)</p></li>
+</ul>
+</li>
+<li><p>Under what conditions?</p>
+<ul>
+<li><p>During meetings to discuss strategy and make decisions</p></li>
+<li><p>PM will study the dashboard on their laptop to prepare for meetings or form hypotheses</p></li>
+<li><p>Urgent requests from management (e.g., checking if activity “dropped” after a release)</p></li>
+</ul>
+</li>
+<li><p>On what devices?</p>
+<ul>
+<li><p>Primarily desktop (laptop/PC) and projector</p></li>
+<li><p>Mobile version has low priority</p></li>
+</ul>
+</li>
+<li><p>How long will a single interaction take?</p>
+<ul>
+<li><p>From 5 to 30 minutes</p></li>
+<li><p>A quick glance to check metrics and longer immersion to analyze reasons for changes and find insights</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Understanding the Task</p>
+<ul class="simple">
+<li><p>Main dashboard goal</p>
+<ul>
+<li><p>To create a single point for monitoring and analyzing interactions between the two key services (news feed and messenger).</p></li>
+</ul>
+</li>
+<li><p>Dashboard type</p>
+<ul>
+<li><p>Overview</p></li>
+</ul>
+</li>
+<li><p>Why the task is important</p>
+<ul>
+<li><p>The company lacks a single source of truth. Different departments (management, marketing, product) have different, often conflicting, views on what is happening with the business.</p></li>
+<li><p>Without a dashboard, it is difficult to answer the main questions: What is happening? and Why?</p></li>
+</ul>
+</li>
+<li><p>Why the task is important?</p>
+<ul>
+<li><p>Will help identify and strengthen the intersection points between services that retain users.</p></li>
+<li><p>Will reduce time spent gathering data from various sources before each meeting.</p></li>
+<li><p>A single entry point will reduce the time needed to access and share information within the team.</p></li>
+<li><p>Visualization of key metrics will improve the quality of decision-making.</p></li>
+</ul>
+</li>
+<li><p>How will we know the goal has been achieved?</p>
+<ul>
+<li><p>Users reference dashboard data during daily meetings.</p></li>
+<li><p>Time spent preparing for planning meetings is reduced (e.g., from 2 hours to 15 minutes).</p></li>
+<li><p>The number of hypotheses generated has increased.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Metrics, Dimensions, and Data Sources</p>
+<ul class="simple">
+<li><p>Metrics</p>
+<ul>
+<li><p>Total number of users</p></li>
+<li><p>Number of users who used only the feed</p></li>
+<li><p>Number of users who used only the messenger</p></li>
+<li><p>Number of users who used both services</p></li>
+<li><p>Number of new users</p></li>
+<li><p>Day 7 cohort retention</p></li>
+<li><p>CTR</p></li>
+<li><p>Average number of messages per user</p></li>
+<li><p>Unique number of posts</p></li>
+<li><p>Total number of views</p></li>
+<li><p>Total number of likes</p></li>
+<li><p>Average number of likes per post</p></li>
+<li><p>Average number of posts per user</p></li>
+<li><p>Average number of views per user</p></li>
+<li><p>Average number of likes per user</p></li>
+<li><p>Average time between like and view of the same post</p></li>
+<li><p>Total number of message senders</p></li>
+<li><p>Total number of message receivers</p></li>
+<li><p>Ratio of message receivers to message senders</p></li>
+<li><p>Total number of messages sent</p></li>
+<li><p>Average time between messages sent by a single user</p></li>
+</ul>
+</li>
+<li><p>Dimensions</p>
+<ul>
+<li><p>Time</p></li>
+<li><p>Gender</p></li>
+<li><p>Age Group</p></li>
+<li><p>Country</p></li>
+<li><p>City</p></li>
+<li><p>Os</p></li>
+<li><p>Source</p></li>
+</ul>
+</li>
+<li><p>Sources</p>
+<ul>
+<li><p>materialized view mv_app_daily_activity</p></li>
+<li><p>materialized view mv_feed_daily_activity</p></li>
+<li><p>materialized view mv_messenger_daily_activity</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Questions and Business Decisions</p>
+<ul class="simple">
+<li><p>What are the values of the metrics (listed above) for the last day and what is the trend over the last month?</p></li>
+<li><p>How have the metrics changed compared to the previous week?</p></li>
+<li><p>How does the metric trend this month differ from the same trend last month?</p></li>
+<li><p>In which cities/countries, which age groups, from which devices are the users who use the app in general and each service separately?</p></li>
+<li><p>Which channel brings more users who only use the feed / only use the messenger / use both services?</p></li>
+<li><p>What is the number of users by traffic source and OS (heatmap)?</p></li>
+<li><p>Which traffic source brings users who stay in the app longer?</p></li>
+<li><p>In which age groups are the average metrics per user higher?</p></li>
+<li><p>How do the conducted advertising campaigns reflect on the dynamics of the metrics?</p></li>
+</ul>
+</li>
+<li><p>Visualization for Questions and Business Decisions</p>
+<ul class="simple">
+<li><p>App Overview Tab</p>
+<ul>
+<li><p>KPI cards with values for the last completed day and WoW change with color indicators for the following metrics:</p>
+<ul>
+<li><p>Total Users</p></li>
+<li><p>Feed Only Users</p></li>
+<li><p>Messenger Only Users</p></li>
+<li><p>Both Services Users</p></li>
+<li><p>New Users</p></li>
+<li><p>Retention 7D</p></li>
+<li><p>CTR</p></li>
+<li><p>Messages per User</p></li>
+</ul>
+</li>
+<li><p>Under each KPI card: WoW comparison and monthly trends (sparkline)</p></li>
+<li><p>Table with all these metrics broken down by Gender, Age Group, Os, Source, Country, City</p></li>
+</ul>
+</li>
+<li><p>Feed Deep Dive Tab</p>
+<ul>
+<li><p>KPI cards with values for the last completed day and WoW change with color indicators for the following metrics:</p>
+<ul>
+<li><p>Total Users</p></li>
+<li><p>New Users</p></li>
+<li><p>Retention 7D</p></li>
+<li><p>CTR</p></li>
+<li><p>Unique Posts</p></li>
+<li><p>Total Views</p></li>
+<li><p>Total Likes</p></li>
+<li><p>Likes per Post</p></li>
+<li><p>Posts per User</p></li>
+<li><p>Views per User</p></li>
+<li><p>Likes per User</p></li>
+<li><p>Avg View-to-Like Time</p></li>
+</ul>
+</li>
+<li><p>Under each KPI card: WoW comparison and monthly trends (sparkline)</p></li>
+<li><p>Table with all these metrics broken down by Gender, Age Group, Os, Source, Country, City</p></li>
+</ul>
+</li>
+<li><p>Messenger Deep Dive Tab</p>
+<ul>
+<li><p>KPI cards with values for the last completed day and WoW change with color indicators for the following metrics:</p>
+<ul>
+<li><p>Total Senders</p></li>
+<li><p>Total Receivers</p></li>
+<li><p>New Users</p></li>
+<li><p>Retention 7D</p></li>
+<li><p>Receiver/Sender Ratio</p></li>
+<li><p>Messages Sent</p></li>
+<li><p>Avg Messages per Sender</p></li>
+<li><p>Avg Time Between Messages</p></li>
+</ul>
+</li>
+<li><p>Under each KPI card: WoW comparison and monthly trends (sparkline)</p></li>
+<li><p>Table with all these metrics broken down by Gender, Age Group, Os, Source, Country, City</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="dashboard-mock-up">
+<h2>2.3 Dashboard Mock-up<a class="headerlink" href="#dashboard-mock-up" title="Link to this heading">#</a></h2>
+<p>Create dashboard mock-up for the product dashboard.</p>
+<p><strong>App Overview Tab</strong></p>
+<img alt="" src="../../_images/app_overview_mockup.png" />
+<p><strong>Feed Deep Dive Tab</strong></p>
+<img alt="" src="../../_images/feed_deep_dive_mockup.png" />
+<p><strong>Messenger Deep Dive Tab</strong></p>
+<img alt="" src="../../_images/messenger_deep_dive_mockup.png" />
+</section>
+<section id="dashboard-documentation">
+<h2>2.4 Dashboard Documentation<a class="headerlink" href="#dashboard-documentation" title="Link to this heading">#</a></h2>
+<p>Create dashboard documentation for the product dashboard. This documentation will be placed on a separate tab within the dashboard itself for easy user reference.</p>
+<p>ℹ️ General Information</p>
+<p>The Feed &amp; Messenger Performance Dashboard provides comprehensive insights into user engagement, content performance, and messaging activity within our social application. This tool enables data-driven decision making for product development and user growth strategies.</p>
+<p><strong>Dashboard Owner:</strong> Pavel Grigoryev</p>
+<p><strong>Data Coverage:</strong> Last 2 Months</p>
+<p><strong>Reporting Period:</strong></p>
+<ul class="simple">
+<li><p><strong>KPI Cards (Factoids):</strong> Show values for the last complete 24-hour period (previous full day)</p></li>
+<li><p><strong>Sparklines:</strong> Display trends comparing the current month vs previous month</p></li>
+<li><p><strong>Breakdown Tables:</strong> Use data from the last complete 24-hour period (previous full day)</p></li>
+</ul>
+<p>This approach ensures consistent daily performance tracking while providing monthly trend context.</p>
+<p><strong>Abbreviations:</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Abbreviation</p></th>
+<th class="head text-left"><p>Full Name</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>WoW</strong></p></td>
+<td class="text-left"><p>Week-over-Week</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>CTR</strong></p></td>
+<td class="text-left"><p>Click-Through Rate</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>DAU</strong></p></td>
+<td class="text-left"><p>Daily Active Users</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Retention 7D</strong></p></td>
+<td class="text-left"><p>Retention 7 Days</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>DAU / WAU</strong></p></td>
+<td class="text-left"><p>Daily Active Users / Weekly Active Users</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr class="docutils" />
+<p>📈 Tab Overview</p>
+<p>📱 App Overview Tab</p>
+<p><strong>Key Metrics:</strong></p>
+<ul class="simple">
+<li><p><strong>Total Users</strong> - Count of unique users who performed any action in the application</p></li>
+<li><p><strong>Feed Only Users</strong> - Users who only interacted with the feed (viewed or liked posts)</p></li>
+<li><p><strong>Messenger Only Users</strong> - Users who only used the messaging feature</p></li>
+<li><p><strong>Both Services Users</strong> - Users who interacted with both feed and messenger</p></li>
+<li><p><strong>New Users</strong> - Users who registered and first used the application</p></li>
+<li><p><strong>Retention 7D</strong> - Percentage of users from a cohort who were active on the 7th day after their first activity</p></li>
+<li><p><strong>CTR</strong> - Click-through rate: ratio of likes to views in the feed</p></li>
+<li><p><strong>Messages per User</strong> - Average number of messages sent per active user</p></li>
+</ul>
+<p><em>All metrics include WoW comparison and monthly trends (sparkline).</em></p>
+<p>📰 Feed Deep Dive Tab</p>
+<p><strong>Key Metrics:</strong></p>
+<ul class="simple">
+<li><p><strong>Total Users</strong> - Count of unique users who performed any action in the application</p></li>
+<li><p><strong>New Users</strong> - Users who registered and first used the feed</p></li>
+<li><p><strong>Retention 7D</strong> - Percentage of users from a cohort who were active on the 7th day after their first activity</p></li>
+<li><p><strong>CTR</strong> - Like-to-view ratio</p></li>
+<li><p><strong>Unique Posts</strong> - Number of distinct posts viewed</p></li>
+<li><p><strong>Total Views</strong> - Overall post impression count</p></li>
+<li><p><strong>Total Likes</strong> - Number of likes received</p></li>
+<li><p><strong>Likes per Post</strong> - Ratio of likes to posts, measuring content quality and engagement</p></li>
+<li><p><strong>Posts per User</strong> - Average unique posts viewed per user</p></li>
+<li><p><strong>Views per User</strong> - Average views per user</p></li>
+<li><p><strong>Likes per User</strong> - Average likes per user</p></li>
+<li><p><strong>Avg View-to-Like Time</strong> - Average time from view to like action</p></li>
+</ul>
+<p><em>All metrics include WoW comparison and monthly trends (sparkline).</em></p>
+<p>💬 Messenger Deep Dive Tab</p>
+<p><strong>Key Metrics:</strong></p>
+<ul class="simple">
+<li><p><strong>Total Senders</strong> - Number of unique users who sent messages</p></li>
+<li><p><strong>Total Receivers</strong> - Number of unique users who received messages</p></li>
+<li><p><strong>New Users</strong> - Users who registered and first used the messenger</p></li>
+<li><p><strong>Retention 7D</strong> - Percentage of users from a cohort who were active on the 7th day after their first activity</p></li>
+<li><p><strong>Receiver/Sender Ratio</strong> - Ratio of message receivers to senders, measuring audience reach and network effect</p></li>
+<li><p><strong>Messages Sent</strong> - Total number of messages sent in the platform</p></li>
+<li><p><strong>Avg Messages per Sender</strong> - Average number of messages sent per active sender</p></li>
+<li><p><strong>Avg Time Between Messages</strong> - Average time interval between consecutive messages from the same user</p></li>
+</ul>
+<p><em>All metrics include WoW comparison and monthly trends (sparkline).</em></p>
+<hr class="docutils" />
+<p>🔓 Access Information</p>
+<p><strong>Access Level:</strong> Available to all</p>
+<hr class="docutils" />
+<p>🗃️ Data Sources &amp; Technical Details</p>
+<p><strong>Data Sources:</strong></p>
+<ul class="simple">
+<li><p>Data is sourced from the analytical database.</p></li>
+<li><p>The dashboard connects to folloing materialized views</p>
+<ul>
+<li><p>mv_app_daily_activity</p></li>
+<li><p>mv_feed_daily_activity</p></li>
+<li><p>mv_messenger_daily_activity</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>Calculation Methodology:</strong></p>
+<ul class="simple">
+<li><p>WoW (Week-over-Week) Growth: Calculated as (Metric Value for Current Period / Metric Value for Previous Week) - 1</p></li>
+<li><p>Retention 7D: Percentage of users from a cohort who were active on the 7th day after their first activity</p></li>
+<li><p>CTR: Calculated as (Total Likes / Total Views) for feed content</p></li>
+</ul>
+<hr class="docutils" />
+<p>❓ Frequently Asked Questions</p>
+<p>What does WoW mean and how is it calculated?</p>
+<p>WoW stands for Week-over-Week.</p>
+<ul class="simple">
+<li><p>It compares the current period (usually yesterday) to the same day in the previous week</p></li>
+<li><p>This helps identify weekly trends and seasonality effects</p></li>
+</ul>
+<p>It is calculated as:
+(Metric Value for Current Period / Metric Value for Same Day Previous Week) - 1</p>
+<p>How is Retention 7D defined?</p>
+<p>Retention 7D measures the percentage of users from a specific cohort (e.g., users who joined on a specific day) who returned and were active exactly on the 7th day after their first activity. This is a classic retention metric that shows the ability to retain users one week after their initial engagement.</p>
+<p>What is shown on the sparkline charts?</p>
+<p>The sparklines provide a 30-day visual history of each metric’s performance, allowing quick identification of trends, spikes, or drops in user engagement and platform performance.</p>
+</section>
+<section id="dashboard-implementation">
+<h2>2.5 Dashboard Implementation<a class="headerlink" href="#dashboard-implementation" title="Link to this heading">#</a></h2>
+<p>Based on the dashboard mockup, a dashboard was created using the BI tool Yandex DataLens.</p>
+<p>The dashboard is available at the following link: <a class="reference external" href="https://datalens.yandex/w5blxgwqvb4uh"><strong>Feed &amp; Messenger Performance Dashboard</strong></a></p>
+<p>Screenshots of the dashboard are provided below.</p>
+<section id="app-overview-tab">
+<h3>📱 App Overview Tab<a class="headerlink" href="#app-overview-tab" title="Link to this heading">#</a></h3>
+<img alt="" src="../../_images/app_overview_tab_part_1.png" />
+<img alt="" src="../../_images/app_overview_tab_part_2.png" />
+</section>
+<section id="feed-deep-dive-tab">
+<h3>📰 Feed Deep Dive Tab<a class="headerlink" href="#feed-deep-dive-tab" title="Link to this heading">#</a></h3>
+<img alt="" src="../../_images/feed_deep_dive_tab_part_1.png" />
+<img alt="" src="../../_images/feed_deep_dive_tab_part_2.png" />
+</section>
+<section id="messenger-deep-dive-tab">
+<h3>💬 Messenger Deep Dive Tab<a class="headerlink" href="#messenger-deep-dive-tab" title="Link to this heading">#</a></h3>
+<img alt="" src="../../_images/messenger_deep_dive_tab_part_1.png" />
+<img alt="" src="../../_images/messenger_deep_dive_tab_part_2.png" />
+</section>
+<section id="documentation">
+<h3>📖 Documentation<a class="headerlink" href="#documentation" title="Link to this heading">#</a></h3>
+<img alt="" src="../../_images/documentation_part_1.png" />
+<img alt="" src="../../_images/documentation_part_2.png" />
+<img alt="" src="../../_images/documentation_part_3.png" />
+</section>
+</section>
+<section id="general-conclusion">
+<h2>2.6 General Conclusion<a class="headerlink" href="#general-conclusion" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Dashboard Canvas Completed:</strong> Defined business questions, key metrics, and target audience for the product dashboard</p></li>
+<li><p><strong>Dashboard Layout Designed:</strong> Created comprehensive dashboard mockup with visualization types and layout structure</p></li>
+<li><p><strong>Yandex DataLens Dashboard Implemented:</strong> Built and deployed interactive dashboard in Yandex DataLens</p></li>
+<li><p><strong>Dashboard Documentation Written:</strong> Created comprehensive documentation including filter definitions and metric explanations</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../1_data_infrastructure/1_analytical_database.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">1. Building Analytical Database</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../3_metric_deep_dive/3_metric_deep_dive.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">3. Product Metric Deep Dive</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-description">2.1 Data Description</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dashboard-canvas">2.2 Dashboard Canvas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dashboard-mock-up">2.3 Dashboard Mock-up</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dashboard-documentation">2.4 Dashboard Documentation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dashboard-implementation">2.5 Dashboard Implementation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#app-overview-tab">📱 App Overview Tab</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#feed-deep-dive-tab">📰 Feed Deep Dive Tab</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#messenger-deep-dive-tab">💬 Messenger Deep Dive Tab</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#documentation">📖 Documentation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-conclusion">2.6 General Conclusion</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Pavel Grigoryev
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025, Pavel Grigoryev.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,596 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>🧩 Building Startup Analytics &#8212; 🧩 Building Startup Analytics</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=aa5847ba" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/custom.js?v=f9582d1e"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="1. Building Analytical Database" href="building_startup_analytics/1_data_infrastructure/1_analytical_database.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="#">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo-light.jpg" class="logo__image only-light" alt="🧩 Building Startup Analytics - Home"/>
+    <script>document.write(`<img src="_static/logo-dark.jpg" class="logo__image only-dark" alt="🧩 Building Startup Analytics - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1 current active">
+                <a class="reference internal" href="#">
+                    🧩 Building Startup Analytics
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="building_startup_analytics/1_data_infrastructure/1_analytical_database.html">1. Building Analytical Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="building_startup_analytics/2_product_dashboard/2_product_dashboard.html">2. Product Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="building_startup_analytics/3_metric_deep_dive/3_metric_deep_dive.html">3. Product Metric Deep Dive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="building_startup_analytics/4_ab_testing/4_ab_testing.html">4. A/B Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="building_startup_analytics/5_metric_forecasting/5_metric_forecasting.html">5. Metric Forecasting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="building_startup_analytics/6_automated_reporting/6_automated_reporting.html">6. Automated Daily Reports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="building_startup_analytics/7_anomaly_detection/7_alert_system.html">7. Alert System</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/PavelGrigoryevDS/building-startup-analytics" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/index.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>🧩 Building Startup Analytics</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> On this page </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#author">👨‍💻 Author</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tech-stack-methods">🛠️ Tech Stack &amp; Methods</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#project-overview">📌 Project Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-source">🗃️ Data Source</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#goal-delivered">🎯 Goal Delivered</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="toctree-wrapper compound">
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="building-startup-analytics">
+<h1>🧩 Building Startup Analytics<a class="headerlink" href="#building-startup-analytics" title="Link to this heading">#</a></h1>
+<p>Building analytics process for startup: infrastructure, dashboards, A/B testing, forecasting, automated reports, and anomaly detection.</p>
+<section id="author">
+<h2>👨‍💻 Author<a class="headerlink" href="#author" title="Link to this heading">#</a></h2>
+<p><strong>Pavel Grigoryev</strong></p>
+</section>
+<section id="tech-stack-methods">
+<h2>🛠️ Tech Stack &amp; Methods<a class="headerlink" href="#tech-stack-methods" title="Link to this heading">#</a></h2>
+<p><strong>Stack:</strong></p>
+<ul class="simple">
+<li><p><strong>Data &amp; DB:</strong> <code class="docutils literal notranslate"><span class="pre">Python</span></code> <code class="docutils literal notranslate"><span class="pre">Pandas</span></code> <code class="docutils literal notranslate"><span class="pre">ClickHouse</span></code></p></li>
+<li><p><strong>Viz &amp; BI:</strong> <code class="docutils literal notranslate"><span class="pre">Superset</span></code> <code class="docutils literal notranslate"><span class="pre">Yandex</span> <span class="pre">DataLens</span></code> <code class="docutils literal notranslate"><span class="pre">Plotly</span></code></p></li>
+<li><p><strong>ML &amp; Stats:</strong> <code class="docutils literal notranslate"><span class="pre">StatsModels</span></code> <code class="docutils literal notranslate"><span class="pre">SciPy</span></code> <code class="docutils literal notranslate"><span class="pre">Pingouin</span></code> <code class="docutils literal notranslate"><span class="pre">Uber</span> <span class="pre">Orbit</span></code></p></li>
+<li><p><strong>Automation:</strong> <code class="docutils literal notranslate"><span class="pre">Apache</span> <span class="pre">Airflow</span></code> <code class="docutils literal notranslate"><span class="pre">Telegram</span> <span class="pre">API</span></code></p></li>
+</ul>
+<p><strong>Methods:</strong></p>
+<ul class="simple">
+<li><p><strong>Data Infrastructure Design:</strong></p>
+<ul>
+<li><p>Star schema modeling, ETL pipeline development, and data quality validation</p></li>
+</ul>
+</li>
+<li><p><strong>Product Analytics:</strong></p>
+<ul>
+<li><p>Retention analysis, cohort analysis, and engagement metrics tracking</p></li>
+</ul>
+</li>
+<li><p><strong>Business Intelligence:</strong></p>
+<ul>
+<li><p>Real-time dashboard design, KPI definition, and self-service reporting implementation</p></li>
+</ul>
+</li>
+<li><p><strong>Statistical Hypothesis Testing:</strong></p>
+<ul>
+<li><p>A/A and A/B test analysis, sample size calculation, and statistical power analysis</p></li>
+</ul>
+</li>
+<li><p><strong>Time Series Forecasting:</strong></p>
+<ul>
+<li><p>Bayesian structural models, trend/seasonality decomposition, and model validation</p></li>
+</ul>
+</li>
+<li><p><strong>Anomaly Detection:</strong></p>
+<ul>
+<li><p>MAD-based outlier detection, alert threshold optimization, and real-time monitoring</p></li>
+</ul>
+</li>
+<li><p><strong>Automation Engineering:</strong></p>
+<ul>
+<li><p>DAG orchestration, API integration, and scheduled reporting systems</p></li>
+</ul>
+</li>
+<li><p><strong>Monte Carlo Simulation:</strong></p>
+<ul>
+<li><p>Statistical power estimation and sample size determination through simulation</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="project-overview">
+<h2>📌 Project Overview<a class="headerlink" href="#project-overview" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>This project demonstrates the implementation of a complete product analytics system for an early-stage startup that has developed an application merging a messenger with a personalized news feed.</p></li>
+<li><p>In this ecosystem, users can browse and interact with posts (views, likes) while simultaneously communicating with each other through direct messages.</p></li>
+<li><p>The core challenge was to build the entire analytical infrastructure from scratch to understand user behavior across both features and enable data-driven decision-making.</p></li>
+</ul>
+<p><strong>Project Goal:</strong></p>
+<ul class="simple">
+<li><p><strong>Build Data Infrastructure</strong></p>
+<ul>
+<li><p>Create scalable analytical database for product metrics</p></li>
+<li><p>Establish single source of truth for user behavior data</p></li>
+</ul>
+</li>
+<li><p><strong>Enable Product Analytics</strong></p>
+<ul>
+<li><p>Develop interactive dashboards for real-time monitoring</p></li>
+<li><p>Implement retention analysis and engagement tracking</p></li>
+</ul>
+</li>
+<li><p><strong>Establish Experimentation</strong></p>
+<ul>
+<li><p>Build complete A/B testing pipeline for feature validation</p></li>
+<li><p>Ensure statistical reliability of experiment results</p></li>
+</ul>
+</li>
+<li><p><strong>Create Forecasting System</strong></p>
+<ul>
+<li><p>Develop predictive models for key business metrics</p></li>
+<li><p>Enable proactive anomaly detection and planning</p></li>
+</ul>
+</li>
+<li><p><strong>Automate Business Reporting</strong></p>
+<ul>
+<li><p>Implement daily automated reports to Telegram</p></li>
+<li><p>Build comprehensive stakeholder communication system</p></li>
+</ul>
+</li>
+<li><p><strong>Establish Proactive Monitoring</strong></p>
+<ul>
+<li><p>Build real-time alerting system for metric anomalies</p></li>
+<li><p>Implement 24/7 monitoring with immediate notifications</p></li>
+</ul>
+</li>
+<li><p><strong>Drive Business Decisions</strong></p>
+<ul>
+<li><p>Translate data insights into product recommendations</p></li>
+<li><p>Establish continuous monitoring processes</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>Expected Outcome:</strong></p>
+<ul class="simple">
+<li><p>A complete analytics ecosystem that provides real-time business visibility, enables data-driven product decisions, and automates stakeholder reporting through reliable, scalable data infrastructure.</p></li>
+</ul>
+</section>
+<section id="data-source">
+<h2>🗃️ Data Source<a class="headerlink" href="#data-source" title="Link to this heading">#</a></h2>
+<p>The analysis uses data from the product database in ClickHouse, which consists of two main tables:</p>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">feed_actions</span></code></strong> - tracks user interactions with the news feed</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">message_actions</span></code></strong> - records messaging activity between users</p></li>
+</ul>
+</section>
+<section id="goal-delivered">
+<h2>🎯 Goal Delivered<a class="headerlink" href="#goal-delivered" title="Link to this heading">#</a></h2>
+<p>Successfully implemented a complete analytics workflow from data collection to actionable business insights.</p>
+<ul class="simple">
+<li><p><strong>Centralized Data Foundation</strong> with optimized analytical database</p></li>
+<li><p><strong>Comprehensive Monitoring</strong> through interactive dashboards and alerts</p></li>
+<li><p><strong>Automated Intelligence</strong> with daily reporting and anomaly detection</p></li>
+<li><p><strong>Experimental Framework</strong> for data-driven feature validation</p></li>
+<li><p><strong>Predictive Capabilities</strong> enabling proactive planning and optimization</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="right-next"
+       href="building_startup_analytics/1_data_infrastructure/1_analytical_database.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">1. Building Analytical Database</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#author">👨‍💻 Author</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tech-stack-methods">🛠️ Tech Stack &amp; Methods</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#project-overview">📌 Project Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-source">🗃️ Data Source</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#goal-delivered">🎯 Goal Delivered</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Pavel Grigoryev
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025, Pavel Grigoryev.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

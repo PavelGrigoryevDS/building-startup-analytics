@@ -1,0 +1,2247 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>1. Building Analytical Database &#8212; 🧩 Building Startup Analytics</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=aa5847ba" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/custom.js?v=f9582d1e"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'building_startup_analytics/1_data_infrastructure/1_analytical_database';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="2. Product Dashboard" href="../2_product_dashboard/2_product_dashboard.html" />
+    <link rel="prev" title="🧩 Building Startup Analytics" href="../../index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo-light.jpg" class="logo__image only-light" alt="🧩 Building Startup Analytics - Home"/>
+    <script>document.write(`<img src="../../_static/logo-dark.jpg" class="logo__image only-dark" alt="🧩 Building Startup Analytics - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    🧩 Building Startup Analytics
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">1. Building Analytical Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_product_dashboard/2_product_dashboard.html">2. Product Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_metric_deep_dive/3_metric_deep_dive.html">3. Product Metric Deep Dive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_ab_testing/4_ab_testing.html">4. A/B Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5_metric_forecasting/5_metric_forecasting.html">5. Metric Forecasting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6_automated_reporting/6_automated_reporting.html">6. Automated Daily Reports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../7_anomaly_detection/7_alert_system.html">7. Alert System</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/PavelGrigoryevDS/building-startup-analytics" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/building_startup_analytics/1_data_infrastructure/1_analytical_database.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>1. Building Analytical Database</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> On this page </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#importing-libraries">1.1 Importing Libraries</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-description">1.2 Data Description</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#database-connection">1.3 Database Connection</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#designing-the-analytical-database">1.4 Designing the Analytical Database</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-fact-daily-feed">1.4.1 Creating fact_daily_feed</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-fact-daily-posts">1.4.2 Creating fact_daily_posts</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-fact-daily-messenger">1.4.3 Creating fact_daily_messenger</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-fact-user-connections">1.4.4 Creating fact_user_connections</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-dim-users">1.4.5 Creating dim_users</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-dim-dates">1.4.6 Creating dim_dates</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-materialized-views">1.5 Creating Materialized Views</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#app-daily-activity-materialized-view">1.5.1 App Daily Activity Materialized View</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#feed-daily-activity-materialized-view">1.5.2 Feed Daily Activity Materialized View</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#messenger-daily-activity-materialized-view">1.5.3 Messenger Daily Activity Materialized View</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#etl-process-airflow-dag">1.6 ETL Process (Airflow DAG)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-conclusion">1.7 General Conclusion</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="building-analytical-database">
+<h1>1. Building Analytical Database<a class="headerlink" href="#building-analytical-database" title="Link to this heading">#</a></h1>
+<p><strong>Context:</strong></p>
+<ul class="simple">
+<li><p>Our startup’s messenger and news feed app generates extensive user interaction data.</p></li>
+<li><p>To enable product monitoring, we need to build an optimized analytical database that will power our business intelligence dashboards.</p></li>
+</ul>
+<p><strong>Objectives:</strong></p>
+<ul class="simple">
+<li><p>To design and implement a performant database structure that serves as the backend for product dashboards, enabling tracking of key metrics like DAU, retention, and engagement across both messaging and feed features.</p></li>
+</ul>
+<p><strong>Data Sources:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">feed_actions</span></code> - News feed activity</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">message_actions</span></code> - Messaging activity</p></li>
+</ul>
+<p><strong>Key Achievements:</strong></p>
+<ul class="simple">
+<li><p><strong>Star Schema Designed:</strong> Developed a star schema for the analytical database</p></li>
+<li><p><strong>Metric Queries Created:</strong> Built queries to the product database for calculating required metrics for the analytical database</p></li>
+<li><p><strong>Star Schema Tables Implemented:</strong> Created all necessary tables for the star schema in the analytical database</p></li>
+<li><p><strong>Data Migration Completed:</strong> Extracted required data from the product database and loaded it into the analytical database</p></li>
+<li><p><strong>Dashboard Optimization:</strong> Created materialized views to optimize dashboard performance</p></li>
+<li><p><strong>Automation Pipeline Built:</strong> Developed Airflow DAG for daily incremental data loading for yesterday’s data</p></li>
+<li><p><strong>Goal Achieved:</strong> Established analytical database and ETL process for continuous data updates</p></li>
+</ul>
+<p><strong>Business Impact:</strong></p>
+<ul class="simple">
+<li><p>Created optimized analytical database that serves as foundation for all downstream reporting and analytics, enabling faster data processing and reusable data infrastructure.</p></li>
+</ul>
+<section id="importing-libraries">
+<h2>1.1 Importing Libraries<a class="headerlink" href="#importing-libraries" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">io</span><span class="w"> </span><span class="kn">import</span> <span class="n">StringIO</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dotenv</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_dotenv</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_engine</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy</span><span class="w"> </span><span class="kn">import</span> <span class="n">text</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">itertools</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">clickhouse_driver</span><span class="w"> </span><span class="kn">import</span> <span class="n">Client</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="n">load_dotenv</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="data-description">
+<h2>1.2 Data Description<a class="headerlink" href="#data-description" title="Link to this heading">#</a></h2>
+<p>In the product database on ClickHouse, the data is stored in the following tables</p>
+<p>Table feed_actions</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>user_id</p></td>
+<td><p>User ID</p></td>
+</tr>
+<tr class="row-odd"><td><p>post_id</p></td>
+<td><p>Post ID</p></td>
+</tr>
+<tr class="row-even"><td><p>action</p></td>
+<td><p>Action: view or like</p></td>
+</tr>
+<tr class="row-odd"><td><p>time</p></td>
+<td><p>Timestamp</p></td>
+</tr>
+<tr class="row-even"><td><p>gender</p></td>
+<td><p>User’s gender</p></td>
+</tr>
+<tr class="row-odd"><td><p>age</p></td>
+<td><p>User’s age (1 = Male)</p></td>
+</tr>
+<tr class="row-even"><td><p>os</p></td>
+<td><p>User’s OS</p></td>
+</tr>
+<tr class="row-odd"><td><p>source</p></td>
+<td><p>Traffic source</p></td>
+</tr>
+<tr class="row-even"><td><p>country</p></td>
+<td><p>User’s country</p></td>
+</tr>
+<tr class="row-odd"><td><p>city</p></td>
+<td><p>User’s city</p></td>
+</tr>
+<tr class="row-even"><td><p>exp_group</p></td>
+<td><p>A/B test group</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Table message_actions</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>user_id</p></td>
+<td><p>Sender’s ID</p></td>
+</tr>
+<tr class="row-odd"><td><p>receiver_id</p></td>
+<td><p>Receiver’s ID</p></td>
+</tr>
+<tr class="row-even"><td><p>time</p></td>
+<td><p>Send timestamp</p></td>
+</tr>
+<tr class="row-odd"><td><p>gender</p></td>
+<td><p>Sender’s gender</p></td>
+</tr>
+<tr class="row-even"><td><p>age</p></td>
+<td><p>Sender’s age (1 = Male)</p></td>
+</tr>
+<tr class="row-odd"><td><p>os</p></td>
+<td><p>Sender’s OS</p></td>
+</tr>
+<tr class="row-even"><td><p>source</p></td>
+<td><p>Sender’s traffic source</p></td>
+</tr>
+<tr class="row-odd"><td><p>country</p></td>
+<td><p>Sender’s country</p></td>
+</tr>
+<tr class="row-even"><td><p>city</p></td>
+<td><p>Sender’s city</p></td>
+</tr>
+<tr class="row-odd"><td><p>exp_group</p></td>
+<td><p>Sender’s A/B test group</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="database-connection">
+<h2>1.3 Database Connection<a class="headerlink" href="#database-connection" title="Link to this heading">#</a></h2>
+<p>Let’s create clients for connection to source and destination databases</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">src_ch_client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span>
+    <span class="n">host</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;SRC_HOST&#39;</span><span class="p">),</span>
+    <span class="n">user</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;SRC_USER&#39;</span><span class="p">),</span>
+    <span class="n">password</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;SRC_PASSWORD&#39;</span><span class="p">),</span> 
+    <span class="n">database</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;SRC_DATABASE&#39;</span><span class="p">),</span>   
+    <span class="n">compression</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
+<span class="p">)</span>
+
+<span class="n">dst_ch_client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span>
+    <span class="n">host</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;DST_HOST&#39;</span><span class="p">),</span>
+    <span class="n">user</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;DST_USER&#39;</span><span class="p">),</span>
+    <span class="n">password</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;DST_PASSWORD&#39;</span><span class="p">),</span> 
+    <span class="n">database</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;DST_DATABASE&#39;</span><span class="p">),</span>  
+    <span class="n">compression</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>     
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Create a function that will migrate data from one database to another in chunks</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">ch_migrate_db_chunked</span><span class="p">(</span>
+    <span class="n">src_client</span><span class="p">,</span>
+    <span class="n">dst_client</span><span class="p">,</span>
+    <span class="n">src_query</span><span class="p">,</span>
+    <span class="n">dst_table_name</span><span class="p">,</span>
+    <span class="n">chunk_size</span><span class="o">=</span><span class="mi">50_000</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Migrates data from source to destination in chunks</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        src_client: clickhouse_driver.Client for source</span>
+<span class="sd">        dst_client: clickhouse_driver.Client for destination  </span>
+<span class="sd">        src_query (str): SQL query to source</span>
+<span class="sd">        dst_table_name (str): Table name in destination</span>
+<span class="sd">        chunk_size (int): Chunk size for data migration</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">total_rows</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">chunk_number</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;🚀 Starting data migration to table: </span><span class="si">{</span><span class="n">dst_table_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;📊 Chunk size: </span><span class="si">{</span><span class="n">chunk_size</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> rows&quot;</span><span class="p">)</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Determine total row count</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;📈 Calculating total rows for migration...&quot;</span><span class="p">)</span>     
+        <span class="n">count_query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT count() FROM (</span><span class="si">{</span><span class="n">src_query</span><span class="si">}</span><span class="s2">)&quot;</span>
+        <span class="n">total_count</span> <span class="o">=</span> <span class="n">src_client</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">count_query</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;📈 Total rows to migrate: </span><span class="si">{</span><span class="n">total_count</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>        
+        <span class="c1"># Use execute_iter for streaming data reading</span>
+        <span class="n">result_iter</span> <span class="o">=</span> <span class="n">src_client</span><span class="o">.</span><span class="n">execute_iter</span><span class="p">(</span>
+            <span class="n">src_query</span><span class="p">,</span> 
+            <span class="n">with_column_types</span><span class="o">=</span><span class="kc">False</span>  
+        <span class="p">)</span>    
+        <span class="n">progress_bar</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span>
+            <span class="n">total</span><span class="o">=</span><span class="n">total_count</span><span class="p">,</span>
+            <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;📦 Data migration&quot;</span><span class="p">,</span>
+            <span class="n">unit</span><span class="o">=</span><span class="s2">&quot; rows&quot;</span><span class="p">,</span>
+            <span class="n">unit_scale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">ncols</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+            <span class="n">mininterval</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> 
+            <span class="n">maxinterval</span><span class="o">=</span><span class="mf">5.0</span>             
+        <span class="p">)</span>      
+        
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="c1"># Read chunk_size rows per operation</span>
+            <span class="c1"># Creates iterator slice as another iterator</span>
+            <span class="n">chunk</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">islice</span><span class="p">(</span><span class="n">result_iter</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">))</span>
+            <span class="c1"># If chunk is empty - exit loop</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">chunk</span><span class="p">:</span>
+                <span class="k">break</span>            
+            <span class="n">chunk_number</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">dst_client</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;INSERT INTO </span><span class="si">{</span><span class="n">dst_table_name</span><span class="si">}</span><span class="s2"> VALUES&quot;</span><span class="p">,</span>
+                <span class="n">chunk</span><span class="p">,</span>
+                <span class="n">types_check</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
+            
+            <span class="n">total_rows</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+            <span class="n">progress_bar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">chunk</span><span class="p">))</span>
+            <span class="n">progress_bar</span><span class="o">.</span><span class="n">set_postfix</span><span class="p">({</span>
+                <span class="s1">&#39;chunk&#39;</span><span class="p">:</span> <span class="n">chunk_number</span><span class="p">,</span>
+                <span class="s1">&#39;total&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">total_rows</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">})</span>
+            
+        <span class="n">progress_bar</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;🎉 Migration completed!</span><span class="se">\n</span><span class="s2">Total migrated: </span><span class="si">{</span><span class="n">total_rows</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> rows</span><span class="se">\n</span><span class="s2">Chunks: </span><span class="si">{</span><span class="n">chunk_number</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;❌ Error migrating table </span><span class="si">{</span><span class="n">dst_table_name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;progress_bar&#39;</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">():</span>
+            <span class="n">progress_bar</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>                    
+        <span class="k">raise</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="designing-the-analytical-database">
+<h2>1.4 Designing the Analytical Database<a class="headerlink" href="#designing-the-analytical-database" title="Link to this heading">#</a></h2>
+<p>Let’s create an analytical database for the dashboard.</p>
+<p>We will use a star schema as it is optimally suited for analytical databases.</p>
+<section id="creating-fact-daily-feed">
+<h3>1.4.1 Creating fact_daily_feed<a class="headerlink" href="#creating-fact-daily-feed" title="Link to this heading">#</a></h3>
+<p>Create a fact table for news feed metrics.</p>
+<p>Create a query to the product database to calculate the required metrics.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">QUERY_FACT_DAILY_FEED</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    WITH user_actions as (</span>
+<span class="s2">        SELECT</span>
+<span class="s2">            user_id</span>
+<span class="s2">            , post_id</span>
+<span class="s2">            , action</span>
+<span class="s2">            , time</span>
+<span class="s2">            , lagInFrame(time) OVER (PARTITION BY  user_id, toDate(time), action ORDER BY time) prev_time</span>
+<span class="s2">            , minIf(time, action = &#39;view&#39;) OVER (PARTITION BY  user_id, toDate(time), post_id) first_view_in_day</span>
+<span class="s2">            , minIf(time, action = &#39;like&#39;) OVER (PARTITION BY  user_id, toDate(time), post_id) first_like_in_day</span>
+<span class="s2">        FROM </span>
+<span class="s2">            feed_actions </span>
+<span class="s2">        WHERE </span>
+<span class="s2">            toDate(time) &lt;= yesterday()  </span>
+<span class="s2">    )</span>
+<span class="s2">    SELECT</span>
+<span class="s2">        toDate(time) as date</span>
+<span class="s2">        , user_id</span>
+<span class="s2">        , minIf(time, action = &#39;view&#39;) as first_view_time</span>
+<span class="s2">        , minIf(time, action = &#39;like&#39;) as first_like_time</span>
+<span class="s2">        , maxIf(time, action = &#39;view&#39;) as last_view_time</span>
+<span class="s2">        , maxIf(time, action = &#39;like&#39;) as last_like_time    </span>
+<span class="s2">        , uniq(post_id) as posts</span>
+<span class="s2">        , countIf(action = &#39;view&#39;) as views</span>
+<span class="s2">        , countIf(action = &#39;like&#39;) as likes</span>
+<span class="s2">        , avgIf(time - prev_time, action = &#39;view&#39; and prev_time != toDateTime(0)) as avg_time_between_views</span>
+<span class="s2">        , avgIf(time - prev_time, action = &#39;like&#39; and prev_time != toDateTime(0)) as avg_time_between_likes</span>
+<span class="s2">        , avgIf(</span>
+<span class="s2">            first_like_in_day - first_view_in_day</span>
+<span class="s2">            , first_like_in_day != toDateTime(0) </span>
+<span class="s2">            and first_view_in_day != toDateTime(0) </span>
+<span class="s2">            and first_like_in_day &gt;= first_view_in_day</span>
+<span class="s2">        ) as avg_view_to_like_seconds    </span>
+<span class="s2">    FROM </span>
+<span class="s2">        user_actions</span>
+<span class="s2">    GROUP BY</span>
+<span class="s2">        date</span>
+<span class="s2">        , user_id</span>
+<span class="s2">    ORDER BY </span>
+<span class="s2">        date</span>
+<span class="s2">        , user_id     </span>
+<span class="s2">&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Create a table in the analytical database.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">query_create</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    CREATE TABLE fact_daily_feed (</span>
+<span class="s2">        date Date</span>
+<span class="s2">        , user_id UInt32</span>
+<span class="s2">        , first_view_time DateTime</span>
+<span class="s2">        , first_like_time DateTime</span>
+<span class="s2">        , last_view_time DateTime</span>
+<span class="s2">        , last_like_time DateTime        </span>
+<span class="s2">        , posts UInt16</span>
+<span class="s2">        , views UInt16</span>
+<span class="s2">        , likes UInt16</span>
+<span class="s2">        , avg_time_between_views Float32</span>
+<span class="s2">        , avg_time_between_likes Float32</span>
+<span class="s2">        , avg_view_to_like_seconds Float32</span>
+<span class="s2">    ) ENGINE = MergeTree()</span>
+<span class="s2">    PARTITION BY toYYYYMM(date)</span>
+<span class="s2">    ORDER BY (date, user_id, views, likes)</span>
+<span class="s2">&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dst_ch_client</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query_create</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Populate the table with data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ch_migrate_db_chunked</span><span class="p">(</span>
+    <span class="n">src_client</span><span class="o">=</span><span class="n">src_ch_client</span><span class="p">,</span>
+    <span class="n">dst_client</span><span class="o">=</span><span class="n">dst_ch_client</span><span class="p">,</span>
+    <span class="n">src_query</span><span class="o">=</span><span class="n">QUERY_FACT_DAILY_FEED</span><span class="p">,</span>
+    <span class="n">dst_table_name</span><span class="o">=</span><span class="s1">&#39;fact_daily_feed&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="creating-fact-daily-posts">
+<h3>1.4.2 Creating fact_daily_posts<a class="headerlink" href="#creating-fact-daily-posts" title="Link to this heading">#</a></h3>
+<p>Create a fact table for post metrics.</p>
+<p>Create a query to the product database to calculate the required metrics.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">QUERY_FACT_DAILY_POSTS</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    WITH post_actions as (</span>
+<span class="s2">        SELECT</span>
+<span class="s2">            user_id</span>
+<span class="s2">            , post_id</span>
+<span class="s2">            , action</span>
+<span class="s2">            , time</span>
+<span class="s2">            , lagInFrame(time) OVER (PARTITION BY  post_id, toDate(time), action ORDER BY time) prev_time</span>
+<span class="s2">            , minIf(time, action = &#39;view&#39;) OVER (PARTITION BY toDate(time), post_id) first_view_in_day</span>
+<span class="s2">            , minIf(time, action = &#39;like&#39;) OVER (PARTITION BY toDate(time), post_id) first_like_in_day</span>
+<span class="s2">        FROM </span>
+<span class="s2">            feed_actions </span>
+<span class="s2">        WHERE </span>
+<span class="s2">            toDate(time) &lt;= yesterday()    </span>
+<span class="s2">    )</span>
+<span class="s2">    SELECT</span>
+<span class="s2">        toDate(time) as date</span>
+<span class="s2">        , post_id</span>
+<span class="s2">        , min(time) as first_action_time</span>
+<span class="s2">        , max(time) as last_action_time</span>
+<span class="s2">        , countIf(action = &#39;view&#39;) as views</span>
+<span class="s2">        , countIf(action = &#39;like&#39;) as likes</span>
+<span class="s2">        , uniqIf(user_id, action = &#39;view&#39;) as unique_viewers</span>
+<span class="s2">        , uniqIf(user_id, action = &#39;like&#39;) as unique_likers</span>
+<span class="s2">        , avgIf(time - prev_time, action = &#39;view&#39; and prev_time != toDateTime(0)) as avg_time_between_views</span>
+<span class="s2">        , avgIf(time - prev_time, action = &#39;like&#39; and prev_time != toDateTime(0)) as avg_time_between_likes</span>
+<span class="s2">        , avgIf(</span>
+<span class="s2">            first_like_in_day - first_view_in_day</span>
+<span class="s2">            , first_like_in_day != toDateTime(0) </span>
+<span class="s2">            and first_view_in_day != toDateTime(0) </span>
+<span class="s2">            and first_like_in_day &gt;= first_view_in_day</span>
+<span class="s2">        ) as avg_view_to_like_seconds    </span>
+<span class="s2">    FROM </span>
+<span class="s2">        post_actions</span>
+<span class="s2">    GROUP BY</span>
+<span class="s2">        date</span>
+<span class="s2">        , post_id</span>
+<span class="s2">    ORDER BY </span>
+<span class="s2">        date</span>
+<span class="s2">        , post_id     </span>
+<span class="s2">&quot;&quot;&quot;</span>    
+</pre></div>
+</div>
+</div>
+</div>
+<p>Create a table in the analytical database.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">query_create</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    CREATE TABLE fact_daily_posts (</span>
+<span class="s2">        date Date</span>
+<span class="s2">        , post_id UInt32</span>
+<span class="s2">        , first_action_time DateTime</span>
+<span class="s2">        , last_action_time DateTime</span>
+<span class="s2">        , views UInt32</span>
+<span class="s2">        , likes UInt16</span>
+<span class="s2">        , unique_viewers UInt16</span>
+<span class="s2">        , unique_likers UInt16</span>
+<span class="s2">        , avg_time_between_views Float32</span>
+<span class="s2">        , avg_time_between_likes Float32</span>
+<span class="s2">        , avg_view_to_like_seconds Float32</span>
+<span class="s2">    ) ENGINE = MergeTree()</span>
+<span class="s2">    PARTITION BY toYYYYMM(date)</span>
+<span class="s2">    ORDER BY (date, post_id, views, likes)</span>
+<span class="s2">&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dst_ch_client</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query_create</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Populate the table with data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ch_migrate_db_chunked</span><span class="p">(</span>
+    <span class="n">src_client</span><span class="o">=</span><span class="n">src_ch_client</span><span class="p">,</span>
+    <span class="n">dst_client</span><span class="o">=</span><span class="n">dst_ch_client</span><span class="p">,</span>
+    <span class="n">src_query</span><span class="o">=</span><span class="n">QUERY_FACT_DAILY_POSTS</span><span class="p">,</span>
+    <span class="n">dst_table_name</span><span class="o">=</span><span class="s1">&#39;fact_daily_posts&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="creating-fact-daily-messenger">
+<h3>1.4.3 Creating fact_daily_messenger<a class="headerlink" href="#creating-fact-daily-messenger" title="Link to this heading">#</a></h3>
+<p>Create a fact table for messenger metrics.</p>
+<p>Create a query to the product database to calculate the required metrics.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">QUERY_FACT_DAILY_MESSENGER</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    WITH user_actions as (</span>
+<span class="s2">        SELECT </span>
+<span class="s2">            time</span>
+<span class="s2">            , user_id</span>
+<span class="s2">            , receiver_id </span>
+<span class="s2">            , lagInFrame(time) OVER (PARTITION BY  toDate(time), user_id ORDER BY time) user_prev_time</span>
+<span class="s2">            , lagInFrame(time) OVER (PARTITION BY  toDate(time), receiver_id ORDER BY time) receiver_prev_time</span>
+<span class="s2">        FROM </span>
+<span class="s2">            message_actions </span>
+<span class="s2">        WHERE </span>
+<span class="s2">            toDate(time) &lt;= yesterday()    </span>
+<span class="s2">        )</span>
+<span class="s2">        , senders as (</span>
+<span class="s2">        SELECT</span>
+<span class="s2">            toDate(time) as date</span>
+<span class="s2">            , user_id </span>
+<span class="s2">            , min(time) as first_sent_time</span>
+<span class="s2">            , max(time) as last_sent_time    </span>
+<span class="s2">            , uniq(receiver_id) as users_sent</span>
+<span class="s2">            , count() as messages_sent</span>
+<span class="s2">            , avgIf(time - user_prev_time, user_prev_time != toDateTime(0)) avg_time_between_messages_sent</span>
+<span class="s2">        FROM </span>
+<span class="s2">            user_actions   </span>
+<span class="s2">        GROUP BY </span>
+<span class="s2">            date</span>
+<span class="s2">            , user_id</span>
+<span class="s2">        )</span>
+<span class="s2">    , receivers as (</span>
+<span class="s2">        SELECT</span>
+<span class="s2">            toDate(time) as date</span>
+<span class="s2">            , receiver_id as user_id </span>
+<span class="s2">            , min(time) as first_received_time</span>
+<span class="s2">            , max(time) as last_received_time      </span>
+<span class="s2">            , uniq(user_id) as users_received</span>
+<span class="s2">            , count() as messages_received</span>
+<span class="s2">            , avgIf(time - receiver_prev_time, receiver_prev_time != toDateTime(0)) avg_time_between_messages_received</span>
+<span class="s2">        FROM </span>
+<span class="s2">            user_actions  </span>
+<span class="s2">        GROUP BY </span>
+<span class="s2">            date</span>
+<span class="s2">            , receiver_id</span>
+<span class="s2">    )</span>
+<span class="s2">    SELECT </span>
+<span class="s2">        if(s.user_id != 0, s.date, r.date) as date</span>
+<span class="s2">        , if(s.user_id != 0, s.user_id, r.user_id) as user_id</span>
+<span class="s2">        , s.first_sent_time</span>
+<span class="s2">        , s.last_sent_time</span>
+<span class="s2">        , s.users_sent</span>
+<span class="s2">        , s.messages_sent</span>
+<span class="s2">        , s.avg_time_between_messages_sent</span>
+<span class="s2">        , r.first_received_time</span>
+<span class="s2">        , r.last_received_time</span>
+<span class="s2">        , r.users_received</span>
+<span class="s2">        , r.messages_received</span>
+<span class="s2">        , r.avg_time_between_messages_received  </span>
+<span class="s2">    FROM </span>
+<span class="s2">        senders s</span>
+<span class="s2">        FULL JOIN receivers r ON s.date = r.date AND s.user_id = r.user_id</span>
+<span class="s2">    ORDER BY </span>
+<span class="s2">        date</span>
+<span class="s2">        , user_id      </span>
+<span class="s2">&quot;&quot;&quot;</span>    
+</pre></div>
+</div>
+</div>
+</div>
+<p>Create a table in the analytical database.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">query_create</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    CREATE TABLE fact_daily_messenger (</span>
+<span class="s2">        date Date</span>
+<span class="s2">        , user_id UInt32</span>
+<span class="s2">        , first_sent_time DateTime</span>
+<span class="s2">        , last_sent_time DateTime</span>
+<span class="s2">        , users_sent UInt16</span>
+<span class="s2">        , messages_sent UInt16</span>
+<span class="s2">        , avg_time_between_messages_sent Float32</span>
+<span class="s2">        , first_received_time DateTime</span>
+<span class="s2">        , last_received_time DateTime</span>
+<span class="s2">        , users_received UInt16</span>
+<span class="s2">        , messages_received UInt16</span>
+<span class="s2">        , avg_time_between_messages_received Float32</span>
+<span class="s2">    ) ENGINE = MergeTree()</span>
+<span class="s2">    PARTITION BY toYYYYMM(date)</span>
+<span class="s2">    ORDER BY (date, user_id, messages_sent, messages_received)</span>
+<span class="s2">&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dst_ch_client</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query_create</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Populate the table with data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ch_migrate_db_chunked</span><span class="p">(</span>
+    <span class="n">src_client</span><span class="o">=</span><span class="n">src_ch_client</span><span class="p">,</span>
+    <span class="n">dst_client</span><span class="o">=</span><span class="n">dst_ch_client</span><span class="p">,</span>
+    <span class="n">src_query</span><span class="o">=</span><span class="n">QUERY_FACT_DAILY_MESSENGER</span><span class="p">,</span>
+    <span class="n">dst_table_name</span><span class="o">=</span><span class="s1">&#39;fact_daily_messenger&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="creating-fact-user-connections">
+<h3>1.4.4 Creating fact_user_connections<a class="headerlink" href="#creating-fact-user-connections" title="Link to this heading">#</a></h3>
+<p>Create a fact table for user connections in the messenger.</p>
+<p>Create a query to the product database to calculate the required metrics.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">QUERY_FACT_USER_CONNECTIONS</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    SELECT </span>
+<span class="s2">        toDate(time) as date</span>
+<span class="s2">        , user_id as sender_id</span>
+<span class="s2">        , receiver_id</span>
+<span class="s2">        , count() as messages_count</span>
+<span class="s2">    FROM </span>
+<span class="s2">        message_actions</span>
+<span class="s2">    WHERE </span>
+<span class="s2">        toDate(time) &lt;= yesterday()  </span>
+<span class="s2">    GROUP BY </span>
+<span class="s2">        date</span>
+<span class="s2">        , sender_id</span>
+<span class="s2">        , receiver_id</span>
+<span class="s2">    ORDER BY </span>
+<span class="s2">        date</span>
+<span class="s2">        , sender_id</span>
+<span class="s2">        , receiver_id     </span>
+<span class="s2">&quot;&quot;&quot;</span>  
+</pre></div>
+</div>
+</div>
+</div>
+<p>Create a table in the analytical database.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">query_create</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    CREATE TABLE fact_user_connections (</span>
+<span class="s2">        date Date</span>
+<span class="s2">        , sender_id UInt32</span>
+<span class="s2">        , receiver_id UInt32</span>
+<span class="s2">        , messages_count UInt16</span>
+<span class="s2">    ) ENGINE = MergeTree()</span>
+<span class="s2">    PARTITION BY toYYYYMM(date)</span>
+<span class="s2">    ORDER BY (date, sender_id, receiver_id, messages_count)</span>
+<span class="s2">&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dst_ch_client</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query_create</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Populate the table with data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ch_migrate_db_chunked</span><span class="p">(</span>
+    <span class="n">src_client</span><span class="o">=</span><span class="n">src_ch_client</span><span class="p">,</span>
+    <span class="n">dst_client</span><span class="o">=</span><span class="n">dst_ch_client</span><span class="p">,</span>
+    <span class="n">src_query</span><span class="o">=</span><span class="n">QUERY_FACT_USER_CONNECTIONS</span><span class="p">,</span>
+    <span class="n">dst_table_name</span><span class="o">=</span><span class="s1">&#39;fact_user_connections&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="creating-dim-users">
+<h3>1.4.5 Creating dim_users<a class="headerlink" href="#creating-dim-users" title="Link to this heading">#</a></h3>
+<p>Create a dimension table for users.</p>
+<p>Create a query to the product database to calculate the required metrics.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">QUERY_DIM_USERS</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    SELECT </span>
+<span class="s2">        user_id</span>
+<span class="s2">        , argMax(gender, time) as gender</span>
+<span class="s2">        , argMax(age, time) as age</span>
+<span class="s2">        , argMax(source, time) as source</span>
+<span class="s2">        , argMax(os, time) as os</span>
+<span class="s2">        , argMax(city, time) as city</span>
+<span class="s2">        , argMax(country, time) as country</span>
+<span class="s2">        , argMax(exp_group, time) as exp_group</span>
+<span class="s2">        , toDate(now()) as version</span>
+<span class="s2">    FROM (</span>
+<span class="s2">        SELECT</span>
+<span class="s2">            time</span>
+<span class="s2">            , user_id</span>
+<span class="s2">            , gender</span>
+<span class="s2">            , age</span>
+<span class="s2">            , source</span>
+<span class="s2">            , os </span>
+<span class="s2">            , city </span>
+<span class="s2">            , country</span>
+<span class="s2">            , exp_group </span>
+<span class="s2">        FROM </span>
+<span class="s2">            feed_actions </span>
+<span class="s2">        UNION ALL</span>
+<span class="s2">        SELECT</span>
+<span class="s2">            time</span>
+<span class="s2">            , user_id</span>
+<span class="s2">            , gender</span>
+<span class="s2">            , age</span>
+<span class="s2">            , source</span>
+<span class="s2">            , os </span>
+<span class="s2">            , city </span>
+<span class="s2">            , country</span>
+<span class="s2">            , exp_group       </span>
+<span class="s2">        FROM </span>
+<span class="s2">            message_actions    </span>
+<span class="s2">    )</span>
+<span class="s2">    WHERE </span>
+<span class="s2">        toDate(time) &lt;= yesterday()</span>
+<span class="s2">    GROUP BY </span>
+<span class="s2">        user_id</span>
+<span class="s2">    ORDER BY </span>
+<span class="s2">        user_id</span>
+<span class="s2">&quot;&quot;&quot;</span>  
+</pre></div>
+</div>
+</div>
+</div>
+<p>Create a table in the analytical database.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">query_create</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    CREATE TABLE dim_users (</span>
+<span class="s2">        user_id UInt32</span>
+<span class="s2">        , gender UInt8</span>
+<span class="s2">        , age UInt8</span>
+<span class="s2">        , source LowCardinality(String)</span>
+<span class="s2">        , os LowCardinality(String)</span>
+<span class="s2">        , city String</span>
+<span class="s2">        , country LowCardinality(String)</span>
+<span class="s2">        , exp_group UInt8</span>
+<span class="s2">        , version Date  </span>
+<span class="s2">    ) ENGINE = ReplacingMergeTree(version)</span>
+<span class="s2">    ORDER BY (user_id)</span>
+<span class="s2">&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dst_ch_client</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query_create</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Populate the table with data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ch_migrate_db_chunked</span><span class="p">(</span>
+    <span class="n">src_client</span><span class="o">=</span><span class="n">src_ch_client</span><span class="p">,</span>
+    <span class="n">dst_client</span><span class="o">=</span><span class="n">dst_ch_client</span><span class="p">,</span>
+    <span class="n">src_query</span><span class="o">=</span><span class="n">QUERY_DIM_USERS</span><span class="p">,</span>
+    <span class="n">dst_table_name</span><span class="o">=</span><span class="s1">&#39;dim_users&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="creating-dim-dates">
+<h3>1.4.6 Creating dim_dates<a class="headerlink" href="#creating-dim-dates" title="Link to this heading">#</a></h3>
+<p>Create a dimension table for dates.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">query_create</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    CREATE TABLE dim_dates (</span>
+<span class="s2">        date Date</span>
+<span class="s2">        , day_of_week UInt8</span>
+<span class="s2">        , day_name String</span>
+<span class="s2">        , month UInt8</span>
+<span class="s2">        , month_name String</span>
+<span class="s2">        , quarter UInt8</span>
+<span class="s2">        , year UInt16</span>
+<span class="s2">        , is_weekend UInt8</span>
+<span class="s2">        , week_number UInt8</span>
+<span class="s2">    ) ENGINE = MergeTree()</span>
+<span class="s2">    ORDER BY (date)</span>
+<span class="s2">    PRIMARY KEY (date);</span>
+<span class="s2">&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dst_ch_client</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query_create</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Populate the table with data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">query_insert</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    INSERT INTO dim_dates</span>
+<span class="s2">    SELECT </span>
+<span class="s2">        date</span>
+<span class="s2">        , toDayOfWeek(date) as day_of_week</span>
+<span class="s2">        , dateName(&#39;day&#39;, date) as day_name</span>
+<span class="s2">        , toMonth(date) as month</span>
+<span class="s2">        , dateName(&#39;month&#39;, date) as month_name</span>
+<span class="s2">        , toQuarter(date) as quarter</span>
+<span class="s2">        , toYear(date) as year</span>
+<span class="s2">        , if(day_of_week IN (6, 7), 1, 0) as is_weekend</span>
+<span class="s2">        , toISOWeek(date) as week_number</span>
+<span class="s2">    FROM (</span>
+<span class="s2">        SELECT toDate(&#39;2025-01-01&#39;) + number as date</span>
+<span class="s2">        FROM numbers(730)  </span>
+<span class="s2">);</span>
+<span class="s2">&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dst_ch_client</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query_insert</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>As a result, we obtained the following schema.</p>
+<img alt="" src="../../_images/er.png" />
+</section>
+</section>
+<section id="creating-materialized-views">
+<h2>1.5 Creating Materialized Views<a class="headerlink" href="#creating-materialized-views" title="Link to this heading">#</a></h2>
+<p>To optimize data loading into the dashboard, let’s create materialized views.</p>
+<section id="app-daily-activity-materialized-view">
+<h3>1.5.1 App Daily Activity Materialized View<a class="headerlink" href="#app-daily-activity-materialized-view" title="Link to this heading">#</a></h3>
+<p>Create materialized view for app daily activity.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">QUERY_APP_DAILY_ACTIVITY_MV</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    CREATE MATERIALIZED VIEW mv_app_daily_activity AS</span>
+<span class="s2">    WITH merged_stats AS ( </span>
+<span class="s2">        SELECT </span>
+<span class="s2">            COALESCE(f.date, m.date) AS date</span>
+<span class="s2">            , COALESCE(f.user_id, m.user_id) AS user_id</span>
+<span class="s2">            , f.likes</span>
+<span class="s2">            , f.views</span>
+<span class="s2">            , m.messages_sent</span>
+<span class="s2">        FROM</span>
+<span class="s2">            fact_daily_feed f</span>
+<span class="s2">            FULL JOIN fact_daily_messenger m ON f.date = m.date AND f.user_id = m.user_id </span>
+<span class="s2">    )</span>
+<span class="s2">    , daily_metrics AS (</span>
+<span class="s2">        SELECT </span>
+<span class="s2">            date</span>
+<span class="s2">            , user_id</span>
+<span class="s2">            , date - MIN(date) OVER (PARTITION BY user_id) AS lifetime</span>
+<span class="s2">            , views</span>
+<span class="s2">            , likes </span>
+<span class="s2">            , posts    </span>
+<span class="s2">            , messages_sent </span>
+<span class="s2">        FROM</span>
+<span class="s2">            merged_stats</span>
+<span class="s2">    )</span>
+<span class="s2">    , base_metrics AS (</span>
+<span class="s2">        SELECT </span>
+<span class="s2">            m.date</span>
+<span class="s2">            , u.gender</span>
+<span class="s2">            , u.age </span>
+<span class="s2">            , u.source</span>
+<span class="s2">            , u.os</span>
+<span class="s2">            , u.city </span>
+<span class="s2">            , u.country</span>
+<span class="s2">            , COUNT(DISTINCT m.user_id) AS total_users</span>
+<span class="s2">            , COUNT(DISTINCT m.user_id) FILTER (WHERE messages_sent IS NULL) AS feed_only_users</span>
+<span class="s2">            , COUNT(DISTINCT m.user_id) FILTER (WHERE views IS NULL) AS messenger_only_users</span>
+<span class="s2">            , COUNT(DISTINCT m.user_id) FILTER (WHERE views IS NOT NULL AND messages_sent IS NOT NULL) AS both_services_users</span>
+<span class="s2">            , COUNT(DISTINCT m.user_id) FILTER (WHERE messages_sent IS NOT NULL) AS messenger_users</span>
+<span class="s2">            , COUNT(DISTINCT m.user_id) FILTER (WHERE lifetime = 0) AS new_users_lifetime_0</span>
+<span class="s2">            , COUNT(DISTINCT m.user_id) FILTER (WHERE lifetime = 7) AS users_lifetime_7d</span>
+<span class="s2">            , SUM(views) AS views</span>
+<span class="s2">            , SUM(likes) AS likes</span>
+<span class="s2">            , SUM(messages_sent) AS messages_sent</span>
+<span class="s2">        FROM</span>
+<span class="s2">            daily_metrics m</span>
+<span class="s2">            LEFT JOIN dim_users u ON m.user_id = u.user_id </span>
+<span class="s2">        GROUP BY</span>
+<span class="s2">            m.date</span>
+<span class="s2">            , u.gender</span>
+<span class="s2">            , u.age </span>
+<span class="s2">            , u.source</span>
+<span class="s2">            , u.os</span>
+<span class="s2">            , u.city </span>
+<span class="s2">            , u.country</span>
+<span class="s2">    )</span>
+<span class="s2">    , lag_metrics AS (</span>
+<span class="s2">        SELECT </span>
+<span class="s2">            date + INTERVAL &#39;7 days&#39; as date</span>
+<span class="s2">            , gender</span>
+<span class="s2">            , age </span>
+<span class="s2">            , source</span>
+<span class="s2">            , os</span>
+<span class="s2">            , city </span>
+<span class="s2">            , country</span>
+<span class="s2">            , new_users_lifetime_0 as new_users_7_days_ago</span>
+<span class="s2">        FROM </span>
+<span class="s2">            base_metrics</span>
+<span class="s2">    )</span>
+<span class="s2">    SELECT </span>
+<span class="s2">        COALESCE(b.date, l.date) as date</span>
+<span class="s2">        , COALESCE(b.gender, l.gender) as gender</span>
+<span class="s2">        , COALESCE(b.age, l.age) as age</span>
+<span class="s2">        , COALESCE(b.source, l.source) as source</span>
+<span class="s2">        , COALESCE(b.os, l.os) as os</span>
+<span class="s2">        , COALESCE(b.city, l.city) as city</span>
+<span class="s2">        , COALESCE(b.country, l.country) as country</span>
+<span class="s2">        , COALESCE(b.total_users, 0) as total_users</span>
+<span class="s2">        , COALESCE(b.feed_only_users, 0) as feed_only_users</span>
+<span class="s2">        , COALESCE(b.messenger_only_users, 0) as messenger_only_users</span>
+<span class="s2">        , COALESCE(b.both_services_users, 0) as both_services_users</span>
+<span class="s2">        , COALESCE(b.messenger_users, 0) as messenger_users</span>
+<span class="s2">        , COALESCE(b.new_users_lifetime_0, 0) as new_users_lifetime_0</span>
+<span class="s2">        , COALESCE(b.users_lifetime_7d, 0) as users_lifetime_7d</span>
+<span class="s2">        , COALESCE(l.new_users_7_days_ago, 0) as new_users_7_days_ago</span>
+<span class="s2">        , COALESCE(b.views, 0) as views</span>
+<span class="s2">        , COALESCE(b.likes, 0) as likes</span>
+<span class="s2">    FROM </span>
+<span class="s2">        base_metrics b</span>
+<span class="s2">        FULL JOIN lag_metrics l ON </span>
+<span class="s2">            b.date = l.date </span>
+<span class="s2">            AND b.gender = l.gender</span>
+<span class="s2">            AND b.age = l.age</span>
+<span class="s2">            AND b.source = l.source</span>
+<span class="s2">            AND b.os = l.os</span>
+<span class="s2">            AND b.city = l.city</span>
+<span class="s2">            AND b.country = l.country</span>
+<span class="s2">    ORDER BY</span>
+<span class="s2">        date</span>
+<span class="s2">        , gender</span>
+<span class="s2">        , age</span>
+<span class="s2">        , source</span>
+<span class="s2">        , os</span>
+<span class="s2">        , city</span>
+<span class="s2">        , country</span>
+<span class="s2">&quot;&quot;&quot;</span>    
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dst_ch_client</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">QUERY_APP_DAILY_ACTIVITY_MV</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="feed-daily-activity-materialized-view">
+<h3>1.5.2 Feed Daily Activity Materialized View<a class="headerlink" href="#feed-daily-activity-materialized-view" title="Link to this heading">#</a></h3>
+<p>Create materialized view for feed daily activity</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">QUERY_FEED_DAILY_ACTIVITY_MV</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    CREATE MATERIALIZED VIEW mv_feed_daily_activity AS</span>
+<span class="s2">    WITH daily_metrics AS (</span>
+<span class="s2">        SELECT </span>
+<span class="s2">            date</span>
+<span class="s2">            , user_id</span>
+<span class="s2">            , date - MIN(date) OVER (PARTITION BY user_id) AS lifetime</span>
+<span class="s2">            , views</span>
+<span class="s2">            , likes </span>
+<span class="s2">            , posts</span>
+<span class="s2">            , avg_view_to_like_seconds        </span>
+<span class="s2">        FROM</span>
+<span class="s2">            fact_daily_feed</span>
+<span class="s2">    )</span>
+<span class="s2">    , base_metrics AS (</span>
+<span class="s2">        SELECT </span>
+<span class="s2">            m.date</span>
+<span class="s2">            , u.gender</span>
+<span class="s2">            , u.age </span>
+<span class="s2">            , u.source</span>
+<span class="s2">            , u.os</span>
+<span class="s2">            , u.city </span>
+<span class="s2">            , u.country</span>
+<span class="s2">            , COUNT(DISTINCT m.user_id) AS feed_users</span>
+<span class="s2">            , COUNT(DISTINCT m.user_id) FILTER (WHERE lifetime = 0) AS feed_new_users_lifetime_0</span>
+<span class="s2">            , COUNT(DISTINCT m.user_id) FILTER (WHERE lifetime = 7) AS feed_users_lifetime_7d</span>
+<span class="s2">            , SUM(views) AS views</span>
+<span class="s2">            , SUM(likes) AS likes</span>
+<span class="s2">            , SUM(posts) AS posts</span>
+<span class="s2">            , AVG(avg_view_to_like_seconds) AS avg_view_to_like_seconds</span>
+<span class="s2">        FROM</span>
+<span class="s2">            daily_metrics m</span>
+<span class="s2">            LEFT JOIN public.dim_users u ON m.user_id = u.user_id </span>
+<span class="s2">        GROUP BY</span>
+<span class="s2">            m.date</span>
+<span class="s2">            , u.gender</span>
+<span class="s2">            , u.age </span>
+<span class="s2">            , u.source</span>
+<span class="s2">            , u.os</span>
+<span class="s2">            , u.city </span>
+<span class="s2">            , u.country</span>
+<span class="s2">    )</span>
+<span class="s2">    , lag_metrics AS (</span>
+<span class="s2">        SELECT </span>
+<span class="s2">            date + INTERVAL &#39;7 days&#39; as date</span>
+<span class="s2">            , gender</span>
+<span class="s2">            , age </span>
+<span class="s2">            , source</span>
+<span class="s2">            , os</span>
+<span class="s2">            , city </span>
+<span class="s2">            , country</span>
+<span class="s2">            , feed_new_users_lifetime_0 as feed_new_users_7_days_ago</span>
+<span class="s2">        FROM </span>
+<span class="s2">            base_metrics</span>
+<span class="s2">    )</span>
+<span class="s2">    SELECT </span>
+<span class="s2">        COALESCE(b.date, l.date) as date</span>
+<span class="s2">        , COALESCE(b.gender, l.gender) as gender</span>
+<span class="s2">        , COALESCE(b.age, l.age) as age</span>
+<span class="s2">        , COALESCE(b.source, l.source) as source</span>
+<span class="s2">        , COALESCE(b.os, l.os) as os</span>
+<span class="s2">        , COALESCE(b.city, l.city) as city</span>
+<span class="s2">        , COALESCE(b.country, l.country) as country</span>
+<span class="s2">        , COALESCE(b.views, 0) as views</span>
+<span class="s2">        , COALESCE(b.likes, 0) as likes</span>
+<span class="s2">        , COALESCE(b.posts, 0) as posts</span>
+<span class="s2">        , COALESCE(b.avg_view_to_like_seconds, 0) as avg_view_to_like_seconds</span>
+<span class="s2">        , COALESCE(b.feed_users, 0) as feed_users</span>
+<span class="s2">        , COALESCE(b.feed_new_users_lifetime_0, 0) as feed_new_users_lifetime_0</span>
+<span class="s2">        , COALESCE(b.feed_users_lifetime_7d, 0) as feed_users_lifetime_7d</span>
+<span class="s2">        , COALESCE(l.feed_new_users_7_days_ago, 0) as feed_new_users_7_days_ago</span>
+<span class="s2">    FROM </span>
+<span class="s2">        base_metrics b</span>
+<span class="s2">        FULL JOIN lag_metrics l ON </span>
+<span class="s2">            b.date = l.date </span>
+<span class="s2">            AND b.gender = l.gender</span>
+<span class="s2">            AND b.age = l.age</span>
+<span class="s2">            AND b.source = l.source</span>
+<span class="s2">            AND b.os = l.os</span>
+<span class="s2">            AND b.city = l.city</span>
+<span class="s2">            AND b.country = l.country</span>
+<span class="s2">    ORDER BY</span>
+<span class="s2">        date</span>
+<span class="s2">        , gender</span>
+<span class="s2">        , age</span>
+<span class="s2">        , source</span>
+<span class="s2">        , os</span>
+<span class="s2">        , city</span>
+<span class="s2">        , country</span>
+<span class="s2">&quot;&quot;&quot;</span>        
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dst_ch_client</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">QUERY_FEED_DAILY_ACTIVITY_MV</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="messenger-daily-activity-materialized-view">
+<h3>1.5.3 Messenger Daily Activity Materialized View<a class="headerlink" href="#messenger-daily-activity-materialized-view" title="Link to this heading">#</a></h3>
+<p>Create materialized view for messenger daily activity</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">QUERY_MESSENGER_DAILY_ACTIVITY_MV</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    CREATE MATERIALIZED VIEW mv_messenger_daily_activity AS</span>
+<span class="s2">    WITH daily_metrics AS (</span>
+<span class="s2">        SELECT </span>
+<span class="s2">            date</span>
+<span class="s2">            , user_id</span>
+<span class="s2">            , date - MIN(date) OVER (PARTITION BY user_id) AS lifetime</span>
+<span class="s2">            , messages_sent</span>
+<span class="s2">            , messages_received</span>
+<span class="s2">            , users_sent</span>
+<span class="s2">            , users_received</span>
+<span class="s2">            , avg_time_between_messages_sent</span>
+<span class="s2">        FROM </span>
+<span class="s2">            fact_daily_messenger</span>
+<span class="s2">    )</span>
+<span class="s2">    , base_metrics AS (</span>
+<span class="s2">        SELECT </span>
+<span class="s2">            m.date</span>
+<span class="s2">            , u.gender</span>
+<span class="s2">            , u.age </span>
+<span class="s2">            , u.source</span>
+<span class="s2">            , u.os</span>
+<span class="s2">            , u.city </span>
+<span class="s2">            , u.country</span>
+<span class="s2">            , COUNT(DISTINCT m.user_id) FILTER (WHERE users_sent != 0) AS total_senders</span>
+<span class="s2">            , COUNT(DISTINCT m.user_id) FILTER (WHERE users_sent = 0) AS total_receivers</span>
+<span class="s2">            , COUNT(DISTINCT m.user_id) FILTER (WHERE lifetime = 0) AS new_users_lifetime_0</span>
+<span class="s2">            , COUNT(DISTINCT m.user_id) FILTER (WHERE lifetime = 7) AS users_lifetime_7d        </span>
+<span class="s2">            , SUM(messages_sent) AS messages_sent</span>
+<span class="s2">            , AVG(avg_time_between_messages_sent) AS avg_time_between_messages_sent</span>
+<span class="s2">        FROM </span>
+<span class="s2">            daily_metrics m</span>
+<span class="s2">            LEFT JOIN public.dim_users u ON m.user_id = u.user_id </span>
+<span class="s2">        GROUP BY</span>
+<span class="s2">            m.date</span>
+<span class="s2">            , u.gender</span>
+<span class="s2">            , u.age </span>
+<span class="s2">            , u.source</span>
+<span class="s2">            , u.os</span>
+<span class="s2">            , u.city </span>
+<span class="s2">            , u.country</span>
+<span class="s2">    )</span>
+<span class="s2">    , lag_metrics AS (</span>
+<span class="s2">        SELECT </span>
+<span class="s2">            date + INTERVAL &#39;7 days&#39; as date</span>
+<span class="s2">            , gender</span>
+<span class="s2">            , age </span>
+<span class="s2">            , source</span>
+<span class="s2">            , os</span>
+<span class="s2">            , city </span>
+<span class="s2">            , country</span>
+<span class="s2">            , new_users_lifetime_0 as new_messenger_users_7_days_ago</span>
+<span class="s2">        FROM </span>
+<span class="s2">            base_metrics</span>
+<span class="s2">    )</span>
+<span class="s2">    SELECT </span>
+<span class="s2">        COALESCE(b.date, l.date) as date</span>
+<span class="s2">        , COALESCE(b.gender, l.gender) as gender</span>
+<span class="s2">        , COALESCE(b.age, l.age) as age</span>
+<span class="s2">        , COALESCE(b.source, l.source) as source</span>
+<span class="s2">        , COALESCE(b.os, l.os) as os</span>
+<span class="s2">        , COALESCE(b.city, l.city) as city</span>
+<span class="s2">        , COALESCE(b.country, l.country) as country</span>
+<span class="s2">        , COALESCE(b.total_senders, 0) as total_senders</span>
+<span class="s2">        , COALESCE(b.total_receivers, 0) as total_receivers</span>
+<span class="s2">        , COALESCE(b.new_users_lifetime_0, 0) as new_users_lifetime_0</span>
+<span class="s2">        , COALESCE(b.users_lifetime_7d, 0) as users_lifetime_7d</span>
+<span class="s2">        , COALESCE(l.new_messenger_users_7_days_ago, 0) as new_messenger_users_7_days_ago</span>
+<span class="s2">        , COALESCE(b.messages_sent, 0) as messages_sent</span>
+<span class="s2">        , COALESCE(b.avg_time_between_messages_sent, 0) as avg_time_between_messages_sent</span>
+<span class="s2">    FROM </span>
+<span class="s2">        base_metrics b</span>
+<span class="s2">        FULL JOIN lag_metrics l ON </span>
+<span class="s2">            b.date = l.date </span>
+<span class="s2">            AND b.gender = l.gender</span>
+<span class="s2">            AND b.age = l.age</span>
+<span class="s2">            AND b.source = l.source</span>
+<span class="s2">            AND b.os = l.os</span>
+<span class="s2">            AND b.city = l.city</span>
+<span class="s2">            AND b.country = l.country</span>
+<span class="s2">    ORDER BY</span>
+<span class="s2">        date</span>
+<span class="s2">        , gender</span>
+<span class="s2">        , age</span>
+<span class="s2">        , source</span>
+<span class="s2">        , os</span>
+<span class="s2">        , city</span>
+<span class="s2">        , country</span>
+<span class="s2">&quot;&quot;&quot;</span>        
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dst_ch_client</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">QUERY_MESSENGER_DAILY_ACTIVITY_MV</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="etl-process-airflow-dag">
+<h2>1.6 ETL Process (Airflow DAG)<a class="headerlink" href="#etl-process-airflow-dag" title="Link to this heading">#</a></h2>
+<p>To add data for yesterday, we will create an Airflow DAG.</p>
+<ul class="simple">
+<li><p>We will create a file with queries to extract data for yesterday.</p></li>
+<li><p>The queries for the tables will be analogous to the queries used to create the analytical database. Only the data will be taken for yesterday.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># analytics_daily_etl_queries.py</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">SQL queries for analytics_daily_etl dag</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># ==========================================================================</span>
+<span class="c1"># Queries for extract</span>
+<span class="c1"># ==========================================================================</span>
+
+<span class="n">QUERY_FACT_DAILY_FEED_EXTRACT</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    WITH user_actions as (</span>
+<span class="s2">        SELECT</span>
+<span class="s2">            user_id</span>
+<span class="s2">            , post_id</span>
+<span class="s2">            , action</span>
+<span class="s2">            , time</span>
+<span class="s2">            , lagInFrame(time) OVER (PARTITION BY  user_id, toDate(time), action ORDER BY time) prev_time</span>
+<span class="s2">            , minIf(time, action = &#39;view&#39;) OVER (PARTITION BY  user_id, toDate(time), post_id) first_view_in_day</span>
+<span class="s2">            , minIf(time, action = &#39;like&#39;) OVER (PARTITION BY  user_id, toDate(time), post_id) first_like_in_day</span>
+<span class="s2">        FROM </span>
+<span class="s2">            feed_actions </span>
+<span class="s2">        WHERE </span>
+<span class="s2">            toDate(time) = yesterday()    </span>
+<span class="s2">    )</span>
+<span class="s2">    SELECT</span>
+<span class="s2">        toDate(time) as date</span>
+<span class="s2">        , user_id</span>
+<span class="s2">        , minIf(time, action = &#39;view&#39;) as first_view_time</span>
+<span class="s2">        , minIf(time, action = &#39;like&#39;) as first_like_time</span>
+<span class="s2">        , maxIf(time, action = &#39;view&#39;) as last_view_time</span>
+<span class="s2">        , maxIf(time, action = &#39;like&#39;) as last_like_time    </span>
+<span class="s2">        , uniq(post_id) as posts</span>
+<span class="s2">        , countIf(action = &#39;view&#39;) as views</span>
+<span class="s2">        , countIf(action = &#39;like&#39;) as likes</span>
+<span class="s2">        , avgIf(time - prev_time, action = &#39;view&#39; and prev_time != toDateTime(0)) as avg_time_between_views</span>
+<span class="s2">        , avgIf(time - prev_time, action = &#39;like&#39; and prev_time != toDateTime(0)) as avg_time_between_likes</span>
+<span class="s2">        , avgIf(</span>
+<span class="s2">            first_like_in_day - first_view_in_day</span>
+<span class="s2">            , first_like_in_day != toDateTime(0) </span>
+<span class="s2">            and first_view_in_day != toDateTime(0) </span>
+<span class="s2">            and first_like_in_day &gt;= first_view_in_day</span>
+<span class="s2">        ) as avg_view_to_like_seconds    </span>
+<span class="s2">    FROM </span>
+<span class="s2">        user_actions</span>
+<span class="s2">    GROUP BY</span>
+<span class="s2">        date</span>
+<span class="s2">        , user_id</span>
+<span class="s2">    ORDER BY </span>
+<span class="s2">        date</span>
+<span class="s2">        , user_id     </span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">QUERY_FACT_DAILY_POSTS_EXTRACT</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    WITH post_actions as (</span>
+<span class="s2">        SELECT</span>
+<span class="s2">            user_id</span>
+<span class="s2">            , post_id</span>
+<span class="s2">            , action</span>
+<span class="s2">            , time</span>
+<span class="s2">            , lagInFrame(time) OVER (PARTITION BY  post_id, toDate(time), action ORDER BY time) prev_time</span>
+<span class="s2">            , minIf(time, action = &#39;view&#39;) OVER (PARTITION BY toDate(time), post_id) first_view_in_day</span>
+<span class="s2">            , minIf(time, action = &#39;like&#39;) OVER (PARTITION BY toDate(time), post_id) first_like_in_day</span>
+<span class="s2">        FROM </span>
+<span class="s2">            feed_actions </span>
+<span class="s2">        WHERE </span>
+<span class="s2">            toDate(time) = yesterday()    </span>
+<span class="s2">    )</span>
+<span class="s2">    SELECT</span>
+<span class="s2">        toDate(time) as date</span>
+<span class="s2">        , post_id</span>
+<span class="s2">        , min(time) as first_action_time</span>
+<span class="s2">        , max(time) as last_action_time</span>
+<span class="s2">        , countIf(action = &#39;view&#39;) as views</span>
+<span class="s2">        , countIf(action = &#39;like&#39;) as likes</span>
+<span class="s2">        , uniqIf(user_id, action = &#39;view&#39;) as unique_viewers</span>
+<span class="s2">        , uniqIf(user_id, action = &#39;like&#39;) as unique_likers</span>
+<span class="s2">        , avgIf(time - prev_time, action = &#39;view&#39; and prev_time != toDateTime(0)) as avg_time_between_views</span>
+<span class="s2">        , avgIf(time - prev_time, action = &#39;like&#39; and prev_time != toDateTime(0)) as avg_time_between_likes</span>
+<span class="s2">        , avgIf(</span>
+<span class="s2">            first_like_in_day - first_view_in_day</span>
+<span class="s2">            , first_like_in_day != toDateTime(0) </span>
+<span class="s2">            and first_view_in_day != toDateTime(0) </span>
+<span class="s2">            and first_like_in_day &gt;= first_view_in_day</span>
+<span class="s2">        ) as avg_view_to_like_seconds    </span>
+<span class="s2">    FROM </span>
+<span class="s2">        post_actions</span>
+<span class="s2">    GROUP BY</span>
+<span class="s2">        date</span>
+<span class="s2">        , post_id</span>
+<span class="s2">    ORDER BY </span>
+<span class="s2">        date</span>
+<span class="s2">        , post_id           </span>
+<span class="s2">&quot;&quot;&quot;</span>    
+
+<span class="n">QUERY_FACT_DAILY_MESSENGER_EXTRACT</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    WITH user_actions as (</span>
+<span class="s2">        SELECT </span>
+<span class="s2">            time</span>
+<span class="s2">            , user_id</span>
+<span class="s2">            , receiver_id </span>
+<span class="s2">            , lagInFrame(time) OVER (PARTITION BY  toDate(time), user_id ORDER BY time) user_prev_time</span>
+<span class="s2">            , lagInFrame(time) OVER (PARTITION BY  toDate(time), receiver_id ORDER BY time) receiver_prev_time</span>
+<span class="s2">        FROM </span>
+<span class="s2">            message_actions </span>
+<span class="s2">        WHERE </span>
+<span class="s2">            toDate(time) = yesterday()    </span>
+<span class="s2">        )</span>
+<span class="s2">        , senders as (</span>
+<span class="s2">        SELECT</span>
+<span class="s2">            toDate(time) as date</span>
+<span class="s2">            , user_id </span>
+<span class="s2">            , min(time) as first_sent_time</span>
+<span class="s2">            , max(time) as last_sent_time    </span>
+<span class="s2">            , uniq(receiver_id) as users_sent</span>
+<span class="s2">            , count() as messages_sent</span>
+<span class="s2">            , avgIf(time - user_prev_time, user_prev_time != toDateTime(0)) avg_time_between_messages_sent</span>
+<span class="s2">        FROM </span>
+<span class="s2">            user_actions   </span>
+<span class="s2">        GROUP BY </span>
+<span class="s2">            date</span>
+<span class="s2">            , user_id</span>
+<span class="s2">        )</span>
+<span class="s2">    , receivers as (</span>
+<span class="s2">        SELECT</span>
+<span class="s2">            toDate(time) as date</span>
+<span class="s2">            , receiver_id as user_id </span>
+<span class="s2">            , min(time) as first_received_time</span>
+<span class="s2">            , max(time) as last_received_time      </span>
+<span class="s2">            , uniq(user_id) as users_received</span>
+<span class="s2">            , count() as messages_received</span>
+<span class="s2">            , avgIf(time - receiver_prev_time, receiver_prev_time != toDateTime(0)) avg_time_between_messages_received</span>
+<span class="s2">        FROM </span>
+<span class="s2">            user_actions  </span>
+<span class="s2">        GROUP BY </span>
+<span class="s2">            date</span>
+<span class="s2">            , receiver_id</span>
+<span class="s2">    )</span>
+<span class="s2">    SELECT </span>
+<span class="s2">        if(s.user_id != 0, s.date, r.date) as date</span>
+<span class="s2">        , if(s.user_id != 0, s.user_id, r.user_id) as user_id</span>
+<span class="s2">        , s.first_sent_time</span>
+<span class="s2">        , s.last_sent_time</span>
+<span class="s2">        , s.users_sent</span>
+<span class="s2">        , s.messages_sent</span>
+<span class="s2">        , s.avg_time_between_messages_sent</span>
+<span class="s2">        , r.first_received_time</span>
+<span class="s2">        , r.last_received_time</span>
+<span class="s2">        , r.users_received</span>
+<span class="s2">        , r.messages_received</span>
+<span class="s2">        , r.avg_time_between_messages_received  </span>
+<span class="s2">    FROM </span>
+<span class="s2">        senders s</span>
+<span class="s2">        FULL JOIN receivers r ON s.date = r.date AND s.user_id = r.user_id</span>
+<span class="s2">    ORDER BY </span>
+<span class="s2">        date</span>
+<span class="s2">        , user_id            </span>
+<span class="s2">&quot;&quot;&quot;</span>    
+
+<span class="n">QUERY_FACT_USER_CONNECTIONS_EXTRACT</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    SELECT </span>
+<span class="s2">        toDate(time) as date</span>
+<span class="s2">        , user_id as sender_id</span>
+<span class="s2">        , receiver_id</span>
+<span class="s2">        , count() as messages_count</span>
+<span class="s2">    FROM </span>
+<span class="s2">        message_actions</span>
+<span class="s2">    WHERE </span>
+<span class="s2">        toDate(time) = yesterday()  </span>
+<span class="s2">    GROUP BY </span>
+<span class="s2">        date</span>
+<span class="s2">        , sender_id</span>
+<span class="s2">        , receiver_id</span>
+<span class="s2">    ORDER BY </span>
+<span class="s2">        date</span>
+<span class="s2">        , sender_id</span>
+<span class="s2">        , receiver_id         </span>
+<span class="s2">&quot;&quot;&quot;</span>  
+
+<span class="n">QUERY_DIM_USERS_EXTRACT</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    SELECT </span>
+<span class="s2">        user_id</span>
+<span class="s2">        , argMax(gender, time) as gender</span>
+<span class="s2">        , argMax(age, time) as age</span>
+<span class="s2">        , argMax(source, time) as source</span>
+<span class="s2">        , argMax(os, time) as os</span>
+<span class="s2">        , argMax(city, time) as city</span>
+<span class="s2">        , argMax(country, time) as country</span>
+<span class="s2">        , argMax(exp_group, time) as exp_group</span>
+<span class="s2">        , toDate(now()) as version</span>
+<span class="s2">    FROM (</span>
+<span class="s2">        SELECT</span>
+<span class="s2">            time</span>
+<span class="s2">            , user_id</span>
+<span class="s2">            , gender</span>
+<span class="s2">            , age</span>
+<span class="s2">            , source</span>
+<span class="s2">            , os </span>
+<span class="s2">            , city </span>
+<span class="s2">            , country</span>
+<span class="s2">            , exp_group </span>
+<span class="s2">        FROM </span>
+<span class="s2">            feed_actions </span>
+<span class="s2">        UNION ALL</span>
+<span class="s2">        SELECT</span>
+<span class="s2">            time</span>
+<span class="s2">            , user_id</span>
+<span class="s2">            , gender</span>
+<span class="s2">            , age</span>
+<span class="s2">            , source</span>
+<span class="s2">            , os </span>
+<span class="s2">            , city </span>
+<span class="s2">            , country</span>
+<span class="s2">            , exp_group       </span>
+<span class="s2">        FROM </span>
+<span class="s2">            message_actions    </span>
+<span class="s2">    )</span>
+<span class="s2">    WHERE </span>
+<span class="s2">        toDate(time) = yesterday()</span>
+<span class="s2">    GROUP BY </span>
+<span class="s2">        user_id</span>
+<span class="s2">    ORDER BY </span>
+<span class="s2">        user_id     </span>
+<span class="s2">&quot;&quot;&quot;</span>  
+
+<span class="c1"># ==========================================================================</span>
+<span class="c1"># Queries for load</span>
+<span class="c1"># ==========================================================================</span>
+
+<span class="n">QUERY_FACT_DAILY_FEED_LOAD</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    INSERT INTO fact_daily_feed VALUES    </span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">QUERY_FACT_DAILY_POSTS_LOAD</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    INSERT INTO fact_daily_posts VALUES      </span>
+<span class="s2">&quot;&quot;&quot;</span>    
+
+<span class="n">QUERY_FACT_DAILY_MESSENGER_LOAD</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    INSERT INTO fact_daily_messenger VALUES        </span>
+<span class="s2">&quot;&quot;&quot;</span>    
+
+<span class="n">QUERY_FACT_USER_CONNECTIONS_LOAD</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    INSERT INTO fact_user_connections VALUES</span>
+<span class="s2">&quot;&quot;&quot;</span>  
+
+<span class="n">QUERY_DIM_USERS_LOAD</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    INSERT INTO dim_users VALUES </span>
+<span class="s2">&quot;&quot;&quot;</span>  
+</pre></div>
+</div>
+</div>
+</div>
+<p>Create an Airflow DAG that will daily add data from the previous day to the analytical database.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># analytics_daily_etl.py</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Analytics Daily ETL DAG</span>
+
+<span class="sd">This DAG extracts, validates and loads daily analytics data with quality checks</span>
+<span class="sd">from operational database to analytics warehouse.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">airflow.sdk</span><span class="w"> </span><span class="kn">import</span> <span class="n">dag</span><span class="p">,</span> <span class="n">task</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">airflow_clickhouse_plugin.hooks.clickhouse</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClickHouseHook</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">itertools</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">textwrap</span><span class="w"> </span><span class="kn">import</span> <span class="n">dedent</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elt_queries</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">QUERY_FACT_DAILY_FEED_EXTRACT</span>
+    <span class="p">,</span> <span class="n">QUERY_FACT_DAILY_POSTS_EXTRACT</span>
+    <span class="p">,</span> <span class="n">QUERY_FACT_DAILY_MESSENGER_EXTRACT</span>
+    <span class="p">,</span> <span class="n">QUERY_FACT_USER_CONNECTIONS_EXTRACT</span>
+    <span class="p">,</span> <span class="n">QUERY_DIM_USERS_EXTRACT</span>
+    <span class="p">,</span> <span class="n">QUERY_FACT_DAILY_FEED_LOAD</span>
+    <span class="p">,</span> <span class="n">QUERY_FACT_DAILY_POSTS_LOAD</span>
+    <span class="p">,</span> <span class="n">QUERY_FACT_DAILY_MESSENGER_LOAD</span>
+    <span class="p">,</span> <span class="n">QUERY_FACT_USER_CONNECTIONS_LOAD</span>
+    <span class="p">,</span> <span class="n">QUERY_DIM_USERS_LOAD</span>    
+<span class="p">)</span>
+
+<span class="c1"># Database connections</span>
+<span class="n">SRC_DB_ID</span> <span class="o">=</span> <span class="s1">&#39;ch_src&#39;</span>
+<span class="n">DST_DB_ID</span> <span class="o">=</span> <span class="s1">&#39;ch_dst&#39;</span>
+<span class="n">src_hook</span> <span class="o">=</span> <span class="n">ClickHouseHook</span><span class="p">(</span><span class="n">clickhouse_conn_id</span><span class="o">=</span><span class="n">SRC_DB_ID</span><span class="p">)</span>
+<span class="n">dst_hook</span> <span class="o">=</span> <span class="n">ClickHouseHook</span><span class="p">(</span><span class="n">clickhouse_conn_id</span><span class="o">=</span><span class="n">DST_DB_ID</span><span class="p">)</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="c1"># ==========================================================================</span>
+<span class="c1"># DAG config</span>
+<span class="c1"># ==========================================================================</span>
+
+<span class="n">default_args</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;owner&#39;</span><span class="p">:</span> <span class="s1">&#39;analytics_team&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;depends_on_past&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;start_date&#39;</span><span class="p">:</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2025</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">25</span><span class="p">),</span>
+    <span class="s1">&#39;retries&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s1">&#39;retry_delay&#39;</span><span class="p">:</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>
+    <span class="s1">&#39;email_on_failure&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s1">&#39;email_on_retry&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">dag_config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;default_args&#39;</span><span class="p">:</span> <span class="n">default_args</span><span class="p">,</span>
+    <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;Daily ETL pipeline for loading data from operational DB to analytics warehouse&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;schedule&#39;</span><span class="p">:</span> <span class="s1">&#39;0 3 * * *&#39;</span><span class="p">,</span> <span class="c1"># Runs at 3 AM daily</span>
+    <span class="s1">&#39;catchup&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;tags&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;analytics&#39;</span><span class="p">,</span> <span class="s1">&#39;etl&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;max_active_runs&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s1">&#39;doc_md&#39;</span><span class="p">:</span> <span class="n">dedent</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    # Analytics Daily ETL with Data Validation</span>
+<span class="s2">    </span>
+<span class="s2">    Extracts, validates and loads daily analytics data with quality checks.</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="c1"># ==========================================================================</span>
+<span class="c1"># Constants for validation</span>
+<span class="c1"># ==========================================================================</span>
+
+<span class="n">REQUIRED_COLUMNS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;daily_feed&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;first_view_time&#39;</span><span class="p">,</span> <span class="s1">&#39;first_like_time&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;last_view_time&#39;</span><span class="p">,</span> <span class="s1">&#39;last_like_time&#39;</span><span class="p">,</span> <span class="s1">&#39;posts&#39;</span><span class="p">,</span> <span class="s1">&#39;views&#39;</span><span class="p">,</span> <span class="s1">&#39;likes&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;avg_time_between_views&#39;</span><span class="p">,</span> <span class="s1">&#39;avg_time_between_likes&#39;</span><span class="p">,</span> <span class="s1">&#39;avg_view_to_like_seconds&#39;</span>
+    <span class="p">],</span>
+    <span class="s1">&#39;daily_posts&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="s1">&#39;post_id&#39;</span><span class="p">,</span> <span class="s1">&#39;first_action_time&#39;</span><span class="p">,</span> <span class="s1">&#39;last_action_time&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;views&#39;</span><span class="p">,</span> <span class="s1">&#39;likes&#39;</span><span class="p">,</span> <span class="s1">&#39;unique_viewers&#39;</span><span class="p">,</span> <span class="s1">&#39;unique_likers&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;avg_time_between_views&#39;</span><span class="p">,</span> <span class="s1">&#39;avg_time_between_likes&#39;</span><span class="p">,</span> <span class="s1">&#39;avg_view_to_like_seconds&#39;</span>
+    <span class="p">],</span>
+    <span class="s1">&#39;daily_messenger&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;first_sent_time&#39;</span><span class="p">,</span> <span class="s1">&#39;last_sent_time&#39;</span><span class="p">,</span> <span class="s1">&#39;users_sent&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;messages_sent&#39;</span><span class="p">,</span> <span class="s1">&#39;avg_time_between_messages_sent&#39;</span><span class="p">,</span> <span class="s1">&#39;first_received_time&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;last_received_time&#39;</span><span class="p">,</span> <span class="s1">&#39;users_received&#39;</span><span class="p">,</span> <span class="s1">&#39;messages_received&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;avg_time_between_messages_received&#39;</span>
+    <span class="p">],</span>
+    <span class="s1">&#39;user_connections&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="s1">&#39;sender_id&#39;</span><span class="p">,</span> <span class="s1">&#39;receiver_id&#39;</span><span class="p">,</span> <span class="s1">&#39;messages_count&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;users&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;gender&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;source&#39;</span><span class="p">,</span> <span class="s1">&#39;os&#39;</span><span class="p">,</span> <span class="s1">&#39;city&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;country&#39;</span><span class="p">,</span> <span class="s1">&#39;exp_group&#39;</span><span class="p">,</span> <span class="s1">&#39;version&#39;</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+
+<span class="c1"># ==========================================================================</span>
+<span class="c1"># Helper functions</span>
+<span class="c1"># ==========================================================================</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">extract_data</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Common extraction logic&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;🚀 Starting </span><span class="si">{</span><span class="n">data_type</span><span class="si">}</span><span class="s2"> extraction...&quot;</span><span class="p">)</span>
+        <span class="n">records</span><span class="p">,</span> <span class="n">column_types</span> <span class="o">=</span> <span class="n">src_hook</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">with_column_types</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">column_types</span><span class="p">]</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;✅ Successfully extracted </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">data_type</span><span class="si">}</span><span class="s2"> records&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;DataFrame shape: </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, columns: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">df</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;❌ Failed to extract </span><span class="si">{</span><span class="n">data_type</span><span class="si">}</span><span class="s2"> data: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">validate_data</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">data_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Common validation logic&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;🔍 Validating </span><span class="si">{</span><span class="n">data_type</span><span class="si">}</span><span class="s2"> data...&quot;</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;❌ </span><span class="si">{</span><span class="n">data_type</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span><span class="si">}</span><span class="s2"> DataFrame is empty&quot;</span><span class="p">)</span>
+        
+        <span class="n">required_columns</span> <span class="o">=</span> <span class="n">REQUIRED_COLUMNS</span><span class="p">[</span><span class="n">data_type</span><span class="p">]</span>
+        <span class="n">missing_columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">required_columns</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">missing_columns</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;❌ Missing required columns in </span><span class="si">{</span><span class="n">data_type</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">missing_columns</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;✅ </span><span class="si">{</span><span class="n">data_type</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span><span class="si">}</span><span class="s2"> validation passed: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">}</span><span class="s2"> records&quot;</span><span class="p">)</span>
+        
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;❌ </span><span class="si">{</span><span class="n">data_type</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span><span class="si">}</span><span class="s2"> validation failed: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">load_data</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">load_query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Common loading logic&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;📥 Loading </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">data_type</span><span class="si">}</span><span class="s2"> records...&quot;</span><span class="p">)</span>
+        <span class="n">dst_hook</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">load_query</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>  
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;✅ Successfully loaded </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">data_type</span><span class="si">}</span><span class="s2"> records&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;❌ Failed to load </span><span class="si">{</span><span class="n">data_type</span><span class="si">}</span><span class="s2"> records: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">handle_etl_failure</span><span class="p">(</span><span class="n">context</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Enhanced error handling for ETL tasks&quot;&quot;&quot;</span>
+    <span class="n">task_instance</span> <span class="o">=</span> <span class="n">context</span><span class="p">[</span><span class="s1">&#39;task_instance&#39;</span><span class="p">]</span>
+    <span class="n">exception</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;exception&#39;</span><span class="p">)</span>
+    <span class="n">execution_date</span> <span class="o">=</span> <span class="n">context</span><span class="p">[</span><span class="s1">&#39;execution_date&#39;</span><span class="p">]</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ETL Task </span><span class="si">{</span><span class="n">task_instance</span><span class="o">.</span><span class="n">task_id</span><span class="si">}</span><span class="s2"> failed on </span><span class="si">{</span><span class="n">execution_date</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Exception: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">exception</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Task try number: </span><span class="si">{</span><span class="n">task_instance</span><span class="o">.</span><span class="n">try_number</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Send email notification (uses Airflow&#39;s default email config)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">task_instance</span><span class="o">.</span><span class="n">email_on_failure</span><span class="p">(</span><span class="n">subject</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;ETL Failure: </span><span class="si">{</span><span class="n">task_instance</span><span class="o">.</span><span class="n">task_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">html_content</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to send failure email: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+<span class="nd">@dag</span><span class="p">(</span><span class="o">**</span><span class="n">dag_config</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">analytics_daily_etl</span><span class="p">():</span>
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># Extract Tasks</span>
+    <span class="c1"># ==========================================================================</span>
+    <span class="nd">@task</span><span class="p">(</span>
+        <span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="n">retry_delay</span><span class="o">=</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>
+        <span class="n">on_failure_callback</span><span class="o">=</span><span class="n">handle_etl_failure</span>
+    <span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">extract_daily_feed</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extracts daily feed data&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">extract_data</span><span class="p">(</span><span class="n">QUERY_FACT_DAILY_FEED_EXTRACT</span><span class="p">,</span> <span class="s1">&#39;daily_feed&#39;</span><span class="p">)</span>
+    
+    <span class="nd">@task</span><span class="p">(</span>
+        <span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="n">retry_delay</span><span class="o">=</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>
+        <span class="n">on_failure_callback</span><span class="o">=</span><span class="n">handle_etl_failure</span>
+    <span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">extract_daily_posts</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extracts daily posts data&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">extract_data</span><span class="p">(</span><span class="n">QUERY_FACT_DAILY_POSTS_EXTRACT</span><span class="p">,</span> <span class="s1">&#39;daily_posts&#39;</span><span class="p">)</span>
+    
+    <span class="nd">@task</span><span class="p">(</span>
+        <span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="n">retry_delay</span><span class="o">=</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>
+        <span class="n">on_failure_callback</span><span class="o">=</span><span class="n">handle_etl_failure</span>
+    <span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">extract_daily_messenger</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extracts daily messenger data&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">extract_data</span><span class="p">(</span><span class="n">QUERY_FACT_DAILY_MESSENGER_EXTRACT</span><span class="p">,</span> <span class="s1">&#39;daily_messenger&#39;</span><span class="p">)</span>
+    
+    <span class="nd">@task</span><span class="p">(</span>
+        <span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="n">retry_delay</span><span class="o">=</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>
+        <span class="n">on_failure_callback</span><span class="o">=</span><span class="n">handle_etl_failure</span>
+    <span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">extract_user_connections</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extracts user connection data&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">extract_data</span><span class="p">(</span><span class="n">QUERY_FACT_USER_CONNECTIONS_EXTRACT</span><span class="p">,</span> <span class="s1">&#39;user_connections&#39;</span><span class="p">)</span>
+    
+    <span class="nd">@task</span><span class="p">(</span>
+        <span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="n">retry_delay</span><span class="o">=</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>
+        <span class="n">on_failure_callback</span><span class="o">=</span><span class="n">handle_etl_failure</span>
+    <span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">extract_users</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extracts users data&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">extract_data</span><span class="p">(</span><span class="n">QUERY_DIM_USERS_EXTRACT</span><span class="p">,</span> <span class="s1">&#39;users&#39;</span><span class="p">)</span>
+
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># Validate Tasks</span>
+    <span class="c1"># ==========================================================================</span>
+    <span class="nd">@task</span><span class="p">(</span>
+        <span class="n">retries</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">retry_delay</span><span class="o">=</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+        <span class="n">on_failure_callback</span><span class="o">=</span><span class="n">handle_etl_failure</span>
+    <span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate_daily_feed</span><span class="p">(</span><span class="n">df_daily_feed</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Validates daily feed data quality&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">validate_data</span><span class="p">(</span><span class="n">df_daily_feed</span><span class="p">,</span> <span class="s1">&#39;daily_feed&#39;</span><span class="p">)</span>
+
+    <span class="nd">@task</span><span class="p">(</span>
+        <span class="n">retries</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">retry_delay</span><span class="o">=</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+        <span class="n">on_failure_callback</span><span class="o">=</span><span class="n">handle_etl_failure</span>
+    <span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate_daily_posts</span><span class="p">(</span><span class="n">df_daily_posts</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Validates daily posts data quality&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">validate_data</span><span class="p">(</span><span class="n">df_daily_posts</span><span class="p">,</span> <span class="s1">&#39;daily_posts&#39;</span><span class="p">)</span>
+
+    <span class="nd">@task</span><span class="p">(</span>
+        <span class="n">retries</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">retry_delay</span><span class="o">=</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+        <span class="n">on_failure_callback</span><span class="o">=</span><span class="n">handle_etl_failure</span>
+    <span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate_daily_messenger</span><span class="p">(</span><span class="n">df_daily_messenger</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Validates daily messenger data quality&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">validate_data</span><span class="p">(</span><span class="n">df_daily_messenger</span><span class="p">,</span> <span class="s1">&#39;daily_messenger&#39;</span><span class="p">)</span>
+
+    <span class="nd">@task</span><span class="p">(</span>
+        <span class="n">retries</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">retry_delay</span><span class="o">=</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+        <span class="n">on_failure_callback</span><span class="o">=</span><span class="n">handle_etl_failure</span>
+    <span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate_user_connections</span><span class="p">(</span><span class="n">df_user_connections</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Validates user connections data quality&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">validate_data</span><span class="p">(</span><span class="n">df_user_connections</span><span class="p">,</span> <span class="s1">&#39;user_connections&#39;</span><span class="p">)</span>
+
+    <span class="nd">@task</span><span class="p">(</span>
+        <span class="n">retries</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">retry_delay</span><span class="o">=</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+        <span class="n">on_failure_callback</span><span class="o">=</span><span class="n">handle_etl_failure</span>
+    <span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate_users</span><span class="p">(</span><span class="n">df_users</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Validates users dimension data quality&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">validate_data</span><span class="p">(</span><span class="n">df_users</span><span class="p">,</span> <span class="s1">&#39;users&#39;</span><span class="p">)</span>
+        
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># Load Tasks</span>
+    <span class="c1"># ==========================================================================</span>
+    <span class="nd">@task</span><span class="p">(</span>
+        <span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="n">retry_delay</span><span class="o">=</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>
+        <span class="n">on_failure_callback</span><span class="o">=</span><span class="n">handle_etl_failure</span>
+    <span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_daily_feed</span><span class="p">(</span><span class="n">df_daily_feed</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Loads daily feed data&quot;&quot;&quot;</span>
+        <span class="n">load_data</span><span class="p">(</span><span class="n">df_daily_feed</span><span class="p">,</span> <span class="n">QUERY_FACT_DAILY_FEED_LOAD</span><span class="p">,</span> <span class="s1">&#39;daily_feed&#39;</span><span class="p">)</span>
+    
+    <span class="nd">@task</span><span class="p">(</span>
+        <span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="n">retry_delay</span><span class="o">=</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>
+        <span class="n">on_failure_callback</span><span class="o">=</span><span class="n">handle_etl_failure</span>
+    <span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_daily_posts</span><span class="p">(</span><span class="n">df_daily_posts</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Loads daily posts data&quot;&quot;&quot;</span>
+        <span class="n">load_data</span><span class="p">(</span><span class="n">df_daily_posts</span><span class="p">,</span> <span class="n">QUERY_FACT_DAILY_POSTS_LOAD</span><span class="p">,</span> <span class="s1">&#39;daily_posts&#39;</span><span class="p">)</span>
+   
+    <span class="nd">@task</span><span class="p">(</span>
+        <span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="n">retry_delay</span><span class="o">=</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>
+        <span class="n">on_failure_callback</span><span class="o">=</span><span class="n">handle_etl_failure</span>
+    <span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_daily_messenger</span><span class="p">(</span><span class="n">df_daily_messenger</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Loads daily messenger data&quot;&quot;&quot;</span>
+        <span class="n">load_data</span><span class="p">(</span><span class="n">df_daily_messenger</span><span class="p">,</span> <span class="n">QUERY_FACT_DAILY_MESSENGER_LOAD</span><span class="p">,</span> <span class="s1">&#39;daily_messenger&#39;</span><span class="p">)</span>
+        
+    <span class="nd">@task</span><span class="p">(</span>
+        <span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="n">retry_delay</span><span class="o">=</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>
+        <span class="n">on_failure_callback</span><span class="o">=</span><span class="n">handle_etl_failure</span>
+    <span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_user_connections</span><span class="p">(</span><span class="n">df_user_connections</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Loads user connections data&quot;&quot;&quot;</span>
+        <span class="n">load_data</span><span class="p">(</span><span class="n">df_user_connections</span><span class="p">,</span> <span class="n">QUERY_FACT_USER_CONNECTIONS_LOAD</span><span class="p">,</span> <span class="s1">&#39;user_connections&#39;</span><span class="p">)</span>
+        
+    <span class="nd">@task</span><span class="p">(</span>
+        <span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="n">retry_delay</span><span class="o">=</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>
+        <span class="n">on_failure_callback</span><span class="o">=</span><span class="n">handle_etl_failure</span>
+    <span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_users</span><span class="p">(</span><span class="n">df_users</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Loads users data&quot;&quot;&quot;</span>
+        <span class="n">load_data</span><span class="p">(</span><span class="n">df_users</span><span class="p">,</span> <span class="n">QUERY_DIM_USERS_LOAD</span><span class="p">,</span> <span class="s1">&#39;users&#39;</span><span class="p">)</span>
+                                       
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># WORKFLOW</span>
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># Extract</span>
+    <span class="n">df_daily_feed</span> <span class="o">=</span> <span class="n">extract_daily_feed</span><span class="p">()</span>
+    <span class="n">df_daily_posts</span> <span class="o">=</span> <span class="n">extract_daily_posts</span><span class="p">()</span>
+    <span class="n">df_daily_messenger</span> <span class="o">=</span> <span class="n">extract_daily_messenger</span><span class="p">()</span>
+    <span class="n">df_user_connections</span> <span class="o">=</span> <span class="n">extract_user_connections</span><span class="p">()</span>
+    <span class="n">df_users</span> <span class="o">=</span> <span class="n">extract_users</span><span class="p">()</span>
+
+    <span class="c1"># Validate</span>
+    <span class="n">feed_valid</span> <span class="o">=</span> <span class="n">validate_daily_feed</span><span class="p">(</span><span class="n">df_daily_feed</span><span class="p">)</span>
+    <span class="n">posts_valid</span> <span class="o">=</span> <span class="n">validate_daily_posts</span><span class="p">(</span><span class="n">df_daily_posts</span><span class="p">)</span>
+    <span class="n">messenger_valid</span> <span class="o">=</span> <span class="n">validate_daily_messenger</span><span class="p">(</span><span class="n">df_daily_messenger</span><span class="p">)</span>
+    <span class="n">connections_valid</span> <span class="o">=</span> <span class="n">validate_user_connections</span><span class="p">(</span><span class="n">df_user_connections</span><span class="p">)</span>
+    <span class="n">users_valid</span> <span class="o">=</span> <span class="n">validate_users</span><span class="p">(</span><span class="n">df_users</span><span class="p">)</span>
+
+    <span class="c1"># Load facts</span>
+    <span class="n">load_daily_feed_task</span> <span class="o">=</span> <span class="n">load_daily_feed</span><span class="p">(</span><span class="n">df_daily_feed</span><span class="p">)</span>
+    <span class="n">load_daily_posts_task</span> <span class="o">=</span> <span class="n">load_daily_posts</span><span class="p">(</span><span class="n">df_daily_posts</span><span class="p">)</span>
+    <span class="n">load_daily_messenger_task</span> <span class="o">=</span> <span class="n">load_daily_messenger</span><span class="p">(</span><span class="n">df_daily_messenger</span><span class="p">)</span>
+    <span class="n">load_user_connections_task</span> <span class="o">=</span> <span class="n">load_user_connections</span><span class="p">(</span><span class="n">df_user_connections</span><span class="p">)</span>
+    
+    <span class="c1"># Load dimensions</span>
+    <span class="n">load_users_task</span> <span class="o">=</span> <span class="n">load_users</span><span class="p">(</span><span class="n">df_users</span><span class="p">)</span>
+
+    <span class="c1"># Tasks dependences</span>
+    <span class="n">feed_valid</span> <span class="o">&gt;&gt;</span> <span class="n">load_daily_feed_task</span>
+    <span class="n">posts_valid</span> <span class="o">&gt;&gt;</span> <span class="n">load_daily_posts_task</span>
+    <span class="n">messenger_valid</span> <span class="o">&gt;&gt;</span> <span class="n">load_daily_messenger_task</span>
+    <span class="n">connections_valid</span> <span class="o">&gt;&gt;</span> <span class="n">load_user_connections_task</span>
+    <span class="n">users_valid</span> <span class="o">&gt;&gt;</span> <span class="n">load_users_task</span>
+    
+<span class="c1"># ==========================================================================</span>
+<span class="c1"># Instantiate the DAG</span>
+<span class="c1"># ==========================================================================</span>
+<span class="n">analytics_daily_etl</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="general-conclusion">
+<h2>1.7 General Conclusion<a class="headerlink" href="#general-conclusion" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Star Schema Designed:</strong> Developed a star schema for the analytical database</p></li>
+<li><p><strong>Metric Queries Created:</strong> Built queries to the product database for calculating required metrics for the analytical database</p></li>
+<li><p><strong>Star Schema Tables Implemented:</strong> Created all necessary tables for the star schema in the analytical database</p></li>
+<li><p><strong>Data Migration Completed:</strong> Extracted required data from the product database and loaded it into the analytical database</p></li>
+<li><p><strong>Dashboard Optimization:</strong> Created materialized views to optimize dashboard performance</p></li>
+<li><p><strong>Automation Pipeline Built:</strong> Developed Airflow DAG for daily incremental data loading for yesterday’s data</p></li>
+<li><p><strong>Goal Achieved:</strong> Established analytical database and ETL process for continuous data updates</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../../index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">🧩 Building Startup Analytics</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../2_product_dashboard/2_product_dashboard.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">2. Product Dashboard</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#importing-libraries">1.1 Importing Libraries</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-description">1.2 Data Description</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#database-connection">1.3 Database Connection</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#designing-the-analytical-database">1.4 Designing the Analytical Database</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-fact-daily-feed">1.4.1 Creating fact_daily_feed</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-fact-daily-posts">1.4.2 Creating fact_daily_posts</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-fact-daily-messenger">1.4.3 Creating fact_daily_messenger</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-fact-user-connections">1.4.4 Creating fact_user_connections</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-dim-users">1.4.5 Creating dim_users</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-dim-dates">1.4.6 Creating dim_dates</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-materialized-views">1.5 Creating Materialized Views</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#app-daily-activity-materialized-view">1.5.1 App Daily Activity Materialized View</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#feed-daily-activity-materialized-view">1.5.2 Feed Daily Activity Materialized View</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#messenger-daily-activity-materialized-view">1.5.3 Messenger Daily Activity Materialized View</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#etl-process-airflow-dag">1.6 ETL Process (Airflow DAG)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-conclusion">1.7 General Conclusion</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Pavel Grigoryev
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025, Pavel Grigoryev.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

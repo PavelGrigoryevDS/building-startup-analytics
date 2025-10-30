@@ -1,0 +1,1200 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>7. Alert System &#8212; 🧩 Building Startup Analytics</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=aa5847ba" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/custom.js?v=f9582d1e"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'building_startup_analytics/7_anomaly_detection/7_alert_system';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="6. Automated Daily Reports" href="../6_automated_reporting/6_automated_reporting.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo-light.jpg" class="logo__image only-light" alt="🧩 Building Startup Analytics - Home"/>
+    <script>document.write(`<img src="../../_static/logo-dark.jpg" class="logo__image only-dark" alt="🧩 Building Startup Analytics - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    🧩 Building Startup Analytics
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../1_data_infrastructure/1_analytical_database.html">1. Building Analytical Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_product_dashboard/2_product_dashboard.html">2. Product Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_metric_deep_dive/3_metric_deep_dive.html">3. Product Metric Deep Dive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_ab_testing/4_ab_testing.html">4. A/B Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5_metric_forecasting/5_metric_forecasting.html">5. Metric Forecasting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6_automated_reporting/6_automated_reporting.html">6. Automated Daily Reports</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">7. Alert System</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/PavelGrigoryevDS/building-startup-analytics" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/building_startup_analytics/7_anomaly_detection/7_alert_system.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>7. Alert System</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> On this page </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-description">7.1 Data Description</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#anomaly-detection-methodology">7.2 Anomaly Detection Methodology</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#helper-functions">7.3 Helper Functions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#airflow-dag-implementation">7.4 Airflow DAG Implementation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#anomaly-alert-screenshots">7.5 Anomaly Alert Screenshots</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">7.6 Conclusion</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="alert-system">
+<h1>7. Alert System<a class="headerlink" href="#alert-system" title="Link to this heading">#</a></h1>
+<p><strong>Context:</strong></p>
+<ul class="simple">
+<li><p>To proactively identify issues before they impact users, we need a system that continuously monitors key product metrics and alerts the team about anomalies.</p></li>
+<li><p>This project implements an automated alert system that checks critical metrics every 15 minutes and sends immediate notifications when deviations are detected.</p></li>
+</ul>
+<p><strong>Objectives:</strong></p>
+<ul class="simple">
+<li><p>To build a robust anomaly detection system that monitors key product metrics in real-time, automatically alerts the team via Telegram when anomalies occur, and provides actionable insights for rapid investigation.</p></li>
+</ul>
+<p><strong>Data Sources:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">feed_actions</span></code> - News feed activity</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">message_actions</span></code> - Messaging activity</p></li>
+</ul>
+<p><strong>Key Achievements:</strong></p>
+<ul class="simple">
+<li><p><strong>SQL Queries Developed:</strong></p>
+<ul>
+<li><p>Created optimized queries to extract and calculate key metrics from ClickHouse database</p></li>
+</ul>
+</li>
+<li><p><strong>Airflow DAG Implemented:</strong></p>
+<ul>
+<li><p>Built automated pipeline for continuous 15-minute monitoring and alert generation</p></li>
+</ul>
+</li>
+<li><p><strong>Anomaly Detection Engine:</strong></p>
+<ul>
+<li><p>Successfully implemented MAD-based statistical method for identifying metric deviations</p></li>
+</ul>
+</li>
+<li><p><strong>Configurable System:</strong></p>
+<ul>
+<li><p>Built flexible detection with adjustable sensitivity thresholds</p></li>
+</ul>
+</li>
+<li><p><strong>Real-time Monitoring:</strong></p>
+<ul>
+<li><p>Established 24/7 tracking of feed and messenger metrics (DAU, views, likes, CTR, messages)</p></li>
+</ul>
+</li>
+<li><p><strong>Automated Alert System:</strong></p>
+<ul>
+<li><p>Deployed Telegram integration for immediate notification delivery</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>Business Impact:</strong></p>
+<ul class="simple">
+<li><p>Established proactive monitoring system that enables rapid response to critical issues before they escalate to affect user experience.</p></li>
+</ul>
+<section id="data-description">
+<h2>7.1 Data Description<a class="headerlink" href="#data-description" title="Link to this heading">#</a></h2>
+<p>In the product database on ClickHouse, the data is stored in the following tables</p>
+<p>Table feed_actions</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>user_id</p></td>
+<td><p>User ID</p></td>
+</tr>
+<tr class="row-odd"><td><p>post_id</p></td>
+<td><p>Post ID</p></td>
+</tr>
+<tr class="row-even"><td><p>action</p></td>
+<td><p>Action: view or like</p></td>
+</tr>
+<tr class="row-odd"><td><p>time</p></td>
+<td><p>Timestamp</p></td>
+</tr>
+<tr class="row-even"><td><p>gender</p></td>
+<td><p>User’s gender</p></td>
+</tr>
+<tr class="row-odd"><td><p>age</p></td>
+<td><p>User’s age (1 = Male)</p></td>
+</tr>
+<tr class="row-even"><td><p>os</p></td>
+<td><p>User’s OS</p></td>
+</tr>
+<tr class="row-odd"><td><p>source</p></td>
+<td><p>Traffic source</p></td>
+</tr>
+<tr class="row-even"><td><p>country</p></td>
+<td><p>User’s country</p></td>
+</tr>
+<tr class="row-odd"><td><p>city</p></td>
+<td><p>User’s city</p></td>
+</tr>
+<tr class="row-even"><td><p>exp_group</p></td>
+<td><p>A/B test group</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Table message_actions</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>user_id</p></td>
+<td><p>Sender’s ID</p></td>
+</tr>
+<tr class="row-odd"><td><p>receiver_id</p></td>
+<td><p>Receiver’s ID</p></td>
+</tr>
+<tr class="row-even"><td><p>time</p></td>
+<td><p>Send timestamp</p></td>
+</tr>
+<tr class="row-odd"><td><p>gender</p></td>
+<td><p>Sender’s gender</p></td>
+</tr>
+<tr class="row-even"><td><p>age</p></td>
+<td><p>Sender’s age (1 = Male)</p></td>
+</tr>
+<tr class="row-odd"><td><p>os</p></td>
+<td><p>Sender’s OS</p></td>
+</tr>
+<tr class="row-even"><td><p>source</p></td>
+<td><p>Sender’s traffic source</p></td>
+</tr>
+<tr class="row-odd"><td><p>country</p></td>
+<td><p>Sender’s country</p></td>
+</tr>
+<tr class="row-even"><td><p>city</p></td>
+<td><p>Sender’s city</p></td>
+</tr>
+<tr class="row-odd"><td><p>exp_group</p></td>
+<td><p>Sender’s A/B test group</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="anomaly-detection-methodology">
+<h2>7.2 Anomaly Detection Methodology<a class="headerlink" href="#anomaly-detection-methodology" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Statistical Method:</strong></p>
+<ul>
+<li><p>Median Absolute Deviation (MAD) for robust outlier detection resistant to extreme values</p></li>
+</ul>
+</li>
+<li><p><strong>Time-based Sampling:</strong></p>
+<ul>
+<li><p>Uses the same 15-minute interval from each of the previous 30 days (e.g., 14:15-14:30 from each day)</p></li>
+</ul>
+</li>
+<li><p><strong>Dynamic Baseline:</strong></p>
+<ul>
+<li><p>For each monitoring cycle, calculates median and MAD from 30 historical same-time-interval data points</p></li>
+</ul>
+</li>
+<li><p><strong>Bound Calculation:</strong></p>
+<ul>
+<li><p>Upper and lower bounds derived as: rolling_median ± threshold × (MAD × 1.4826)</p></li>
+</ul>
+</li>
+<li><p><strong>Bound Smoothing:</strong></p>
+<ul>
+<li><p>3-point moving average applied to bounds to reduce noise while maintaining sensitivity</p></li>
+</ul>
+</li>
+<li><p><strong>Anomaly Trigger:</strong></p>
+<ul>
+<li><p>Current data point is flagged as anomalous when it falls outside the calculated upper or lower bounds</p></li>
+</ul>
+</li>
+<li><p><strong>Continuous Adaptation:</strong></p>
+<ul>
+<li><p>Bounds automatically recalculate for each new 15-minute interval using updated 30-day window</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="helper-functions">
+<h2>7.3 Helper Functions<a class="headerlink" href="#helper-functions" title="Link to this heading">#</a></h2>
+<p>Create function for calculate anomaly bounds.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">calculate_anomaly_bounds_mad</span><span class="p">(</span>
+    <span class="n">column</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> 
+    <span class="n">window_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
+    <span class="n">threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">3.0</span><span class="p">,</span>
+    <span class="n">smooth_bounds</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">smooth_window</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span> 
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate anomaly bounds using Median Absolute Deviation (MAD) via rolling.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        column: Time series data with datetime index</span>
+<span class="sd">        window_size: Number of previous points for bounds calculation  </span>
+<span class="sd">        threshold: MAD multiplier (default: 3.0 ~ 99.7% for normal distribution)</span>
+<span class="sd">        smooth_bounds: Whether to smooth bounds (default: True)  </span>
+<span class="sd">        smooth_window: Window size for smoothing (default: 3)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">shifted</span> <span class="o">=</span> <span class="n">column</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">rolling_median</span> <span class="o">=</span> <span class="n">shifted</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">window_size</span><span class="p">)</span><span class="o">.</span><span class="n">median</span><span class="p">()</span>
+    <span class="n">rolling_mad</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">shifted</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">window_size</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">stats</span><span class="o">.</span><span class="n">median_abs_deviation</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">nan_policy</span><span class="o">=</span><span class="s2">&quot;omit&quot;</span><span class="p">))</span>
+    <span class="p">)</span>
+    <span class="c1"># Converting MAD to &quot;standard deviation&quot;</span>
+    <span class="n">mad_std</span> <span class="o">=</span> <span class="n">rolling_mad</span> <span class="o">*</span> <span class="mf">1.4826</span>
+    
+    <span class="n">lower_bounds</span> <span class="o">=</span> <span class="n">rolling_median</span> <span class="o">-</span> <span class="n">threshold</span> <span class="o">*</span> <span class="n">mad_std</span>
+    <span class="n">upper_bounds</span> <span class="o">=</span> <span class="n">rolling_median</span> <span class="o">+</span> <span class="n">threshold</span> <span class="o">*</span> <span class="n">mad_std</span>
+    <span class="k">if</span> <span class="n">smooth_bounds</span><span class="p">:</span>
+        <span class="n">lower_bounds</span> <span class="o">=</span> <span class="n">lower_bounds</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="n">smooth_window</span><span class="p">,</span> <span class="n">min_periods</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="n">upper_bounds</span> <span class="o">=</span> <span class="n">upper_bounds</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="n">smooth_window</span><span class="p">,</span> <span class="n">min_periods</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    
+    <span class="n">df_bounds</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+        <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">column</span><span class="p">,</span>
+        <span class="s1">&#39;lower_bound&#39;</span><span class="p">:</span> <span class="n">lower_bounds</span><span class="p">,</span>
+        <span class="s1">&#39;upper_bound&#39;</span><span class="p">:</span> <span class="n">upper_bounds</span>
+    <span class="p">},</span> <span class="n">index</span><span class="o">=</span><span class="n">column</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+    <span class="n">df_bounds</span> <span class="o">=</span> <span class="n">df_bounds</span><span class="o">.</span><span class="n">replace</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df_bounds</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Create a function to build a chart with a highlighted anomaly.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">create_anomaly_chart</span><span class="p">(</span>
+    <span class="n">bounds_df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span>
+    <span class="p">,</span> <span class="n">metric_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create subplots for detected anomaly&quot;&quot;&quot;</span>
+    
+    <span class="n">historical_series</span> <span class="o">=</span> <span class="n">bounds_df</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span>
+    <span class="n">current_value</span> <span class="o">=</span> <span class="n">bounds_df</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">lower_bounds</span> <span class="o">=</span> <span class="n">bounds_df</span><span class="p">[</span><span class="s1">&#39;lower_bound&#39;</span><span class="p">]</span>
+    <span class="n">upper_bounds</span> <span class="o">=</span> <span class="n">bounds_df</span><span class="p">[</span><span class="s1">&#39;upper_bound&#39;</span><span class="p">]</span>
+        
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">make_subplots</span><span class="p">(</span>
+        <span class="n">rows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">subplot_titles</span><span class="o">=</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;Distribution&#39;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s1">&#39;Historical Trend with Bounds&#39;</span>
+        <span class="p">)</span>
+        <span class="p">,</span> <span class="n">horizontal_spacing</span><span class="o">=</span><span class="mi">0</span>
+        <span class="p">,</span> <span class="n">column_widths</span><span class="o">=</span><span class="p">[</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">]</span>
+        <span class="p">,</span> <span class="n">shared_yaxes</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+    
+    <span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+        <span class="n">go</span><span class="o">.</span><span class="n">Violin</span><span class="p">(</span>
+            <span class="n">y</span><span class="o">=</span><span class="n">historical_series</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+            <span class="n">box_visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">meanline_visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">points</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">metric_name</span><span class="p">,</span>
+            <span class="n">marker</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">),</span>
+        <span class="p">),</span>
+        <span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="mi">1</span>
+    <span class="p">)</span>
+
+    <span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+        <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
+            <span class="n">x</span><span class="o">=</span><span class="p">[</span><span class="n">metric_name</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="p">[</span><span class="n">current_value</span><span class="p">],</span>
+            <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;markers&#39;</span><span class="p">,</span>
+            <span class="n">marker</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">symbol</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">),</span>
+            <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Current Value&#39;</span><span class="p">,</span>
+            <span class="n">showlegend</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">),</span>
+        <span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="mi">1</span>
+    <span class="p">)</span>
+    
+    <span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+        <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
+            <span class="n">x</span><span class="o">=</span><span class="n">historical_series</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
+            <span class="n">y</span><span class="o">=</span><span class="n">historical_series</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+            <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;lines+markers&#39;</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Historical data&#39;</span><span class="p">,</span>
+            <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="s1">&#39;spline&#39;</span><span class="p">),</span>
+            <span class="n">marker</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+        <span class="p">),</span>
+        <span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="mi">2</span>
+    <span class="p">)</span>
+
+    <span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+        <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
+            <span class="n">x</span><span class="o">=</span><span class="n">upper_bounds</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
+            <span class="n">y</span><span class="o">=</span><span class="n">upper_bounds</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+            <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;lines&#39;</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Upper Bound&#39;</span><span class="p">,</span>
+            <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dash</span><span class="o">=</span><span class="s1">&#39;dash&#39;</span><span class="p">),</span>
+            <span class="n">showlegend</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">),</span>
+        <span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="mi">2</span>
+    <span class="p">)</span>
+    
+    <span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+        <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
+            <span class="n">x</span><span class="o">=</span><span class="n">lower_bounds</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
+            <span class="n">y</span><span class="o">=</span><span class="n">lower_bounds</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+            <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;lines&#39;</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Lower Bound&#39;</span><span class="p">,</span>
+            <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dash</span><span class="o">=</span><span class="s1">&#39;dash&#39;</span><span class="p">),</span>
+            <span class="n">showlegend</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">),</span>
+        <span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="mi">2</span>
+    <span class="p">)</span>
+    
+    <span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+        <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
+            <span class="n">x</span><span class="o">=</span><span class="p">[</span><span class="n">historical_series</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">max</span><span class="p">()],</span>
+            <span class="n">y</span><span class="o">=</span><span class="p">[</span><span class="n">current_value</span><span class="p">],</span>
+            <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;markers&#39;</span><span class="p">,</span>
+            <span class="n">marker</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">symbol</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">),</span>
+            <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Current Value&#39;</span><span class="p">,</span>
+            <span class="n">showlegend</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">),</span>
+        <span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="mi">2</span>
+    <span class="p">)</span>
+
+    <span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+        <span class="n">title_text</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Anomaly Detection: </span><span class="si">{</span><span class="n">metric_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="n">height</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span>
+        <span class="n">width</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+        <span class="n">showlegend</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+    
+    <span class="n">fig</span><span class="o">.</span><span class="n">update_yaxes</span><span class="p">(</span><span class="n">title_text</span><span class="o">=</span><span class="n">metric_name</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">update_yaxes</span><span class="p">(</span><span class="n">title_text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">update_xaxes</span><span class="p">(</span><span class="n">visible</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">update_xaxes</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Date&#39;</span><span class="p">,</span> <span class="n">tickformat</span><span class="o">=</span><span class="s1">&#39;%b </span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">fig</span>    
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="airflow-dag-implementation">
+<h2>7.4 Airflow DAG Implementation<a class="headerlink" href="#airflow-dag-implementation" title="Link to this heading">#</a></h2>
+<p>Complete DAG code for anomalies detection.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">plotly.express</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">px</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">plotly.graph_objects</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">go</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">plotly.subplots</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_subplots</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">airflow.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">dag</span><span class="p">,</span> <span class="n">task</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">airflow.operators.python</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_current_context</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">textwrap</span><span class="w"> </span><span class="kn">import</span> <span class="n">dedent</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dotenv</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_dotenv</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="n">current_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+<span class="n">env_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">current_dir</span><span class="p">,</span> <span class="s1">&#39;.env&#39;</span><span class="p">)</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">current_dir</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">utils_for_dags</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ChConnector</span>
+    <span class="p">,</span> <span class="n">TelegramBot</span>
+    <span class="p">,</span> <span class="n">create_anomaly_chart</span>
+    <span class="p">,</span> <span class="n">calculate_anomaly_bounds_mad</span>
+<span class="p">)</span>
+<span class="n">load_dotenv</span><span class="p">(</span><span class="n">env_path</span><span class="p">)</span>
+<span class="n">CHAT_ID_ALERT</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;CHAT_ID_ALERT&#39;</span><span class="p">)</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">ChConnector</span><span class="p">()</span>
+<span class="n">bot</span> <span class="o">=</span> <span class="n">TelegramBot</span><span class="p">(</span><span class="n">chat_id</span><span class="o">=</span><span class="n">CHAT_ID_ALERT</span><span class="p">)</span>
+
+<span class="c1"># Configure logger</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;alert_system&#39;</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
+<span class="n">default_args</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;owner&#39;</span><span class="p">:</span> <span class="s1">&#39;Pavel Grigoryev&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;depends_on_past&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;retries&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s1">&#39;retry_delay&#39;</span><span class="p">:</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>
+    <span class="s1">&#39;start_date&#39;</span><span class="p">:</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2025</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">25</span><span class="p">),</span>
+<span class="p">}</span>
+
+<span class="n">dag_config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;default_args&#39;</span><span class="p">:</span> <span class="n">default_args</span><span class="p">,</span>
+    <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;DAG for detecting anomalies and sending report in Telegram&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;schedule_interval&#39;</span><span class="p">:</span> <span class="s1">&#39;*/15 * * * *&#39;</span><span class="p">,</span> <span class="c1"># Every 15 minutes</span>
+    <span class="s1">&#39;catchup&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;tags&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;anomalies&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;max_active_runs&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">QUERY</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">    WITH feed_metrics AS (</span>
+<span class="s1">        SELECT</span>
+<span class="s1">            toStartOfFifteenMinutes(time) AS start_of_15min</span>
+<span class="s1">            , uniqExact(user_id) AS users_feed</span>
+<span class="s1">            , countIf(action = &#39;view&#39;) AS views</span>
+<span class="s1">            , countIf(action = &#39;like&#39;) AS likes</span>
+<span class="s1">            , likes / views as ctr</span>
+<span class="s1">        FROM </span>
+<span class="s1">            feed_actions</span>
+<span class="s1">        WHERE </span>
+<span class="s1">            toDate(time) &gt;= toDate(now()) - 59</span>
+<span class="s1">            AND toHour(time) = toHour(now() - INTERVAL 15 MINUTE)</span>
+<span class="s1">            AND toMinute(time) &gt;= toMinute(toStartOfFifteenMinutes(now() - INTERVAL 15 MINUTE))</span>
+<span class="s1">            AND toMinute(time) &lt; toMinute(toStartOfFifteenMinutes(now() - INTERVAL 15 MINUTE)) + 15</span>
+<span class="s1">        GROUP BY </span>
+<span class="s1">            start_of_15min</span>
+<span class="s1">    )</span>
+<span class="s1">    , messenger_metrics AS (</span>
+<span class="s1">        SELECT</span>
+<span class="s1">            toStartOfFifteenMinutes(time) AS start_of_15min</span>
+<span class="s1">            , uniqExact(user_id) AS users_messenger</span>
+<span class="s1">            , count() AS messages</span>
+<span class="s1">        FROM </span>
+<span class="s1">            message_actions</span>
+<span class="s1">        WHERE </span>
+<span class="s1">            toDate(time) &gt;= toDate(now()) - 59</span>
+<span class="s1">            AND toHour(time) = toHour(now() - INTERVAL 15 MINUTE)</span>
+<span class="s1">            AND toMinute(time) &gt;= toMinute(toStartOfFifteenMinutes(now() - INTERVAL 15 MINUTE))</span>
+<span class="s1">            AND toMinute(time) &lt; toMinute(toStartOfFifteenMinutes(now() - INTERVAL 15 MINUTE)) + 15</span>
+<span class="s1">        GROUP BY </span>
+<span class="s1">            start_of_15min</span>
+<span class="s1">    )</span>
+<span class="s1">    SELECT</span>
+<span class="s1">        if(f.start_of_15min != toDate(0), f.start_of_15min, m.start_of_15min) AS start_of_15min</span>
+<span class="s1">        , f.users_feed</span>
+<span class="s1">        , m.users_messenger</span>
+<span class="s1">        , f.views</span>
+<span class="s1">        , f.likes</span>
+<span class="s1">        , f.likes / nullIf(f.views, 0) AS ctr</span>
+<span class="s1">        , m.messages</span>
+<span class="s1">    FROM </span>
+<span class="s1">        feed_metrics f</span>
+<span class="s1">        FULL OUTER JOIN messenger_metrics m ON f.start_of_15min = m.start_of_15min</span>
+<span class="s1">    ORDER BY </span>
+<span class="s1">        start_of_15min</span>
+<span class="s1">&#39;&#39;&#39;</span>
+
+<span class="n">METRIC_CONFIG</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;users_feed&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Feed Users&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;threshold&#39;</span><span class="p">:</span> <span class="mf">4.5</span><span class="p">,</span>  
+        <span class="s1">&#39;window_size&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span>
+        <span class="s1">&#39;smooth_bounds&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;smooth_window&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="s1">&#39;format&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{:.0f}</span><span class="s1">&#39;</span><span class="p">,</span>  
+    <span class="p">},</span>
+    <span class="s1">&#39;users_messenger&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Messenger Users&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;threshold&#39;</span><span class="p">:</span> <span class="mf">4.5</span><span class="p">,</span>
+        <span class="s1">&#39;window_size&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span>
+        <span class="s1">&#39;smooth_bounds&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;smooth_window&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="s1">&#39;format&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{:.0f}</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;views&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Post Views&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;threshold&#39;</span><span class="p">:</span> <span class="mf">4.0</span><span class="p">,</span>
+        <span class="s1">&#39;window_size&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span>
+        <span class="s1">&#39;smooth_bounds&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> 
+        <span class="s1">&#39;smooth_window&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="s1">&#39;format&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{:.0f}</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;likes&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Post Likes&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;threshold&#39;</span><span class="p">:</span> <span class="mf">4.0</span><span class="p">,</span>
+        <span class="s1">&#39;window_size&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span>
+        <span class="s1">&#39;smooth_bounds&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;smooth_window&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="s1">&#39;format&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{:.0f}</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;ctr&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;CTR&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;threshold&#39;</span><span class="p">:</span> <span class="mf">4.0</span><span class="p">,</span>  
+        <span class="s1">&#39;window_size&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span>
+        <span class="s1">&#39;smooth_bounds&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;smooth_window&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="s1">&#39;format&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{:.2%}</span><span class="s1">&#39;</span><span class="p">,</span> 
+    <span class="p">},</span>
+    <span class="s1">&#39;messages&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Messages Sent&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;threshold&#39;</span><span class="p">:</span> <span class="mf">4.0</span><span class="p">,</span> 
+        <span class="s1">&#39;window_size&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span>
+        <span class="s1">&#39;smooth_bounds&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;smooth_window&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="s1">&#39;format&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{:.0f}</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">handle_failure</span><span class="p">(</span><span class="n">context</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Callback function for processing unsuccessful tasks</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">exception</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;exception&#39;</span><span class="p">)</span>
+    <span class="n">task_instance</span> <span class="o">=</span> <span class="n">context</span><span class="p">[</span><span class="s1">&#39;task_instance&#39;</span><span class="p">]</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Task </span><span class="si">{</span><span class="n">task_instance</span><span class="o">.</span><span class="n">task_id</span><span class="si">}</span><span class="s2"> failed:&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: </span><span class="si">{</span><span class="n">exception</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Execution date: </span><span class="si">{</span><span class="n">context</span><span class="p">[</span><span class="s1">&#39;ds&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Attempt: </span><span class="si">{</span><span class="n">context</span><span class="p">[</span><span class="s1">&#39;ti&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">try_number</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="nd">@dag</span><span class="p">(</span><span class="o">**</span><span class="n">dag_config</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">alert_system</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    DAG runs every 15 minutes, extracts data from database, </span>
+<span class="sd">    checks for anomalies, and sends alerts to Telegram if any detected.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># Extract</span>
+    <span class="c1"># ==========================================================================    </span>
+    <span class="nd">@task</span><span class="p">(</span>
+        <span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="n">retry_delay</span><span class="o">=</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>
+        <span class="n">on_failure_callback</span><span class="o">=</span><span class="n">handle_failure</span>
+    <span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">extract</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extracts metrics data from database&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">get_df</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="n">QUERY</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;start_of_15min&#39;</span><span class="p">)</span>
+        <span class="p">)</span>
+            
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># Transform</span>
+    <span class="c1"># ==========================================================================</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">make_calculate_bounds_task</span><span class="p">(</span><span class="n">metric</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="nd">@task</span><span class="p">(</span>
+            <span class="n">task_id</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;calculate_</span><span class="si">{</span><span class="n">metric</span><span class="si">}</span><span class="s1">_bounds&#39;</span><span class="p">,</span>
+            <span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">retry_delay</span><span class="o">=</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>
+            <span class="n">on_failure_callback</span><span class="o">=</span><span class="n">handle_failure</span>
+        <span class="p">)</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">calculate_single_bounds</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Calculate bounds for single metric&quot;&quot;&quot;</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;📊 Calculating bounds for </span><span class="si">{</span><span class="n">metric</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">config</span> <span class="o">=</span> <span class="n">METRIC_CONFIG</span><span class="p">[</span><span class="n">metric</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">calculate_anomaly_bounds_mad</span><span class="p">(</span>
+                <span class="n">df</span><span class="p">[</span><span class="n">metric</span><span class="p">],</span>
+                <span class="n">threshold</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;threshold&#39;</span><span class="p">],</span>
+                <span class="n">window_size</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;window_size&#39;</span><span class="p">],</span>
+                <span class="n">smooth_bounds</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;smooth_bounds&#39;</span><span class="p">],</span>
+                <span class="n">smooth_window</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;smooth_window&#39;</span><span class="p">]</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">calculate_single_bounds</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">make_metric_alert_task</span><span class="p">(</span><span class="n">metric</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="nd">@task</span><span class="p">(</span>
+            <span class="n">task_id</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;create_</span><span class="si">{</span><span class="n">metric</span><span class="si">}</span><span class="s1">_alert&#39;</span><span class="p">,</span>
+            <span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">retry_delay</span><span class="o">=</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>
+            <span class="n">on_failure_callback</span><span class="o">=</span><span class="n">handle_failure</span><span class="p">,</span>
+            <span class="n">multiple_outputs</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">create_alert_content</span><span class="p">(</span><span class="n">df_bounds</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>    
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Creates alert message and chart for a specific metric&quot;&quot;&quot;</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;📊 Creating alert content for </span><span class="si">{</span><span class="n">metric</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">config</span> <span class="o">=</span> <span class="n">METRIC_CONFIG</span><span class="p">[</span><span class="n">metric</span><span class="p">]</span> 
+            <span class="n">value_format</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;format&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">{:.0f}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">last_timestamp</span> <span class="o">=</span> <span class="n">df_bounds</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">last_row</span> <span class="o">=</span> <span class="n">df_bounds</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">last_value</span> <span class="o">=</span> <span class="n">last_row</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span>
+            <span class="n">previous_value</span> <span class="o">=</span> <span class="n">df_bounds</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span>
+            <span class="n">last_lower_bound</span> <span class="o">=</span> <span class="n">last_row</span><span class="p">[</span><span class="s1">&#39;lower_bound&#39;</span><span class="p">]</span>
+            <span class="n">last_upper_bound</span> <span class="o">=</span> <span class="n">last_row</span><span class="p">[</span><span class="s1">&#39;upper_bound&#39;</span><span class="p">]</span>
+            <span class="n">metric_name</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+
+            <span class="n">is_anomaly</span> <span class="o">=</span> <span class="ow">not</span> <span class="p">(</span><span class="n">last_lower_bound</span> <span class="o">&lt;=</span> <span class="n">last_value</span> <span class="o">&lt;=</span> <span class="n">last_upper_bound</span><span class="p">)</span>
+            
+            <span class="k">if</span> <span class="n">is_anomaly</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;🚨 Anomaly detected in </span><span class="si">{</span><span class="n">metric_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                
+                <span class="k">if</span> <span class="n">last_value</span> <span class="o">&lt;</span> <span class="n">last_lower_bound</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">last_lower_bound</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">deviation_from_bound</span> <span class="o">=</span> <span class="p">((</span><span class="n">last_lower_bound</span> <span class="o">-</span> <span class="n">last_value</span><span class="p">)</span> <span class="o">/</span> <span class="n">last_lower_bound</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+                    <span class="k">else</span><span class="p">:</span>   
+                        <span class="n">deviation_from_bound</span> <span class="o">=</span> <span class="mf">100.0</span>    
+                    <span class="n">direction</span> <span class="o">=</span> <span class="s2">&quot;below&quot;</span>
+                <span class="k">else</span><span class="p">:</span>  
+                    <span class="k">if</span> <span class="n">last_upper_bound</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">deviation_from_bound</span> <span class="o">=</span> <span class="p">((</span><span class="n">last_value</span> <span class="o">-</span> <span class="n">last_upper_bound</span><span class="p">)</span> <span class="o">/</span> <span class="n">last_upper_bound</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">deviation_from_bound</span> <span class="o">=</span> <span class="mf">100.0</span>                        
+                    <span class="n">direction</span> <span class="o">=</span> <span class="s2">&quot;above&quot;</span> 
+                
+                <span class="k">if</span> <span class="n">previous_value</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">daily_change</span> <span class="o">=</span> <span class="p">((</span><span class="n">last_value</span> <span class="o">-</span> <span class="n">previous_value</span><span class="p">)</span> <span class="o">/</span> <span class="n">previous_value</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+                    <span class="n">deviation_from_yesterday</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Change from yesterday: </span><span class="si">{</span><span class="n">daily_change</span><span class="si">:</span><span class="s2">+.1f</span><span class="si">}</span><span class="s2">%&quot;</span>    
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">deviation_from_yesterday</span> <span class="o">=</span> <span class="s2">&quot;Change from yesterday: N/A (no previous data)&quot;</span>
+                <span class="n">time_slot</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">last_timestamp</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%H:%M&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="p">(</span><span class="n">last_timestamp</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">15</span><span class="p">))</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%H:%M&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>                     
+                <span class="c1"># Create alert message</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="n">dedent</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">                    🚨 Anomaly Alert</span>
+<span class="s2">                    </span>
+<span class="s2">                    ⏰ Time slot: </span><span class="si">{</span><span class="n">time_slot</span><span class="si">}</span>
+<span class="s2">                    📊 Metric: </span><span class="si">{</span><span class="n">metric_name</span><span class="si">}</span>
+<span class="s2">                    🔢 Current value: </span><span class="si">{</span><span class="n">value_format</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">last_value</span><span class="p">)</span><span class="si">}</span><span class="s2"> </span>
+<span class="s2">                    ⚠️ Deviation: </span><span class="si">{</span><span class="n">deviation_from_bound</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">% </span><span class="si">{</span><span class="n">direction</span><span class="si">}</span><span class="s2"> range</span>
+<span class="s2">                    📅 </span><span class="si">{</span><span class="n">deviation_from_yesterday</span><span class="si">}</span>
+<span class="s2">                    ↔️ Expected range: </span><span class="si">{</span><span class="n">value_format</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">last_lower_bound</span><span class="p">)</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">value_format</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">last_upper_bound</span><span class="p">)</span><span class="si">}</span>
+<span class="s2">                    📈 [Go To Dash](https://superset.lab.karpov.courses/superset/dashboard/7569/)</span>
+<span class="s2">                    🕵️ @alert_jedis @avengers_analytics</span>
+<span class="s2">                &quot;&quot;&quot;</span><span class="p">)</span>
+                
+                <span class="c1"># Create chart</span>
+                <span class="n">fig</span> <span class="o">=</span> <span class="n">create_anomaly_chart</span><span class="p">(</span>
+                    <span class="n">bounds_df</span><span class="o">=</span><span class="n">df_bounds</span><span class="p">,</span>
+                    <span class="n">metric_name</span><span class="o">=</span><span class="n">metric_name</span>
+                <span class="p">)</span>
+                <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="n">msg</span><span class="p">,</span> <span class="s2">&quot;chart&quot;</span><span class="p">:</span> <span class="n">fig</span><span class="p">,</span> <span class="s2">&quot;has_anomaly&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+            
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;✅ No anomaly in </span><span class="si">{</span><span class="n">metric_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;chart&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;has_anomaly&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
+        <span class="k">return</span> <span class="n">create_alert_content</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">make_send_message_task</span><span class="p">(</span><span class="n">metric</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="nd">@task</span><span class="p">(</span>
+            <span class="n">task_id</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;send_</span><span class="si">{</span><span class="n">metric</span><span class="si">}</span><span class="s1">_message&#39;</span><span class="p">,</span>
+            <span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">retry_delay</span><span class="o">=</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>
+            <span class="n">on_failure_callback</span><span class="o">=</span><span class="n">handle_failure</span>
+        <span class="p">)</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">send_alert_message</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Sends alert message for specific metric&quot;&quot;&quot;</span>
+            <span class="k">if</span> <span class="n">message</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;📨 Sending </span><span class="si">{</span><span class="n">metric</span><span class="si">}</span><span class="s2"> alert message...&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">bot</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">):</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;❌ Failed to send </span><span class="si">{</span><span class="n">metric</span><span class="si">}</span><span class="s2"> message&quot;</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to send </span><span class="si">{</span><span class="n">metric</span><span class="si">}</span><span class="s2"> message&quot;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;✅ </span><span class="si">{</span><span class="n">metric</span><span class="si">}</span><span class="s2"> message sent successfully&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">send_alert_message</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">make_send_chart_task</span><span class="p">(</span><span class="n">metric</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="nd">@task</span><span class="p">(</span>
+            <span class="n">task_id</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;send_</span><span class="si">{</span><span class="n">metric</span><span class="si">}</span><span class="s1">_chart&#39;</span><span class="p">,</span>
+            <span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">retry_delay</span><span class="o">=</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>
+            <span class="n">on_failure_callback</span><span class="o">=</span><span class="n">handle_failure</span>
+        <span class="p">)</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">send_alert_chart</span><span class="p">(</span><span class="n">figure</span><span class="p">:</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Sends alert chart for specific metric&quot;&quot;&quot;</span>
+            <span class="k">if</span> <span class="n">figure</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;📊 Sending </span><span class="si">{</span><span class="n">metric</span><span class="si">}</span><span class="s2"> chart...&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">bot</span><span class="o">.</span><span class="n">send_chart</span><span class="p">(</span><span class="n">figure</span><span class="o">=</span><span class="n">figure</span><span class="p">):</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;❌ Failed to send </span><span class="si">{</span><span class="n">metric</span><span class="si">}</span><span class="s2"> chart&quot;</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to send </span><span class="si">{</span><span class="n">metric</span><span class="si">}</span><span class="s2"> chart&quot;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;✅ </span><span class="si">{</span><span class="n">metric</span><span class="si">}</span><span class="s2"> chart sent successfully&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">send_alert_chart</span>
+
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># WORKFLOW</span>
+    <span class="c1"># ==========================================================================</span>
+    
+    <span class="c1"># Extract data</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">extract</span><span class="p">()</span>
+
+    <span class="c1"># Creating a chain of dependencies between graphs</span>
+    <span class="n">previous_chart_task</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># Create and send alerts for each metric</span>
+    <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">METRIC_CONFIG</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            
+        <span class="c1"># Create task instances for this metric</span>
+        <span class="n">bounds_task</span> <span class="o">=</span> <span class="n">make_calculate_bounds_task</span><span class="p">(</span><span class="n">metric</span><span class="p">)</span>
+        <span class="n">alert_task</span> <span class="o">=</span> <span class="n">make_metric_alert_task</span><span class="p">(</span><span class="n">metric</span><span class="p">)</span>
+        <span class="n">send_message_task</span> <span class="o">=</span> <span class="n">make_send_message_task</span><span class="p">(</span><span class="n">metric</span><span class="p">)</span>
+        <span class="n">send_chart_task</span> <span class="o">=</span> <span class="n">make_send_chart_task</span><span class="p">(</span><span class="n">metric</span><span class="p">)</span>
+        
+        <span class="c1"># Execute workflow for this metric</span>
+        <span class="n">df_bounds</span> <span class="o">=</span> <span class="n">bounds_task</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+        <span class="n">alert_content</span> <span class="o">=</span> <span class="n">alert_task</span><span class="p">(</span><span class="n">df_bounds</span><span class="p">)</span>
+        <span class="n">send_message</span> <span class="o">=</span> <span class="n">send_message_task</span><span class="p">(</span><span class="n">alert_content</span><span class="p">[</span><span class="s1">&#39;message&#39;</span><span class="p">])</span>
+        <span class="n">send_chart</span> <span class="o">=</span> <span class="n">send_chart_task</span><span class="p">(</span><span class="n">alert_content</span><span class="p">[</span><span class="s1">&#39;chart&#39;</span><span class="p">])</span>
+        
+        <span class="c1"># Execution order</span>
+        <span class="n">send_message</span> <span class="o">&gt;&gt;</span> <span class="n">send_chart</span>
+        
+        <span class="c1"># Between metrics: graphs are sent sequentially</span>
+        <span class="k">if</span> <span class="n">previous_chart_task</span><span class="p">:</span>
+            <span class="n">previous_chart_task</span> <span class="o">&gt;&gt;</span> <span class="n">send_chart</span>
+            
+        <span class="n">previous_chart_task</span> <span class="o">=</span> <span class="n">send_chart</span>
+
+<span class="c1"># Initialize DAG</span>
+<span class="n">alert_system</span> <span class="o">=</span> <span class="n">alert_system</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="anomaly-alert-screenshots">
+<h2>7.5 Anomaly Alert Screenshots<a class="headerlink" href="#anomaly-alert-screenshots" title="Link to this heading">#</a></h2>
+<p>Below are screenshots of a sample anomaly alert.</p>
+<a class="reference internal image-reference" href="../../_images/anomaly_detection_part_1.jpg"><img alt="../../_images/anomaly_detection_part_1.jpg" src="../../_images/anomaly_detection_part_1.jpg" style="width: 500px;" />
+</a>
+<a class="reference internal image-reference" href="../../_images/anomaly_detection_part_2.jpg"><img alt="../../_images/anomaly_detection_part_2.jpg" src="../../_images/anomaly_detection_part_2.jpg" style="width: 500px;" />
+</a>
+</section>
+<section id="conclusion">
+<h2>7.6 Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>SQL Queries Developed:</strong></p>
+<ul>
+<li><p>Created optimized queries to extract and calculate key metrics from ClickHouse database</p></li>
+</ul>
+</li>
+<li><p><strong>Airflow DAG Implemented:</strong></p>
+<ul>
+<li><p>Built automated pipeline for continuous 15-minute monitoring and alert generation</p></li>
+</ul>
+</li>
+<li><p><strong>Anomaly Detection Engine:</strong></p>
+<ul>
+<li><p>Successfully implemented MAD-based statistical method for identifying metric deviations</p></li>
+</ul>
+</li>
+<li><p><strong>Configurable System:</strong></p>
+<ul>
+<li><p>Built flexible detection with adjustable sensitivity thresholds</p></li>
+</ul>
+</li>
+<li><p><strong>Real-time Monitoring:</strong></p>
+<ul>
+<li><p>Established 24/7 tracking of feed and messenger metrics (DAU, views, likes, CTR, messages)</p></li>
+</ul>
+</li>
+<li><p><strong>Automated Alert System:</strong></p>
+<ul>
+<li><p>Deployed Telegram integration for immediate notification delivery</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../6_automated_reporting/6_automated_reporting.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">6. Automated Daily Reports</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-description">7.1 Data Description</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#anomaly-detection-methodology">7.2 Anomaly Detection Methodology</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#helper-functions">7.3 Helper Functions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#airflow-dag-implementation">7.4 Airflow DAG Implementation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#anomaly-alert-screenshots">7.5 Anomaly Alert Screenshots</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">7.6 Conclusion</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Pavel Grigoryev
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025, Pavel Grigoryev.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

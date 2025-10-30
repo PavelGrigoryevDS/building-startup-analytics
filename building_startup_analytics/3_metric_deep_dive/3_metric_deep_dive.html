@@ -1,0 +1,2074 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>3. Product Metric Deep Dive &#8212; 🧩 Building Startup Analytics</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=aa5847ba" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/custom.js?v=f9582d1e"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'building_startup_analytics/3_metric_deep_dive/3_metric_deep_dive';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="4. A/B Testing" href="../4_ab_testing/4_ab_testing.html" />
+    <link rel="prev" title="2. Product Dashboard" href="../2_product_dashboard/2_product_dashboard.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo-light.jpg" class="logo__image only-light" alt="🧩 Building Startup Analytics - Home"/>
+    <script>document.write(`<img src="../../_static/logo-dark.jpg" class="logo__image only-dark" alt="🧩 Building Startup Analytics - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    🧩 Building Startup Analytics
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../1_data_infrastructure/1_analytical_database.html">1. Building Analytical Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_product_dashboard/2_product_dashboard.html">2. Product Dashboard</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">3. Product Metric Deep Dive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_ab_testing/4_ab_testing.html">4. A/B Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5_metric_forecasting/5_metric_forecasting.html">5. Metric Forecasting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6_automated_reporting/6_automated_reporting.html">6. Automated Daily Reports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../7_anomaly_detection/7_alert_system.html">7. Alert System</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/PavelGrigoryevDS/building-startup-analytics" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/building_startup_analytics/3_metric_deep_dive/3_metric_deep_dive.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>3. Product Metric Deep Dive</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> On this page </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-description">3.1 Data Description</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#marketing-campaign-analysis">3.2 Marketing Campaign Analysis</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sql-queries">3.2.1 SQL Queries</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#hypothesis-validation">3.2.1.1 Hypothesis Validation</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#profile-of-advertising-campaign-users">3.2.1.2 Profile of Advertising Campaign Users</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#metrics-on-the-first-day">3.2.1.3 Metrics on the First Day</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#retention-analysis">3.2.1.4 Retention Analysis</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#cohort-analysis-of-other-metrics">3.2.1.5 Cohort Analysis of Other Metrics</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dashboard-implementation">3.2.2 Dashboard Implementation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#user-drop-off-analysis">3.3 User Drop-off Analysis</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">3.3.1 SQL Queries</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">3.3.2 Dashboard Implementation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#users-decomposition">3.4 Users Decomposition</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">3.4.1 SQL Queries</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">3.4.2 Dashboard Implementation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-conclusion">3.5 General Conclusion</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="product-metric-deep-dive">
+<h1>3. Product Metric Deep Dive<a class="headerlink" href="#product-metric-deep-dive" title="Link to this heading">#</a></h1>
+<p><strong>Context:</strong></p>
+<ul class="simple">
+<li><p>Over the past several days, our startup experienced two significant events that impacted user metrics.</p></li>
+<li><p>First, marketing launched a major advertising campaign that brought a substantial number of new users to the application.</p></li>
+<li><p>Second, we observed a sharp, unexpected drop in active audience on a specific day, requiring immediate investigation.</p></li>
+</ul>
+<p><strong>Objectives:</strong></p>
+<p>To conduct a deep dive analysis addressing three critical business questions:</p>
+<ol class="arabic simple">
+<li><p>Analyze retention patterns of users acquired through the advertising campaign to understand their long-term engagement and value</p></li>
+<li><p>Investigate the sudden audience drop by identifying users who experienced issues with the news feed and determining common characteristics among them</p></li>
+<li><p>Build weekly audience segmentation to track user lifecycle and identify trends in new, retained, and churned users</p></li>
+</ol>
+<p><strong>Data Sources:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">feed_actions</span></code> - News feed activity</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">message_actions</span></code> - Messaging activity</p></li>
+</ul>
+<p><strong>Key Achievements:</strong></p>
+<ul class="simple">
+<li><p><strong>Retention Analysis Completed:</strong></p>
+<ul>
+<li><p>Conducted comprehensive cohort analysis of advertising campaign users versus organic users</p></li>
+</ul>
+</li>
+<li><p><strong>User Segmentation Identified:</strong></p>
+<ul>
+<li><p>Segmented and analyzed users who experienced news feed access issues</p></li>
+</ul>
+</li>
+<li><p><strong>Root Cause Investigation:</strong></p>
+<ul>
+<li><p>Identified common characteristics and potential technical factors behind the audience drop</p></li>
+</ul>
+</li>
+<li><p><strong>User Lifecycle Tracking Implemented:</strong></p>
+<ul>
+<li><p>Built ClickHouse query and Superset visualization for monitoring New, Retained, and Churned user cohorts</p></li>
+</ul>
+</li>
+<li><p><strong>Data Products Delivered:</strong></p>
+<ul>
+<li><p>Created Superset dashboards for ongoing monitoring of retention patterns and user engagement issues</p></li>
+</ul>
+</li>
+<li><p><strong>Goal Achieved:</strong></p>
+<ul>
+<li><p>Provided data-driven insights that enabled marketing to optimize campaign strategies and engineering to address critical technical issues</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>Key Findings:</strong></p>
+<ul class="simple">
+<li><p>Advertising Campaign Analysis</p>
+<ul>
+<li><p>Campaign successfully attracted large volume of new users, significantly exceeding previous acquisition rates</p></li>
+<li><p>Initial engagement metrics showed no significant difference from organic users</p></li>
+<li><p>Critical Issue: Day-1 retention rate for campaign users was substantially lower than historical Friday cohorts</p></li>
+</ul>
+</li>
+<li><p>Audience Drop Investigation</p>
+<ul>
+<li><p>Significant drop in feed engagement occurred on August 24th</p></li>
+<li><p>Affected Areas: Moscow, St. Petersburg, Yekaterinburg, Novosibirsk showed concentrated impact</p></li>
+<li><p>Isolated Issue: Messenger functionality remained unaffected in these cities</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>Key Recommendation:</strong></p>
+<ul class="simple">
+<li><p>Implement more targeted advertising based on analysis of existing active user profiles rather than broad audience targeting</p></li>
+<li><p>Investigate technical infrastructure in affected regions and implement redundancy measures to prevent future service disruptions</p></li>
+</ul>
+<p><strong>Business Impact:</strong></p>
+<ul class="simple">
+<li><p>Provided actionable insights to optimize user acquisition strategies and improve product experience based on actual user behavior patterns.</p></li>
+</ul>
+<section id="data-description">
+<h2>3.1 Data Description<a class="headerlink" href="#data-description" title="Link to this heading">#</a></h2>
+<p>In the product database on ClickHouse, the data is stored in the following tables</p>
+<p>Table feed_actions</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>user_id</p></td>
+<td><p>User ID</p></td>
+</tr>
+<tr class="row-odd"><td><p>post_id</p></td>
+<td><p>Post ID</p></td>
+</tr>
+<tr class="row-even"><td><p>action</p></td>
+<td><p>Action: view or like</p></td>
+</tr>
+<tr class="row-odd"><td><p>time</p></td>
+<td><p>Timestamp</p></td>
+</tr>
+<tr class="row-even"><td><p>gender</p></td>
+<td><p>User’s gender</p></td>
+</tr>
+<tr class="row-odd"><td><p>age</p></td>
+<td><p>User’s age (1 = Male)</p></td>
+</tr>
+<tr class="row-even"><td><p>os</p></td>
+<td><p>User’s OS</p></td>
+</tr>
+<tr class="row-odd"><td><p>source</p></td>
+<td><p>Traffic source</p></td>
+</tr>
+<tr class="row-even"><td><p>country</p></td>
+<td><p>User’s country</p></td>
+</tr>
+<tr class="row-odd"><td><p>city</p></td>
+<td><p>User’s city</p></td>
+</tr>
+<tr class="row-even"><td><p>exp_group</p></td>
+<td><p>A/B test group</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Table message_actions</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>user_id</p></td>
+<td><p>Sender’s ID</p></td>
+</tr>
+<tr class="row-odd"><td><p>receiver_id</p></td>
+<td><p>Receiver’s ID</p></td>
+</tr>
+<tr class="row-even"><td><p>time</p></td>
+<td><p>Send timestamp</p></td>
+</tr>
+<tr class="row-odd"><td><p>gender</p></td>
+<td><p>Sender’s gender</p></td>
+</tr>
+<tr class="row-even"><td><p>age</p></td>
+<td><p>Sender’s age (1 = Male)</p></td>
+</tr>
+<tr class="row-odd"><td><p>os</p></td>
+<td><p>Sender’s OS</p></td>
+</tr>
+<tr class="row-even"><td><p>source</p></td>
+<td><p>Sender’s traffic source</p></td>
+</tr>
+<tr class="row-odd"><td><p>country</p></td>
+<td><p>Sender’s country</p></td>
+</tr>
+<tr class="row-even"><td><p>city</p></td>
+<td><p>Sender’s city</p></td>
+</tr>
+<tr class="row-odd"><td><p>exp_group</p></td>
+<td><p>Sender’s A/B test group</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="marketing-campaign-analysis">
+<h2>3.2 Marketing Campaign Analysis<a class="headerlink" href="#marketing-campaign-analysis" title="Link to this heading">#</a></h2>
+<section id="sql-queries">
+<h3>3.2.1 SQL Queries<a class="headerlink" href="#sql-queries" title="Link to this heading">#</a></h3>
+<p>We will write SQL queries to the product database to build the charts.</p>
+<section id="hypothesis-validation">
+<h4>3.2.1.1 Hypothesis Validation<a class="headerlink" href="#hypothesis-validation" title="Link to this heading">#</a></h4>
+<p><strong>Any Service New Users By Source</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> 
+  <span class="n">user_id</span> 
+  <span class="p">,</span> <span class="n">toDate</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">time</span><span class="p">))</span> <span class="k">as</span> <span class="n">first_date</span>
+  <span class="p">,</span> <span class="nb">any</span><span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="k">as</span> <span class="n">source</span>
+  <span class="p">,</span> <span class="s1">&#39;New in Feed&#39;</span> <span class="k">as</span> <span class="n">service</span> 
+<span class="n">FROM</span> 
+  <span class="n">feed_actions</span>
+<span class="n">GROUP</span> <span class="n">BY</span> 
+  <span class="n">user_id</span> 
+<span class="n">UNION</span> <span class="n">ALL</span>
+<span class="n">SELECT</span> 
+  <span class="n">user_id</span> 
+  <span class="p">,</span> <span class="n">toDate</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">time</span><span class="p">))</span> <span class="k">as</span> <span class="n">first_date</span>
+  <span class="p">,</span> <span class="nb">any</span><span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="k">as</span> <span class="n">source</span>
+  <span class="p">,</span> <span class="s1">&#39;New in Messenger&#39;</span> <span class="k">as</span> <span class="n">service</span>
+<span class="n">FROM</span> 
+  <span class="n">message_actions</span>
+<span class="n">GROUP</span> <span class="n">BY</span> 
+  <span class="n">user_id</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Feed New Users By Source</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> 
+  <span class="n">user_id</span> 
+  <span class="p">,</span> <span class="n">toDate</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">time</span><span class="p">))</span> <span class="k">as</span> <span class="n">first_date</span>
+  <span class="p">,</span> <span class="nb">any</span><span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="k">as</span> <span class="n">source</span>
+  <span class="p">,</span> <span class="s1">&#39;New in Feed&#39;</span> <span class="k">as</span> <span class="n">service</span> 
+<span class="n">FROM</span> 
+  <span class="n">feed_actions</span>
+<span class="n">GROUP</span> <span class="n">BY</span> 
+  <span class="n">user_id</span> 
+<span class="n">UNION</span> <span class="n">ALL</span>
+<span class="n">SELECT</span> 
+  <span class="n">user_id</span> 
+  <span class="p">,</span> <span class="n">toDate</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">time</span><span class="p">))</span> <span class="k">as</span> <span class="n">first_date</span>
+  <span class="p">,</span> <span class="nb">any</span><span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="k">as</span> <span class="n">source</span>
+  <span class="p">,</span> <span class="s1">&#39;New in Messenger&#39;</span> <span class="k">as</span> <span class="n">service</span>
+<span class="n">FROM</span> 
+  <span class="n">message_actions</span>
+<span class="n">GROUP</span> <span class="n">BY</span> 
+  <span class="n">user_id</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Messenger New Users By Source</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> 
+  <span class="n">user_id</span> 
+  <span class="p">,</span> <span class="n">toDate</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">time</span><span class="p">))</span> <span class="k">as</span> <span class="n">first_date</span>
+  <span class="p">,</span> <span class="nb">any</span><span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="k">as</span> <span class="n">source</span>
+  <span class="p">,</span> <span class="s1">&#39;New in Feed&#39;</span> <span class="k">as</span> <span class="n">service</span> 
+<span class="n">FROM</span> 
+  <span class="n">feed_actions</span>
+<span class="n">GROUP</span> <span class="n">BY</span> 
+  <span class="n">user_id</span> 
+<span class="n">UNION</span> <span class="n">ALL</span>
+<span class="n">SELECT</span> 
+  <span class="n">user_id</span> 
+  <span class="p">,</span> <span class="n">toDate</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">time</span><span class="p">))</span> <span class="k">as</span> <span class="n">first_date</span>
+  <span class="p">,</span> <span class="nb">any</span><span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="k">as</span> <span class="n">source</span>
+  <span class="p">,</span> <span class="s1">&#39;New in Messenger&#39;</span> <span class="k">as</span> <span class="n">service</span>
+<span class="n">FROM</span> 
+  <span class="n">message_actions</span>
+<span class="n">GROUP</span> <span class="n">BY</span> 
+  <span class="n">user_id</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="profile-of-advertising-campaign-users">
+<h4>3.2.1.2 Profile of Advertising Campaign Users<a class="headerlink" href="#profile-of-advertising-campaign-users" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> 
+  <span class="n">user_id</span> 
+  <span class="p">,</span> <span class="n">post_id</span>
+  <span class="p">,</span> <span class="n">action</span>
+  <span class="p">,</span> <span class="n">os</span> <span class="k">as</span> <span class="n">os</span>
+  <span class="p">,</span> <span class="n">age</span> <span class="k">as</span> <span class="n">age</span>
+  <span class="p">,</span> <span class="n">multiIf</span><span class="p">(</span><span class="n">gender</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;female&#39;</span><span class="p">,</span> <span class="n">gender</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;male&#39;</span><span class="p">,</span> <span class="s1">&#39;unknown&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">gender</span>  
+  <span class="p">,</span> <span class="n">multiIf</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">gender</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;female&#39;</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">gender</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;male&#39;</span><span class="p">,</span> <span class="s1">&#39;unknown&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dummy_gender</span>  
+  <span class="p">,</span> <span class="n">multiIf</span><span class="p">(</span>
+      <span class="n">age</span> <span class="o">&lt;</span> <span class="mi">25</span><span class="p">,</span> <span class="s1">&#39; &lt;25&#39;</span>
+      <span class="p">,</span> <span class="n">age</span> <span class="n">between</span> <span class="mi">25</span> <span class="ow">and</span> <span class="mi">40</span><span class="p">,</span> <span class="s1">&#39;25-40&#39;</span> 
+      <span class="p">,</span> <span class="n">age</span> <span class="n">between</span> <span class="mi">41</span> <span class="ow">and</span> <span class="mi">55</span><span class="p">,</span> <span class="s1">&#39;41-55&#39;</span>
+      <span class="p">,</span> <span class="n">age</span> <span class="o">&gt;=</span> <span class="mi">55</span><span class="p">,</span> <span class="s1">&#39;55+&#39;</span>
+      <span class="p">,</span> <span class="s1">&#39;unknown&#39;</span>
+  <span class="p">)</span> <span class="k">as</span> <span class="n">age_group</span>  
+  <span class="p">,</span> <span class="n">country</span> <span class="k">as</span> <span class="n">country</span>
+  <span class="p">,</span> <span class="n">city</span> <span class="k">as</span> <span class="n">city</span>
+<span class="n">FROM</span> 
+  <span class="n">feed_actions</span> <span class="n">f</span>
+<span class="n">WHERE</span> 
+  <span class="n">toDate</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">=</span> <span class="s1">&#39;2025-08-15&#39;</span>
+  <span class="ow">and</span> <span class="n">source</span> <span class="o">=</span> <span class="s1">&#39;ads&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="metrics-on-the-first-day">
+<h4>3.2.1.3 Metrics on the First Day<a class="headerlink" href="#metrics-on-the-first-day" title="Link to this heading">#</a></h4>
+<p><strong>Metrics Compare With Previous Days</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">WITH</span> <span class="n">feed</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="n">SELECT</span> 
+    <span class="n">user_id</span>
+    <span class="p">,</span> <span class="n">toDate</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="k">as</span> <span class="n">date</span>
+    <span class="p">,</span> <span class="n">post_id</span>
+    <span class="p">,</span> <span class="n">action</span>
+  <span class="n">FROM</span> 
+    <span class="n">feed_actions</span>
+  <span class="n">WHERE</span> 
+    <span class="n">date</span> <span class="o">&lt;=</span> <span class="s1">&#39;2025-08-15&#39;</span>
+    <span class="ow">and</span> <span class="n">source</span> <span class="o">=</span> <span class="s1">&#39;ads&#39;</span>
+    <span class="ow">and</span> <span class="n">toDayOfWeek</span><span class="p">(</span><span class="n">date</span><span class="p">)</span> <span class="o">=</span> <span class="mi">5</span>    
+<span class="p">)</span>
+<span class="p">,</span> <span class="n">first_activity</span> <span class="n">AS</span> <span class="p">(</span>
+    <span class="n">SELECT</span> 
+        <span class="n">user_id</span><span class="p">,</span> 
+        <span class="nb">min</span><span class="p">(</span><span class="n">toDate</span><span class="p">(</span><span class="n">time</span><span class="p">))</span> <span class="k">as</span> <span class="n">first_date</span>
+    <span class="n">FROM</span> <span class="n">feed_actions</span>
+    <span class="n">WHERE</span> <span class="n">source</span> <span class="o">=</span> <span class="s1">&#39;ads&#39;</span>
+      <span class="n">AND</span> <span class="n">toDate</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="s1">&#39;2025-08-15&#39;</span>
+    <span class="n">GROUP</span> <span class="n">BY</span> <span class="n">user_id</span> 
+<span class="p">),</span>
+<span class="n">daily_metrics</span> <span class="n">AS</span> <span class="p">(</span>
+    <span class="n">SELECT</span> 
+        <span class="n">fa</span><span class="o">.</span><span class="n">first_date</span> <span class="k">as</span> <span class="n">date</span><span class="p">,</span>
+        <span class="n">fa</span><span class="o">.</span><span class="n">first_date</span> <span class="o">=</span> <span class="s1">&#39;2025-08-15&#39;</span> <span class="k">as</span> <span class="n">is_target_day</span><span class="p">,</span>
+        <span class="n">uniq</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">user_id</span><span class="p">)</span> <span class="k">as</span> <span class="n">users</span><span class="p">,</span>
+        <span class="n">uniq</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">post_id</span><span class="p">)</span> <span class="k">as</span> <span class="n">posts</span><span class="p">,</span>
+        <span class="n">countIf</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">action</span> <span class="o">=</span> <span class="s1">&#39;view&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">views</span><span class="p">,</span>
+        <span class="n">countIf</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">action</span> <span class="o">=</span> <span class="s1">&#39;like&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">likes</span><span class="p">,</span>
+        <span class="n">likes</span> <span class="o">/</span> <span class="n">nullIf</span><span class="p">(</span><span class="n">views</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">as</span> <span class="n">ctr</span><span class="p">,</span>
+        <span class="n">posts</span> <span class="o">/</span> <span class="n">users</span> <span class="k">as</span> <span class="n">posts_per_user</span><span class="p">,</span>
+        <span class="n">views</span> <span class="o">/</span> <span class="n">users</span> <span class="k">as</span> <span class="n">views_per_user</span><span class="p">,</span>
+        <span class="n">likes</span> <span class="o">/</span> <span class="n">users</span> <span class="k">as</span> <span class="n">likes_per_user</span>
+    <span class="n">FROM</span>
+      <span class="n">feed</span> <span class="n">f</span>
+    <span class="n">INNER</span> <span class="n">JOIN</span> <span class="n">first_activity</span> <span class="n">fa</span> <span class="n">ON</span> <span class="n">f</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">fa</span><span class="o">.</span><span class="n">user_id</span> 
+                                <span class="n">AND</span> <span class="n">f</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">fa</span><span class="o">.</span><span class="n">first_date</span>
+    <span class="n">GROUP</span> <span class="n">BY</span> <span class="n">fa</span><span class="o">.</span><span class="n">first_date</span>
+<span class="p">)</span>
+<span class="n">SELECT</span> 
+    <span class="k">if</span><span class="p">(</span><span class="n">is_target_day</span><span class="p">,</span> <span class="s1">&#39;Target Day&#39;</span><span class="p">,</span> <span class="s1">&#39;Previous Fridays&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">period</span><span class="p">,</span>
+    <span class="n">count</span><span class="p">()</span> <span class="k">as</span> <span class="n">days_count</span><span class="p">,</span>
+    <span class="n">median</span><span class="p">(</span><span class="n">users</span><span class="p">)</span> <span class="k">as</span> <span class="n">users</span><span class="p">,</span>
+    <span class="n">median</span><span class="p">(</span><span class="n">posts</span><span class="p">)</span> <span class="k">as</span> <span class="n">posts</span><span class="p">,</span>
+    <span class="n">median</span><span class="p">(</span><span class="n">views</span><span class="p">)</span> <span class="k">as</span> <span class="n">views</span><span class="p">,</span>
+    <span class="n">median</span><span class="p">(</span><span class="n">likes</span><span class="p">)</span> <span class="k">as</span> <span class="n">likes</span><span class="p">,</span>
+    <span class="n">median</span><span class="p">(</span><span class="n">ctr</span><span class="p">)</span> <span class="k">as</span> <span class="n">ctr</span><span class="p">,</span>
+    <span class="n">median</span><span class="p">(</span><span class="n">posts_per_user</span><span class="p">)</span> <span class="k">as</span> <span class="n">posts_per_user</span><span class="p">,</span>
+    <span class="n">median</span><span class="p">(</span><span class="n">views_per_user</span><span class="p">)</span> <span class="k">as</span> <span class="n">views_per_user</span><span class="p">,</span>
+    <span class="n">median</span><span class="p">(</span><span class="n">likes_per_user</span><span class="p">)</span> <span class="k">as</span> <span class="n">likes_per_user</span>
+<span class="n">FROM</span> <span class="n">daily_metrics</span>
+<span class="n">GROUP</span> <span class="n">BY</span> <span class="n">is_target_day</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Metrics  Distribution</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">WITH</span> <span class="n">feed</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="n">SELECT</span> 
+    <span class="n">user_id</span>
+    <span class="p">,</span> <span class="n">toDate</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="k">as</span> <span class="n">date</span>
+    <span class="p">,</span> <span class="n">post_id</span>
+    <span class="p">,</span> <span class="n">action</span>
+  <span class="n">FROM</span> 
+    <span class="n">feed_actions</span>
+  <span class="n">WHERE</span> 
+    <span class="n">date</span> <span class="o">&lt;=</span> <span class="s1">&#39;2025-08-15&#39;</span>
+    <span class="ow">and</span> <span class="n">source</span> <span class="o">=</span> <span class="s1">&#39;ads&#39;</span>
+    <span class="ow">and</span> <span class="n">toDayOfWeek</span><span class="p">(</span><span class="n">date</span><span class="p">)</span> <span class="o">=</span> <span class="mi">5</span>    
+<span class="p">)</span>
+<span class="p">,</span> <span class="n">first_activity</span> <span class="n">AS</span> <span class="p">(</span>
+    <span class="n">SELECT</span> 
+        <span class="n">user_id</span><span class="p">,</span> 
+        <span class="nb">min</span><span class="p">(</span><span class="n">toDate</span><span class="p">(</span><span class="n">time</span><span class="p">))</span> <span class="k">as</span> <span class="n">first_date</span>
+    <span class="n">FROM</span> <span class="n">feed_actions</span>
+    <span class="n">WHERE</span> <span class="n">source</span> <span class="o">=</span> <span class="s1">&#39;ads&#39;</span>
+      <span class="n">AND</span> <span class="n">toDate</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="s1">&#39;2025-08-15&#39;</span>
+    <span class="n">GROUP</span> <span class="n">BY</span> <span class="n">user_id</span> 
+<span class="p">)</span>
+<span class="n">SELECT</span> 
+    <span class="n">user_id</span><span class="p">,</span>
+    <span class="n">toString</span><span class="p">(</span><span class="n">fa</span><span class="o">.</span><span class="n">first_date</span><span class="p">)</span> <span class="k">as</span> <span class="n">first_date</span><span class="p">,</span>
+    <span class="n">uniq</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">post_id</span><span class="p">)</span> <span class="k">as</span> <span class="n">posts</span><span class="p">,</span>
+    <span class="n">countIf</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">action</span> <span class="o">=</span> <span class="s1">&#39;view&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">views</span><span class="p">,</span>
+    <span class="n">countIf</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">action</span> <span class="o">=</span> <span class="s1">&#39;like&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">likes</span><span class="p">,</span>
+    <span class="n">likes</span> <span class="o">/</span> <span class="n">nullIf</span><span class="p">(</span><span class="n">views</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">as</span> <span class="n">ctr</span>
+<span class="n">FROM</span>
+  <span class="n">feed</span> <span class="n">f</span>
+  <span class="n">INNER</span> <span class="n">JOIN</span> <span class="n">first_activity</span> <span class="n">fa</span> <span class="n">ON</span> <span class="n">f</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">fa</span><span class="o">.</span><span class="n">user_id</span> 
+                            <span class="n">AND</span> <span class="n">f</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">fa</span><span class="o">.</span><span class="n">first_date</span>
+<span class="n">GROUP</span> <span class="n">BY</span> <span class="n">fa</span><span class="o">.</span><span class="n">first_date</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">user_id</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="retention-analysis">
+<h4>3.2.1.4 Retention Analysis<a class="headerlink" href="#retention-analysis" title="Link to this heading">#</a></h4>
+<p><strong>Retention Heatmap</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">WITH</span> <span class="n">first_activity</span> <span class="n">AS</span> <span class="p">(</span>
+    <span class="n">SELECT</span> 
+        <span class="n">user_id</span><span class="p">,</span> 
+        <span class="nb">min</span><span class="p">(</span><span class="n">toDate</span><span class="p">(</span><span class="n">time</span><span class="p">))</span> <span class="k">as</span> <span class="n">first_date</span>
+    <span class="n">FROM</span> <span class="n">feed_actions</span>
+    <span class="n">WHERE</span> 
+      <span class="n">source</span> <span class="o">=</span> <span class="s1">&#39;ads&#39;</span>
+      <span class="ow">and</span> <span class="n">toDate</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="s1">&#39;2025-08-15&#39;</span>
+    <span class="n">GROUP</span> <span class="n">BY</span> <span class="n">user_id</span> 
+    <span class="n">HAVING</span> <span class="n">toDayOfWeek</span><span class="p">(</span><span class="n">first_date</span><span class="p">)</span> <span class="o">=</span> <span class="mi">5</span> 
+<span class="p">)</span>
+<span class="p">,</span> <span class="n">cohorts</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="n">SELECT</span> 
+    <span class="n">toDate</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">-</span> <span class="n">first_date</span> <span class="k">as</span> <span class="n">lifetime</span>
+    <span class="p">,</span> <span class="n">toString</span><span class="p">(</span><span class="n">first_date</span><span class="p">)</span> <span class="k">as</span> <span class="n">cohort</span>
+    <span class="p">,</span> <span class="n">uniq</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span> <span class="k">as</span> <span class="n">users</span>
+    <span class="p">,</span> <span class="n">countIf</span><span class="p">(</span><span class="n">action</span> <span class="o">=</span> <span class="s1">&#39;view&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">views</span>
+    <span class="p">,</span> <span class="n">countIf</span><span class="p">(</span><span class="n">action</span> <span class="o">=</span> <span class="s1">&#39;like&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">likes</span>
+    <span class="p">,</span> <span class="n">likes</span> <span class="o">/</span> <span class="n">nullIf</span><span class="p">(</span><span class="n">countIf</span><span class="p">(</span><span class="n">action</span> <span class="o">=</span> <span class="s1">&#39;view&#39;</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span> <span class="k">as</span> <span class="n">ctr</span>
+  <span class="n">FROM</span> 
+    <span class="n">feed_actions</span> <span class="n">f</span>
+    <span class="n">JOIN</span> <span class="n">first_activity</span> <span class="k">as</span> <span class="n">fa</span> <span class="n">using</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+  <span class="n">GROUP</span> <span class="n">BY</span> 
+    <span class="n">cohort</span>
+    <span class="p">,</span> <span class="n">lifetime</span>
+<span class="p">)</span>
+<span class="n">SELECT</span> 
+  <span class="n">c</span><span class="o">.</span><span class="n">cohort</span>
+  <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">lifetime</span>
+  <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">users</span>
+  <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">ctr</span>
+  <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">views</span> <span class="o">/</span> <span class="n">nullIf</span><span class="p">(</span><span class="n">c0</span><span class="o">.</span><span class="n">users</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">as</span> <span class="n">views_per_cohort_user</span>
+  <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">likes</span> <span class="o">/</span> <span class="n">nullIf</span><span class="p">(</span><span class="n">c0</span><span class="o">.</span><span class="n">users</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">as</span> <span class="n">likes_per_cohort_user</span>
+  <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">views</span> <span class="o">/</span> <span class="n">nullIf</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">users</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">as</span> <span class="n">views_per_user</span>
+  <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">likes</span> <span class="o">/</span> <span class="n">nullIf</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">users</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">as</span> <span class="n">likes_per_user</span>  
+  <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">users</span> <span class="o">/</span> <span class="n">nullIf</span><span class="p">(</span><span class="n">c0</span><span class="o">.</span><span class="n">users</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">as</span> <span class="n">retention</span>
+<span class="n">FROM</span> 
+  <span class="n">cohorts</span> <span class="n">c</span>
+  <span class="n">JOIN</span> <span class="n">cohorts</span> <span class="n">c0</span> <span class="n">ON</span> <span class="n">c</span><span class="o">.</span><span class="n">cohort</span> <span class="o">=</span> <span class="n">c0</span><span class="o">.</span><span class="n">cohort</span> <span class="ow">and</span> <span class="n">c0</span><span class="o">.</span><span class="n">lifetime</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">WHERE</span> 
+  <span class="n">c</span><span class="o">.</span><span class="n">lifetime</span> <span class="o">&lt;=</span> <span class="n">toDate</span><span class="p">(</span><span class="n">now</span><span class="p">())</span> <span class="o">-</span> <span class="n">toDate</span><span class="p">(</span><span class="s1">&#39;2025-08-15&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Retention Compare with Previous</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">WITH</span> <span class="n">first_activity</span> <span class="n">AS</span> <span class="p">(</span>
+    <span class="n">SELECT</span> 
+        <span class="n">user_id</span><span class="p">,</span> 
+        <span class="nb">min</span><span class="p">(</span><span class="n">toDate</span><span class="p">(</span><span class="n">time</span><span class="p">))</span> <span class="k">as</span> <span class="n">first_date</span>
+    <span class="n">FROM</span> <span class="n">feed_actions</span>
+    <span class="n">WHERE</span> 
+      <span class="n">source</span> <span class="o">=</span> <span class="s1">&#39;ads&#39;</span>
+      <span class="ow">and</span> <span class="n">toDate</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="s1">&#39;2025-08-15&#39;</span>
+    <span class="n">GROUP</span> <span class="n">BY</span> <span class="n">user_id</span> 
+    <span class="n">HAVING</span> <span class="n">toDayOfWeek</span><span class="p">(</span><span class="n">first_date</span><span class="p">)</span> <span class="o">=</span> <span class="mi">5</span> 
+<span class="p">)</span>
+<span class="p">,</span> <span class="n">cohorts</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="n">SELECT</span> 
+    <span class="n">toDate</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">-</span> <span class="n">first_date</span> <span class="k">as</span> <span class="n">lifetime</span>
+    <span class="p">,</span> <span class="n">toString</span><span class="p">(</span><span class="n">first_date</span><span class="p">)</span> <span class="k">as</span> <span class="n">cohort</span>
+    <span class="p">,</span> <span class="n">uniq</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span> <span class="k">as</span> <span class="n">users</span>
+    <span class="p">,</span> <span class="n">countIf</span><span class="p">(</span><span class="n">action</span> <span class="o">=</span> <span class="s1">&#39;view&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">views</span>
+    <span class="p">,</span> <span class="n">countIf</span><span class="p">(</span><span class="n">action</span> <span class="o">=</span> <span class="s1">&#39;like&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">likes</span>
+    <span class="p">,</span> <span class="n">likes</span> <span class="o">/</span> <span class="n">nullIf</span><span class="p">(</span><span class="n">countIf</span><span class="p">(</span><span class="n">action</span> <span class="o">=</span> <span class="s1">&#39;view&#39;</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span> <span class="k">as</span> <span class="n">ctr</span>
+  <span class="n">FROM</span> 
+    <span class="n">feed_actions</span> <span class="n">f</span>
+    <span class="n">JOIN</span> <span class="n">first_activity</span> <span class="k">as</span> <span class="n">fa</span> <span class="n">using</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+  <span class="n">GROUP</span> <span class="n">BY</span> 
+    <span class="n">cohort</span>
+    <span class="p">,</span> <span class="n">lifetime</span>
+<span class="p">)</span>
+<span class="p">,</span> <span class="n">cohort_metrics</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="n">SELECT</span> 
+    <span class="n">c</span><span class="o">.</span><span class="n">cohort</span>
+    <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">lifetime</span>
+    <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">cohort</span> <span class="o">=</span> <span class="s1">&#39;2025-08-15&#39;</span> <span class="k">as</span> <span class="n">is_target_cohort</span>
+    <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">users</span>
+    <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">ctr</span>
+    <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">views</span> <span class="o">/</span> <span class="n">nullIf</span><span class="p">(</span><span class="n">c0</span><span class="o">.</span><span class="n">users</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">as</span> <span class="n">views_per_cohort_user</span>
+    <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">likes</span> <span class="o">/</span> <span class="n">nullIf</span><span class="p">(</span><span class="n">c0</span><span class="o">.</span><span class="n">users</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">as</span> <span class="n">likes_per_cohort_user</span>
+    <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">views</span> <span class="o">/</span> <span class="n">nullIf</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">users</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">as</span> <span class="n">views_per_user</span>
+    <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">likes</span> <span class="o">/</span> <span class="n">nullIf</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">users</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">as</span> <span class="n">likes_per_user</span>  
+    <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">users</span> <span class="o">/</span> <span class="n">nullIf</span><span class="p">(</span><span class="n">c0</span><span class="o">.</span><span class="n">users</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">as</span> <span class="n">retention</span>
+  <span class="n">FROM</span> 
+    <span class="n">cohorts</span> <span class="n">c</span>
+    <span class="n">JOIN</span> <span class="n">cohorts</span> <span class="n">c0</span> <span class="n">ON</span> <span class="n">c</span><span class="o">.</span><span class="n">cohort</span> <span class="o">=</span> <span class="n">c0</span><span class="o">.</span><span class="n">cohort</span> <span class="ow">and</span> <span class="n">c0</span><span class="o">.</span><span class="n">lifetime</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="n">WHERE</span> 
+    <span class="n">c</span><span class="o">.</span><span class="n">lifetime</span> <span class="o">&lt;=</span> <span class="n">toDate</span><span class="p">(</span><span class="n">now</span><span class="p">())</span> <span class="o">-</span> <span class="n">toDate</span><span class="p">(</span><span class="s1">&#39;2025-08-15&#39;</span><span class="p">)</span>    
+<span class="p">)</span>
+<span class="n">SELECT</span> 
+  <span class="k">if</span><span class="p">(</span><span class="n">is_target_cohort</span><span class="p">,</span> <span class="s1">&#39;Target&#39;</span><span class="p">,</span> <span class="s1">&#39;Prev Fridays&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">cohort_type</span>
+  <span class="p">,</span> <span class="n">toDate</span><span class="p">(</span><span class="s1">&#39;2000-01-01&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">interval</span> <span class="n">lifetime</span> <span class="n">year</span> <span class="k">as</span> <span class="n">lifetime</span>
+  <span class="p">,</span> <span class="n">count</span><span class="p">()</span> <span class="k">as</span> <span class="n">cohorts_count</span>
+  <span class="p">,</span> <span class="n">median</span><span class="p">(</span><span class="n">users</span><span class="p">)</span> <span class="k">as</span> <span class="n">median_users</span>
+  <span class="p">,</span> <span class="n">median</span><span class="p">(</span><span class="n">ctr</span><span class="p">)</span> <span class="k">as</span> <span class="n">median_ctr</span>
+  <span class="p">,</span> <span class="n">median</span><span class="p">(</span><span class="n">views_per_user</span><span class="p">)</span> <span class="k">as</span> <span class="n">median_views_per_user</span>
+  <span class="p">,</span> <span class="n">median</span><span class="p">(</span><span class="n">likes_per_user</span><span class="p">)</span> <span class="k">as</span> <span class="n">median_likes_per_user</span>
+  <span class="p">,</span> <span class="n">median</span><span class="p">(</span><span class="n">views_per_cohort_user</span><span class="p">)</span> <span class="k">as</span> <span class="n">median_views_per_cohort_user</span>
+  <span class="p">,</span> <span class="n">median</span><span class="p">(</span><span class="n">likes_per_cohort_user</span><span class="p">)</span> <span class="k">as</span> <span class="n">median_likes_per_cohort_user</span>  
+  <span class="p">,</span> <span class="n">median</span><span class="p">(</span><span class="n">retention</span><span class="p">)</span> <span class="k">as</span> <span class="n">median_retention</span>
+<span class="n">FROM</span> 
+  <span class="n">cohort_metrics</span>
+<span class="n">GROUP</span> <span class="n">BY</span> 
+  <span class="n">cohort_type</span>
+  <span class="p">,</span> <span class="n">lifetime</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Rolling Retention Compare with Previous</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">WITH</span> <span class="n">first_activity</span> <span class="n">AS</span> <span class="p">(</span>
+    <span class="n">SELECT</span> 
+        <span class="n">user_id</span><span class="p">,</span> 
+        <span class="nb">min</span><span class="p">(</span><span class="n">toDate</span><span class="p">(</span><span class="n">time</span><span class="p">))</span> <span class="k">as</span> <span class="n">first_date</span>
+    <span class="n">FROM</span> <span class="n">feed_actions</span>
+    <span class="n">WHERE</span> 
+      <span class="n">source</span> <span class="o">=</span> <span class="s1">&#39;ads&#39;</span>
+      <span class="ow">and</span> <span class="n">toDate</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="s1">&#39;2025-08-15&#39;</span>
+    <span class="n">GROUP</span> <span class="n">BY</span> <span class="n">user_id</span> 
+    <span class="n">HAVING</span> <span class="n">toDayOfWeek</span><span class="p">(</span><span class="n">first_date</span><span class="p">)</span> <span class="o">=</span> <span class="mi">5</span> 
+<span class="p">)</span>
+<span class="p">,</span> <span class="n">cohorts</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="n">SELECT</span> 
+    <span class="n">f</span><span class="o">.</span><span class="n">user_id</span>
+    <span class="p">,</span> <span class="n">fa</span><span class="o">.</span><span class="n">first_date</span> <span class="k">as</span> <span class="n">cohort</span>
+    <span class="p">,</span> <span class="n">uniq</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span> <span class="n">over</span> <span class="p">(</span><span class="n">partition</span> <span class="n">by</span> <span class="n">cohort</span><span class="p">)</span> <span class="k">as</span> <span class="n">cohort_size</span>
+    <span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">toDate</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">-</span> <span class="n">fa</span><span class="o">.</span><span class="n">first_date</span><span class="p">)</span> <span class="n">over</span> <span class="p">(</span><span class="n">partition</span> <span class="n">by</span> <span class="n">user_id</span><span class="p">)</span> <span class="k">as</span> <span class="n">max_lifetime</span>
+  <span class="n">FROM</span> 
+    <span class="n">feed_actions</span> <span class="n">f</span>
+    <span class="n">JOIN</span> <span class="n">first_activity</span> <span class="n">fa</span> <span class="n">USING</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+  <span class="n">WHERE</span> 
+    <span class="n">toDate</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">-</span> <span class="n">fa</span><span class="o">.</span><span class="n">first_date</span> <span class="o">&lt;=</span> <span class="mi">14</span>
+<span class="p">)</span>
+<span class="p">,</span> <span class="n">cohort_metrics</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="n">SELECT</span> 
+    <span class="n">c</span><span class="o">.</span><span class="n">cohort</span>
+    <span class="p">,</span> <span class="n">al</span><span class="o">.</span><span class="n">lifetime</span>
+    <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">cohort</span> <span class="o">=</span> <span class="s1">&#39;2025-08-15&#39;</span> <span class="k">as</span> <span class="n">is_target_cohort</span>
+    <span class="p">,</span> <span class="nb">any</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">cohort_size</span><span class="p">)</span> <span class="k">as</span> <span class="n">cohort_size</span>
+    <span class="p">,</span> <span class="n">uniqIf</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">user_id</span><span class="p">,</span> <span class="n">al</span><span class="o">.</span><span class="n">lifetime</span> <span class="o">&lt;=</span> <span class="n">c</span><span class="o">.</span><span class="n">max_lifetime</span><span class="p">)</span> <span class="k">as</span> <span class="n">rolling_users</span>
+    <span class="p">,</span> <span class="n">rolling_users</span> <span class="o">/</span> <span class="n">cohort_size</span> <span class="k">as</span> <span class="n">rolling_retention_14_days</span>
+  <span class="n">FROM</span>
+    <span class="n">cohorts</span> <span class="n">c</span>
+    <span class="n">CROSS</span> <span class="n">JOIN</span> 
+      <span class="p">(</span><span class="n">SELECT</span> <span class="n">arrayJoin</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">15</span><span class="p">))</span> <span class="k">as</span> <span class="n">lifetime</span><span class="p">)</span> <span class="n">al</span>
+  <span class="n">GROUP</span> <span class="n">BY</span> 
+    <span class="n">c</span><span class="o">.</span><span class="n">cohort</span>
+    <span class="p">,</span> <span class="n">al</span><span class="o">.</span><span class="n">lifetime</span>
+  <span class="n">ORDER</span> <span class="n">BY</span> 
+    <span class="n">c</span><span class="o">.</span><span class="n">cohort</span>
+    <span class="p">,</span> <span class="n">al</span><span class="o">.</span><span class="n">lifetime</span>
+<span class="p">)</span>
+<span class="n">SELECT</span> 
+  <span class="k">if</span><span class="p">(</span><span class="n">is_target_cohort</span><span class="p">,</span> <span class="s1">&#39;Target&#39;</span><span class="p">,</span> <span class="s1">&#39;Prev Fridays&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">cohort_type</span>
+  <span class="p">,</span> <span class="n">toDate</span><span class="p">(</span><span class="s1">&#39;2000-01-01&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">interval</span> <span class="n">lifetime</span> <span class="n">year</span> <span class="k">as</span> <span class="n">lifetime</span>
+  <span class="p">,</span> <span class="n">count</span><span class="p">()</span> <span class="k">as</span> <span class="n">cohorts_count</span>
+  <span class="p">,</span> <span class="n">median</span><span class="p">(</span><span class="n">rolling_retention_14_days</span><span class="p">)</span> <span class="k">as</span> <span class="n">median_rolling_retention_14_days</span>
+<span class="n">FROM</span> 
+  <span class="n">cohort_metrics</span>
+<span class="n">GROUP</span> <span class="n">BY</span> 
+  <span class="n">cohort_type</span>
+  <span class="p">,</span> <span class="n">lifetime</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Retention Compare with Previous by Gender</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">WITH</span> <span class="n">first_activity</span> <span class="n">AS</span> <span class="p">(</span>
+    <span class="n">SELECT</span> 
+        <span class="n">user_id</span><span class="p">,</span> 
+        <span class="nb">any</span><span class="p">(</span><span class="n">gender</span><span class="p">)</span> <span class="k">as</span> <span class="n">gender</span><span class="p">,</span>
+        <span class="nb">min</span><span class="p">(</span><span class="n">toDate</span><span class="p">(</span><span class="n">time</span><span class="p">))</span> <span class="k">as</span> <span class="n">first_date</span>
+    <span class="n">FROM</span> <span class="n">feed_actions</span>
+    <span class="n">WHERE</span> 
+      <span class="n">source</span> <span class="o">=</span> <span class="s1">&#39;ads&#39;</span>
+      <span class="ow">and</span> <span class="n">toDate</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="s1">&#39;2025-08-15&#39;</span>
+    <span class="n">GROUP</span> <span class="n">BY</span> <span class="n">user_id</span> 
+    <span class="n">HAVING</span> <span class="n">toDayOfWeek</span><span class="p">(</span><span class="n">first_date</span><span class="p">)</span> <span class="o">=</span> <span class="mi">5</span> 
+<span class="p">)</span>
+<span class="p">,</span> <span class="n">cohorts</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="n">SELECT</span> 
+    <span class="n">toDate</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">-</span> <span class="n">first_date</span> <span class="k">as</span> <span class="n">lifetime</span>
+    <span class="p">,</span> <span class="n">toString</span><span class="p">(</span><span class="n">first_date</span><span class="p">)</span> <span class="k">as</span> <span class="n">cohort</span>
+    <span class="p">,</span> <span class="n">multiIf</span><span class="p">(</span><span class="n">gender</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;female&#39;</span><span class="p">,</span> <span class="n">gender</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;male&#39;</span><span class="p">,</span> <span class="s1">&#39;unknown&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">gender</span>  
+    <span class="p">,</span> <span class="n">uniq</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span> <span class="k">as</span> <span class="n">users</span>
+  <span class="n">FROM</span> 
+    <span class="n">feed_actions</span> <span class="n">f</span>
+    <span class="n">JOIN</span> <span class="n">first_activity</span> <span class="k">as</span> <span class="n">fa</span> <span class="n">using</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+  <span class="n">GROUP</span> <span class="n">BY</span> 
+    <span class="n">cohort</span>
+    <span class="p">,</span> <span class="n">lifetime</span>
+    <span class="p">,</span> <span class="n">gender</span>
+<span class="p">)</span>
+<span class="p">,</span> <span class="n">cohort_metrics</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="n">SELECT</span> 
+    <span class="n">c</span><span class="o">.</span><span class="n">cohort</span>
+    <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">lifetime</span>
+    <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">gender</span>
+    <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">cohort</span> <span class="o">=</span> <span class="s1">&#39;2025-08-15&#39;</span> <span class="k">as</span> <span class="n">is_target_cohort</span>
+    <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">users</span>
+    <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">users</span> <span class="o">/</span> <span class="n">nullIf</span><span class="p">(</span><span class="n">c0</span><span class="o">.</span><span class="n">users</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">as</span> <span class="n">retention</span>
+  <span class="n">FROM</span> 
+    <span class="n">cohorts</span> <span class="n">c</span>
+    <span class="n">JOIN</span> <span class="n">cohorts</span> <span class="n">c0</span> <span class="n">ON</span> <span class="n">c</span><span class="o">.</span><span class="n">cohort</span> <span class="o">=</span> <span class="n">c0</span><span class="o">.</span><span class="n">cohort</span> 
+    <span class="ow">and</span> <span class="n">c</span><span class="o">.</span><span class="n">gender</span> <span class="o">=</span> <span class="n">c0</span><span class="o">.</span><span class="n">gender</span>
+    <span class="ow">and</span> <span class="n">c0</span><span class="o">.</span><span class="n">lifetime</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="n">WHERE</span> 
+    <span class="n">lifetime</span> <span class="o">&lt;=</span> <span class="n">toDate</span><span class="p">(</span><span class="n">now</span><span class="p">())</span> <span class="o">-</span> <span class="n">toDate</span><span class="p">(</span><span class="s1">&#39;2025-08-15&#39;</span><span class="p">)</span>  
+<span class="p">)</span>
+<span class="n">SELECT</span> 
+  <span class="k">if</span><span class="p">(</span><span class="n">is_target_cohort</span><span class="p">,</span> <span class="s1">&#39;Target&#39;</span><span class="p">,</span> <span class="s1">&#39;Prev Fridays&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">cohort_type</span>
+  <span class="p">,</span> <span class="n">toDate</span><span class="p">(</span><span class="s1">&#39;2000-01-01&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">interval</span> <span class="n">lifetime</span> <span class="n">year</span> <span class="k">as</span> <span class="n">lifetime</span>
+  <span class="p">,</span> <span class="n">gender</span>
+  <span class="p">,</span> <span class="n">count</span><span class="p">()</span> <span class="k">as</span> <span class="n">cohorts_count</span>
+  <span class="p">,</span> <span class="n">median</span><span class="p">(</span><span class="n">retention</span><span class="p">)</span> <span class="k">as</span> <span class="n">median_retention</span>
+<span class="n">FROM</span> 
+  <span class="n">cohort_metrics</span>
+<span class="n">GROUP</span> <span class="n">BY</span> 
+  <span class="n">cohort_type</span>
+  <span class="p">,</span> <span class="n">lifetime</span>
+  <span class="p">,</span> <span class="n">gender</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Retention Compare with Previous by OS</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">WITH</span> <span class="n">first_activity</span> <span class="n">AS</span> <span class="p">(</span>
+    <span class="n">SELECT</span> 
+        <span class="n">user_id</span><span class="p">,</span> 
+        <span class="nb">any</span><span class="p">(</span><span class="n">os</span><span class="p">)</span> <span class="k">as</span> <span class="n">os</span><span class="p">,</span>
+        <span class="nb">min</span><span class="p">(</span><span class="n">toDate</span><span class="p">(</span><span class="n">time</span><span class="p">))</span> <span class="k">as</span> <span class="n">first_date</span>
+    <span class="n">FROM</span> <span class="n">feed_actions</span>
+    <span class="n">WHERE</span> 
+      <span class="n">source</span> <span class="o">=</span> <span class="s1">&#39;ads&#39;</span>
+      <span class="ow">and</span> <span class="n">toDate</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="s1">&#39;2025-08-15&#39;</span>
+    <span class="n">GROUP</span> <span class="n">BY</span> <span class="n">user_id</span> 
+    <span class="n">HAVING</span> <span class="n">toDayOfWeek</span><span class="p">(</span><span class="n">first_date</span><span class="p">)</span> <span class="o">=</span> <span class="mi">5</span> 
+<span class="p">)</span>
+<span class="p">,</span> <span class="n">cohorts</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="n">SELECT</span> 
+    <span class="n">toDate</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">-</span> <span class="n">first_date</span> <span class="k">as</span> <span class="n">lifetime</span>
+    <span class="p">,</span> <span class="n">toString</span><span class="p">(</span><span class="n">first_date</span><span class="p">)</span> <span class="k">as</span> <span class="n">cohort</span>
+    <span class="p">,</span> <span class="n">os</span>
+    <span class="p">,</span> <span class="n">uniq</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span> <span class="k">as</span> <span class="n">users</span>
+  <span class="n">FROM</span> 
+    <span class="n">feed_actions</span> <span class="n">f</span>
+    <span class="n">JOIN</span> <span class="n">first_activity</span> <span class="k">as</span> <span class="n">fa</span> <span class="n">using</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+  <span class="n">GROUP</span> <span class="n">BY</span> 
+    <span class="n">cohort</span>
+    <span class="p">,</span> <span class="n">lifetime</span>
+    <span class="p">,</span> <span class="n">os</span>
+<span class="p">)</span>
+<span class="p">,</span> <span class="n">cohort_metrics</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="n">SELECT</span> 
+    <span class="n">c</span><span class="o">.</span><span class="n">cohort</span>
+    <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">lifetime</span>
+    <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">os</span>
+    <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">cohort</span> <span class="o">=</span> <span class="s1">&#39;2025-08-15&#39;</span> <span class="k">as</span> <span class="n">is_target_cohort</span>
+    <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">users</span>
+    <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">users</span> <span class="o">/</span> <span class="n">nullIf</span><span class="p">(</span><span class="n">c0</span><span class="o">.</span><span class="n">users</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">as</span> <span class="n">retention</span>
+  <span class="n">FROM</span> 
+    <span class="n">cohorts</span> <span class="n">c</span>
+    <span class="n">JOIN</span> <span class="n">cohorts</span> <span class="n">c0</span> <span class="n">ON</span> <span class="n">c</span><span class="o">.</span><span class="n">cohort</span> <span class="o">=</span> <span class="n">c0</span><span class="o">.</span><span class="n">cohort</span> 
+      <span class="ow">and</span> <span class="n">c</span><span class="o">.</span><span class="n">os</span> <span class="o">=</span> <span class="n">c0</span><span class="o">.</span><span class="n">os</span>
+      <span class="ow">and</span> <span class="n">c0</span><span class="o">.</span><span class="n">lifetime</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="n">WHERE</span> 
+    <span class="n">c</span><span class="o">.</span><span class="n">lifetime</span> <span class="o">&lt;=</span> <span class="n">toDate</span><span class="p">(</span><span class="n">now</span><span class="p">())</span> <span class="o">-</span> <span class="n">toDate</span><span class="p">(</span><span class="s1">&#39;2025-08-15&#39;</span><span class="p">)</span>    
+<span class="p">)</span>
+<span class="n">SELECT</span> 
+  <span class="k">if</span><span class="p">(</span><span class="n">is_target_cohort</span><span class="p">,</span> <span class="s1">&#39;Target&#39;</span><span class="p">,</span> <span class="s1">&#39;Prev Fridays&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">cohort_type</span>
+  <span class="p">,</span> <span class="n">toDate</span><span class="p">(</span><span class="s1">&#39;2000-01-01&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">interval</span> <span class="n">lifetime</span> <span class="n">year</span> <span class="k">as</span> <span class="n">lifetime</span>
+  <span class="p">,</span> <span class="n">os</span>
+  <span class="p">,</span> <span class="n">count</span><span class="p">()</span> <span class="k">as</span> <span class="n">cohorts_count</span>
+  <span class="p">,</span> <span class="n">median</span><span class="p">(</span><span class="n">retention</span><span class="p">)</span> <span class="k">as</span> <span class="n">median_retention</span>
+<span class="n">FROM</span> 
+  <span class="n">cohort_metrics</span>
+<span class="n">GROUP</span> <span class="n">BY</span> 
+  <span class="n">cohort_type</span>
+  <span class="p">,</span> <span class="n">lifetime</span>
+  <span class="p">,</span> <span class="n">os</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Retention Compare with Previous by Top Countries</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">WITH</span> <span class="n">top_countries</span> <span class="k">as</span><span class="p">(</span>
+  <span class="n">SELECT</span> 
+    <span class="n">country</span> 
+  <span class="n">FROM</span> 
+    <span class="n">feed_actions</span>
+  <span class="n">GROUP</span> <span class="n">BY</span> 
+    <span class="n">country</span>
+  <span class="n">ORDER</span> <span class="n">BY</span> 
+    <span class="n">uniq</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span> <span class="n">DESC</span>
+  <span class="n">LIMIT</span> <span class="mi">3</span>
+<span class="p">)</span>
+<span class="p">,</span> <span class="n">first_activity</span> <span class="n">AS</span> <span class="p">(</span>
+    <span class="n">SELECT</span> 
+        <span class="n">user_id</span><span class="p">,</span> 
+        <span class="nb">any</span><span class="p">(</span><span class="n">country</span><span class="p">)</span> <span class="k">as</span> <span class="n">country</span><span class="p">,</span>
+        <span class="nb">min</span><span class="p">(</span><span class="n">toDate</span><span class="p">(</span><span class="n">time</span><span class="p">))</span> <span class="k">as</span> <span class="n">first_date</span>
+    <span class="n">FROM</span> <span class="n">feed_actions</span>
+    <span class="n">WHERE</span> 
+      <span class="n">source</span> <span class="o">=</span> <span class="s1">&#39;ads&#39;</span>
+      <span class="ow">and</span> <span class="n">toDate</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="s1">&#39;2025-08-15&#39;</span>
+    <span class="n">GROUP</span> <span class="n">BY</span> <span class="n">user_id</span> 
+    <span class="n">HAVING</span> 
+      <span class="n">toDayOfWeek</span><span class="p">(</span><span class="n">first_date</span><span class="p">)</span> <span class="o">=</span> <span class="mi">5</span> 
+      <span class="ow">and</span> <span class="n">country</span> <span class="ow">in</span> <span class="p">(</span><span class="n">select</span> <span class="o">*</span> <span class="kn">from</span><span class="w"> </span><span class="nn">top_countries</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="p">,</span> <span class="n">cohorts</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="n">SELECT</span> 
+    <span class="n">toDate</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">-</span> <span class="n">first_date</span> <span class="k">as</span> <span class="n">lifetime</span>
+    <span class="p">,</span> <span class="n">toString</span><span class="p">(</span><span class="n">first_date</span><span class="p">)</span> <span class="k">as</span> <span class="n">cohort</span>
+    <span class="p">,</span> <span class="n">country</span>
+    <span class="p">,</span> <span class="n">uniq</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span> <span class="k">as</span> <span class="n">users</span>
+  <span class="n">FROM</span> 
+    <span class="n">feed_actions</span> <span class="n">f</span>
+    <span class="n">JOIN</span> <span class="n">first_activity</span> <span class="k">as</span> <span class="n">fa</span> <span class="n">using</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+  <span class="n">GROUP</span> <span class="n">BY</span> 
+    <span class="n">cohort</span>
+    <span class="p">,</span> <span class="n">lifetime</span>
+    <span class="p">,</span> <span class="n">country</span>
+<span class="p">)</span>
+<span class="p">,</span> <span class="n">cohort_metrics</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="n">SELECT</span> 
+    <span class="n">c</span><span class="o">.</span><span class="n">cohort</span>
+    <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">lifetime</span>
+    <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">country</span>
+    <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">cohort</span> <span class="o">=</span> <span class="s1">&#39;2025-08-15&#39;</span> <span class="k">as</span> <span class="n">is_target_cohort</span>
+    <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">users</span>
+    <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">users</span> <span class="o">/</span> <span class="n">nullIf</span><span class="p">(</span><span class="n">c0</span><span class="o">.</span><span class="n">users</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">as</span> <span class="n">retention</span>
+  <span class="n">FROM</span> 
+    <span class="n">cohorts</span> <span class="n">c</span>
+    <span class="n">JOIN</span> <span class="n">cohorts</span> <span class="n">c0</span> <span class="n">ON</span> <span class="n">c</span><span class="o">.</span><span class="n">cohort</span> <span class="o">=</span> <span class="n">c0</span><span class="o">.</span><span class="n">cohort</span> 
+      <span class="ow">and</span> <span class="n">c</span><span class="o">.</span><span class="n">country</span> <span class="o">=</span> <span class="n">c0</span><span class="o">.</span><span class="n">country</span>
+      <span class="ow">and</span> <span class="n">c0</span><span class="o">.</span><span class="n">lifetime</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="n">WHERE</span> 
+    <span class="n">c</span><span class="o">.</span><span class="n">lifetime</span> <span class="o">&lt;=</span> <span class="n">toDate</span><span class="p">(</span><span class="n">now</span><span class="p">())</span> <span class="o">-</span> <span class="n">toDate</span><span class="p">(</span><span class="s1">&#39;2025-08-15&#39;</span><span class="p">)</span>    
+<span class="p">)</span>
+<span class="n">SELECT</span> 
+  <span class="k">if</span><span class="p">(</span><span class="n">is_target_cohort</span><span class="p">,</span> <span class="s1">&#39;Target&#39;</span><span class="p">,</span> <span class="s1">&#39;Prev Fridays&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">cohort_type</span>
+  <span class="p">,</span> <span class="n">toDate</span><span class="p">(</span><span class="s1">&#39;2000-01-01&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">interval</span> <span class="n">lifetime</span> <span class="n">year</span> <span class="k">as</span> <span class="n">lifetime</span>
+  <span class="p">,</span> <span class="n">country</span>
+  <span class="p">,</span> <span class="n">count</span><span class="p">()</span> <span class="k">as</span> <span class="n">cohorts_count</span>
+  <span class="p">,</span> <span class="n">median</span><span class="p">(</span><span class="n">retention</span><span class="p">)</span> <span class="k">as</span> <span class="n">median_retention</span>
+<span class="n">FROM</span> 
+  <span class="n">cohort_metrics</span>
+<span class="n">GROUP</span> <span class="n">BY</span> 
+  <span class="n">cohort_type</span>
+  <span class="p">,</span> <span class="n">lifetime</span>
+  <span class="p">,</span> <span class="n">country</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Retention Compare with Previous by Top Cities</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">WITH</span> <span class="n">top_cities</span> <span class="k">as</span><span class="p">(</span>
+  <span class="n">SELECT</span> 
+    <span class="n">city</span> 
+  <span class="n">FROM</span> 
+    <span class="n">feed_actions</span>
+  <span class="n">GROUP</span> <span class="n">BY</span> 
+    <span class="n">city</span>
+  <span class="n">ORDER</span> <span class="n">BY</span> 
+    <span class="n">uniq</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span> <span class="n">DESC</span>
+  <span class="n">LIMIT</span> <span class="mi">3</span>
+<span class="p">)</span>
+<span class="p">,</span> <span class="n">first_activity</span> <span class="n">AS</span> <span class="p">(</span>
+    <span class="n">SELECT</span> 
+        <span class="n">user_id</span><span class="p">,</span> 
+        <span class="nb">any</span><span class="p">(</span><span class="n">city</span><span class="p">)</span> <span class="k">as</span> <span class="n">city</span><span class="p">,</span>
+        <span class="nb">min</span><span class="p">(</span><span class="n">toDate</span><span class="p">(</span><span class="n">time</span><span class="p">))</span> <span class="k">as</span> <span class="n">first_date</span>
+    <span class="n">FROM</span> <span class="n">feed_actions</span>
+    <span class="n">WHERE</span> 
+      <span class="n">source</span> <span class="o">=</span> <span class="s1">&#39;ads&#39;</span>
+      <span class="ow">and</span> <span class="n">toDate</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="s1">&#39;2025-08-15&#39;</span>
+    <span class="n">GROUP</span> <span class="n">BY</span> <span class="n">user_id</span> 
+    <span class="n">HAVING</span> 
+      <span class="n">toDayOfWeek</span><span class="p">(</span><span class="n">first_date</span><span class="p">)</span> <span class="o">=</span> <span class="mi">5</span> 
+      <span class="ow">and</span> <span class="n">city</span> <span class="ow">in</span> <span class="p">(</span><span class="n">select</span> <span class="o">*</span> <span class="kn">from</span><span class="w"> </span><span class="nn">top_cities</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="p">,</span> <span class="n">cohorts</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="n">SELECT</span> 
+    <span class="n">toDate</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">-</span> <span class="n">first_date</span> <span class="k">as</span> <span class="n">lifetime</span>
+    <span class="p">,</span> <span class="n">toString</span><span class="p">(</span><span class="n">first_date</span><span class="p">)</span> <span class="k">as</span> <span class="n">cohort</span>
+    <span class="p">,</span> <span class="n">city</span>
+    <span class="p">,</span> <span class="n">uniq</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span> <span class="k">as</span> <span class="n">users</span>
+  <span class="n">FROM</span> 
+    <span class="n">feed_actions</span> <span class="n">f</span>
+    <span class="n">JOIN</span> <span class="n">first_activity</span> <span class="k">as</span> <span class="n">fa</span> <span class="n">using</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+  <span class="n">GROUP</span> <span class="n">BY</span> 
+    <span class="n">cohort</span>
+    <span class="p">,</span> <span class="n">lifetime</span>
+    <span class="p">,</span> <span class="n">city</span>
+<span class="p">)</span>
+<span class="p">,</span> <span class="n">cohort_metrics</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="n">SELECT</span> 
+    <span class="n">c</span><span class="o">.</span><span class="n">cohort</span>
+    <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">lifetime</span>
+    <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">city</span>
+    <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">cohort</span> <span class="o">=</span> <span class="s1">&#39;2025-08-15&#39;</span> <span class="k">as</span> <span class="n">is_target_cohort</span>
+    <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">users</span>
+    <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">users</span> <span class="o">/</span> <span class="n">nullIf</span><span class="p">(</span><span class="n">c0</span><span class="o">.</span><span class="n">users</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">as</span> <span class="n">retention</span>
+  <span class="n">FROM</span> 
+    <span class="n">cohorts</span> <span class="n">c</span>
+    <span class="n">JOIN</span> <span class="n">cohorts</span> <span class="n">c0</span> <span class="n">ON</span> <span class="n">c</span><span class="o">.</span><span class="n">cohort</span> <span class="o">=</span> <span class="n">c0</span><span class="o">.</span><span class="n">cohort</span> 
+      <span class="ow">and</span> <span class="n">c</span><span class="o">.</span><span class="n">city</span> <span class="o">=</span> <span class="n">c0</span><span class="o">.</span><span class="n">city</span>
+      <span class="ow">and</span> <span class="n">c0</span><span class="o">.</span><span class="n">lifetime</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="n">WHERE</span> 
+    <span class="n">c</span><span class="o">.</span><span class="n">lifetime</span> <span class="o">&lt;=</span> <span class="n">toDate</span><span class="p">(</span><span class="n">now</span><span class="p">())</span> <span class="o">-</span> <span class="n">toDate</span><span class="p">(</span><span class="s1">&#39;2025-08-15&#39;</span><span class="p">)</span>    
+<span class="p">)</span>
+<span class="n">SELECT</span> 
+  <span class="k">if</span><span class="p">(</span><span class="n">is_target_cohort</span><span class="p">,</span> <span class="s1">&#39;Target&#39;</span><span class="p">,</span> <span class="s1">&#39;Prev Fridays&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">cohort_type</span>
+  <span class="p">,</span> <span class="n">toDate</span><span class="p">(</span><span class="s1">&#39;2000-01-01&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">interval</span> <span class="n">lifetime</span> <span class="n">year</span> <span class="k">as</span> <span class="n">lifetime</span>
+  <span class="p">,</span> <span class="n">city</span>
+  <span class="p">,</span> <span class="n">count</span><span class="p">()</span> <span class="k">as</span> <span class="n">cohorts_count</span>
+  <span class="p">,</span> <span class="n">median</span><span class="p">(</span><span class="n">retention</span><span class="p">)</span> <span class="k">as</span> <span class="n">median_retention</span>
+<span class="n">FROM</span> 
+  <span class="n">cohort_metrics</span>
+<span class="n">GROUP</span> <span class="n">BY</span> 
+  <span class="n">cohort_type</span>
+  <span class="p">,</span> <span class="n">lifetime</span>
+  <span class="p">,</span> <span class="n">city</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="cohort-analysis-of-other-metrics">
+<h4>3.2.1.5 Cohort Analysis of Other Metrics<a class="headerlink" href="#cohort-analysis-of-other-metrics" title="Link to this heading">#</a></h4>
+<p><strong>Metrics Compare with Previous</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">WITH</span> <span class="n">first_activity</span> <span class="n">AS</span> <span class="p">(</span>
+    <span class="n">SELECT</span> 
+        <span class="n">user_id</span><span class="p">,</span> 
+        <span class="nb">min</span><span class="p">(</span><span class="n">toDate</span><span class="p">(</span><span class="n">time</span><span class="p">))</span> <span class="k">as</span> <span class="n">first_date</span>
+    <span class="n">FROM</span> <span class="n">feed_actions</span>
+    <span class="n">WHERE</span> 
+      <span class="n">source</span> <span class="o">=</span> <span class="s1">&#39;ads&#39;</span>
+      <span class="ow">and</span> <span class="n">toDate</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="s1">&#39;2025-08-15&#39;</span>
+    <span class="n">GROUP</span> <span class="n">BY</span> <span class="n">user_id</span> 
+    <span class="n">HAVING</span> <span class="n">toDayOfWeek</span><span class="p">(</span><span class="n">first_date</span><span class="p">)</span> <span class="o">=</span> <span class="mi">5</span> 
+<span class="p">)</span>
+<span class="p">,</span> <span class="n">cohorts</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="n">SELECT</span> 
+    <span class="n">toDate</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">-</span> <span class="n">first_date</span> <span class="k">as</span> <span class="n">lifetime</span>
+    <span class="p">,</span> <span class="n">toString</span><span class="p">(</span><span class="n">first_date</span><span class="p">)</span> <span class="k">as</span> <span class="n">cohort</span>
+    <span class="p">,</span> <span class="n">uniq</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span> <span class="k">as</span> <span class="n">users</span>
+    <span class="p">,</span> <span class="n">countIf</span><span class="p">(</span><span class="n">action</span> <span class="o">=</span> <span class="s1">&#39;view&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">views</span>
+    <span class="p">,</span> <span class="n">countIf</span><span class="p">(</span><span class="n">action</span> <span class="o">=</span> <span class="s1">&#39;like&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">likes</span>
+    <span class="p">,</span> <span class="n">likes</span> <span class="o">/</span> <span class="n">nullIf</span><span class="p">(</span><span class="n">countIf</span><span class="p">(</span><span class="n">action</span> <span class="o">=</span> <span class="s1">&#39;view&#39;</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span> <span class="k">as</span> <span class="n">ctr</span>
+  <span class="n">FROM</span> 
+    <span class="n">feed_actions</span> <span class="n">f</span>
+    <span class="n">JOIN</span> <span class="n">first_activity</span> <span class="k">as</span> <span class="n">fa</span> <span class="n">using</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+  <span class="n">GROUP</span> <span class="n">BY</span> 
+    <span class="n">cohort</span>
+    <span class="p">,</span> <span class="n">lifetime</span>
+<span class="p">)</span>
+<span class="p">,</span> <span class="n">cohort_metrics</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="n">SELECT</span> 
+    <span class="n">c</span><span class="o">.</span><span class="n">cohort</span>
+    <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">lifetime</span>
+    <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">cohort</span> <span class="o">=</span> <span class="s1">&#39;2025-08-15&#39;</span> <span class="k">as</span> <span class="n">is_target_cohort</span>
+    <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">users</span>
+    <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">ctr</span>
+    <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">views</span> <span class="o">/</span> <span class="n">nullIf</span><span class="p">(</span><span class="n">c0</span><span class="o">.</span><span class="n">users</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">as</span> <span class="n">views_per_cohort_user</span>
+    <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">likes</span> <span class="o">/</span> <span class="n">nullIf</span><span class="p">(</span><span class="n">c0</span><span class="o">.</span><span class="n">users</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">as</span> <span class="n">likes_per_cohort_user</span>
+    <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">views</span> <span class="o">/</span> <span class="n">nullIf</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">users</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">as</span> <span class="n">views_per_user</span>
+    <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">likes</span> <span class="o">/</span> <span class="n">nullIf</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">users</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">as</span> <span class="n">likes_per_user</span>  
+    <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">users</span> <span class="o">/</span> <span class="n">nullIf</span><span class="p">(</span><span class="n">c0</span><span class="o">.</span><span class="n">users</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">as</span> <span class="n">retention</span>
+  <span class="n">FROM</span> 
+    <span class="n">cohorts</span> <span class="n">c</span>
+    <span class="n">JOIN</span> <span class="n">cohorts</span> <span class="n">c0</span> <span class="n">ON</span> <span class="n">c</span><span class="o">.</span><span class="n">cohort</span> <span class="o">=</span> <span class="n">c0</span><span class="o">.</span><span class="n">cohort</span> <span class="ow">and</span> <span class="n">c0</span><span class="o">.</span><span class="n">lifetime</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="n">WHERE</span> 
+    <span class="n">c</span><span class="o">.</span><span class="n">lifetime</span> <span class="o">&lt;=</span> <span class="n">toDate</span><span class="p">(</span><span class="n">now</span><span class="p">())</span> <span class="o">-</span> <span class="n">toDate</span><span class="p">(</span><span class="s1">&#39;2025-08-15&#39;</span><span class="p">)</span>    
+<span class="p">)</span>
+<span class="n">SELECT</span> 
+  <span class="k">if</span><span class="p">(</span><span class="n">is_target_cohort</span><span class="p">,</span> <span class="s1">&#39;Target&#39;</span><span class="p">,</span> <span class="s1">&#39;Prev Fridays&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">cohort_type</span>
+  <span class="p">,</span> <span class="n">toDate</span><span class="p">(</span><span class="s1">&#39;2000-01-01&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">interval</span> <span class="n">lifetime</span> <span class="n">year</span> <span class="k">as</span> <span class="n">lifetime</span>
+  <span class="p">,</span> <span class="n">count</span><span class="p">()</span> <span class="k">as</span> <span class="n">cohorts_count</span>
+  <span class="p">,</span> <span class="n">median</span><span class="p">(</span><span class="n">users</span><span class="p">)</span> <span class="k">as</span> <span class="n">median_users</span>
+  <span class="p">,</span> <span class="n">median</span><span class="p">(</span><span class="n">ctr</span><span class="p">)</span> <span class="k">as</span> <span class="n">median_ctr</span>
+  <span class="p">,</span> <span class="n">median</span><span class="p">(</span><span class="n">views_per_user</span><span class="p">)</span> <span class="k">as</span> <span class="n">median_views_per_user</span>
+  <span class="p">,</span> <span class="n">median</span><span class="p">(</span><span class="n">likes_per_user</span><span class="p">)</span> <span class="k">as</span> <span class="n">median_likes_per_user</span>
+  <span class="p">,</span> <span class="n">median</span><span class="p">(</span><span class="n">views_per_cohort_user</span><span class="p">)</span> <span class="k">as</span> <span class="n">median_views_per_cohort_user</span>
+  <span class="p">,</span> <span class="n">median</span><span class="p">(</span><span class="n">likes_per_cohort_user</span><span class="p">)</span> <span class="k">as</span> <span class="n">median_likes_per_cohort_user</span>  
+  <span class="p">,</span> <span class="n">median</span><span class="p">(</span><span class="n">retention</span><span class="p">)</span> <span class="k">as</span> <span class="n">median_retention</span>
+<span class="n">FROM</span> 
+  <span class="n">cohort_metrics</span>
+<span class="n">GROUP</span> <span class="n">BY</span> 
+  <span class="n">cohort_type</span>
+  <span class="p">,</span> <span class="n">lifetime</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Metrics Heatmap</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">WITH</span> <span class="n">first_activity</span> <span class="n">AS</span> <span class="p">(</span>
+    <span class="n">SELECT</span> 
+        <span class="n">user_id</span><span class="p">,</span> 
+        <span class="nb">min</span><span class="p">(</span><span class="n">toDate</span><span class="p">(</span><span class="n">time</span><span class="p">))</span> <span class="k">as</span> <span class="n">first_date</span>
+    <span class="n">FROM</span> <span class="n">feed_actions</span>
+    <span class="n">WHERE</span> 
+      <span class="n">source</span> <span class="o">=</span> <span class="s1">&#39;ads&#39;</span>
+      <span class="ow">and</span> <span class="n">toDate</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="s1">&#39;2025-08-15&#39;</span>
+    <span class="n">GROUP</span> <span class="n">BY</span> <span class="n">user_id</span> 
+    <span class="n">HAVING</span> <span class="n">toDayOfWeek</span><span class="p">(</span><span class="n">first_date</span><span class="p">)</span> <span class="o">=</span> <span class="mi">5</span> 
+<span class="p">)</span>
+<span class="p">,</span> <span class="n">cohorts</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="n">SELECT</span> 
+    <span class="n">toDate</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">-</span> <span class="n">first_date</span> <span class="k">as</span> <span class="n">lifetime</span>
+    <span class="p">,</span> <span class="n">toString</span><span class="p">(</span><span class="n">first_date</span><span class="p">)</span> <span class="k">as</span> <span class="n">cohort</span>
+    <span class="p">,</span> <span class="n">uniq</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span> <span class="k">as</span> <span class="n">users</span>
+    <span class="p">,</span> <span class="n">countIf</span><span class="p">(</span><span class="n">action</span> <span class="o">=</span> <span class="s1">&#39;view&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">views</span>
+    <span class="p">,</span> <span class="n">countIf</span><span class="p">(</span><span class="n">action</span> <span class="o">=</span> <span class="s1">&#39;like&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">likes</span>
+    <span class="p">,</span> <span class="n">likes</span> <span class="o">/</span> <span class="n">nullIf</span><span class="p">(</span><span class="n">countIf</span><span class="p">(</span><span class="n">action</span> <span class="o">=</span> <span class="s1">&#39;view&#39;</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span> <span class="k">as</span> <span class="n">ctr</span>
+  <span class="n">FROM</span> 
+    <span class="n">feed_actions</span> <span class="n">f</span>
+    <span class="n">JOIN</span> <span class="n">first_activity</span> <span class="k">as</span> <span class="n">fa</span> <span class="n">using</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+  <span class="n">GROUP</span> <span class="n">BY</span> 
+    <span class="n">cohort</span>
+    <span class="p">,</span> <span class="n">lifetime</span>
+<span class="p">)</span>
+<span class="n">SELECT</span> 
+  <span class="n">c</span><span class="o">.</span><span class="n">cohort</span>
+  <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">lifetime</span>
+  <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">users</span>
+  <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">ctr</span>
+  <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">views</span> <span class="o">/</span> <span class="n">nullIf</span><span class="p">(</span><span class="n">c0</span><span class="o">.</span><span class="n">users</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">as</span> <span class="n">views_per_cohort_user</span>
+  <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">likes</span> <span class="o">/</span> <span class="n">nullIf</span><span class="p">(</span><span class="n">c0</span><span class="o">.</span><span class="n">users</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">as</span> <span class="n">likes_per_cohort_user</span>
+  <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">views</span> <span class="o">/</span> <span class="n">nullIf</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">users</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">as</span> <span class="n">views_per_user</span>
+  <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">likes</span> <span class="o">/</span> <span class="n">nullIf</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">users</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">as</span> <span class="n">likes_per_user</span>  
+  <span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">users</span> <span class="o">/</span> <span class="n">nullIf</span><span class="p">(</span><span class="n">c0</span><span class="o">.</span><span class="n">users</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">as</span> <span class="n">retention</span>
+<span class="n">FROM</span> 
+  <span class="n">cohorts</span> <span class="n">c</span>
+  <span class="n">JOIN</span> <span class="n">cohorts</span> <span class="n">c0</span> <span class="n">ON</span> <span class="n">c</span><span class="o">.</span><span class="n">cohort</span> <span class="o">=</span> <span class="n">c0</span><span class="o">.</span><span class="n">cohort</span> <span class="ow">and</span> <span class="n">c0</span><span class="o">.</span><span class="n">lifetime</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">WHERE</span> 
+  <span class="n">c</span><span class="o">.</span><span class="n">lifetime</span> <span class="o">&lt;=</span> <span class="n">toDate</span><span class="p">(</span><span class="n">now</span><span class="p">())</span> <span class="o">-</span> <span class="n">toDate</span><span class="p">(</span><span class="s1">&#39;2025-08-15&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="dashboard-implementation">
+<h3>3.2.2 Dashboard Implementation<a class="headerlink" href="#dashboard-implementation" title="Link to this heading">#</a></h3>
+<p>Based on the written queries, a dashboard report was created in Superset.</p>
+<p>Screenshots of the dashboard are provided below.</p>
+<img alt="" src="../../_images/marketing_company_part_1.png" />
+<img alt="" src="../../_images/marketing_company_part_2.png" />
+<img alt="" src="../../_images/marketing_company_part_3.png" />
+<img alt="" src="../../_images/marketing_company_part_4.png" />
+<img alt="" src="../../_images/marketing_company_part_5.png" />
+<img alt="" src="../../_images/marketing_company_part_6.png" />
+<img alt="" src="../../_images/marketing_company_part_7.png" />
+<img alt="" src="../../_images/marketing_company_part_8.png" />
+<img alt="" src="../../_images/marketing_company_part_9.png" />
+<img alt="" src="../../_images/marketing_company_part_10.png" />
+</section>
+</section>
+<section id="user-drop-off-analysis">
+<h2>3.3 User Drop-off Analysis<a class="headerlink" href="#user-drop-off-analysis" title="Link to this heading">#</a></h2>
+<section id="id1">
+<h3>3.3.1 SQL Queries<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p>We will write SQL queries to the product database to build the charts.</p>
+<p><strong>DAU</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> 
+  <span class="n">user_id</span> 
+  <span class="p">,</span> <span class="n">toDate</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="k">as</span> <span class="n">date</span>
+  <span class="p">,</span> <span class="s1">&#39;Feed&#39;</span> <span class="k">as</span> <span class="n">service</span> 
+<span class="n">FROM</span> 
+  <span class="n">feed_actions</span>
+<span class="n">GROUP</span> <span class="n">BY</span> 
+  <span class="n">user_id</span>
+  <span class="p">,</span> <span class="n">date</span>
+<span class="n">UNION</span> <span class="n">ALL</span>
+<span class="n">SELECT</span> 
+  <span class="n">user_id</span> 
+  <span class="p">,</span> <span class="n">toDate</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="k">as</span> <span class="n">date</span>
+  <span class="p">,</span> <span class="s1">&#39;Messenger&#39;</span> <span class="k">as</span> <span class="n">service</span>
+<span class="n">FROM</span> 
+  <span class="n">message_actions</span>
+<span class="n">GROUP</span> <span class="n">BY</span> 
+  <span class="n">user_id</span>
+  <span class="p">,</span> <span class="n">date</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Users by Hour</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> 
+  <span class="n">multiIf</span><span class="p">(</span>
+      <span class="n">f</span><span class="o">.</span><span class="n">user_id</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">m</span><span class="o">.</span><span class="n">user_id</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;both&#39;</span>
+      <span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">user_id</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">m</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;feed&#39;</span>
+      <span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">m</span><span class="o">.</span><span class="n">user_id</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;messenger&#39;</span>
+      <span class="p">,</span> <span class="s1">&#39;unknown&#39;</span>
+  <span class="p">)</span> <span class="k">as</span> <span class="n">segment</span>
+  <span class="p">,</span> <span class="k">if</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">user_id</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">date</span><span class="p">)</span> <span class="k">as</span> <span class="n">date</span> 
+  <span class="p">,</span> <span class="k">if</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">user_id</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">user_id</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">user_id</span><span class="p">)</span> <span class="k">as</span> <span class="n">user_id</span> 
+  <span class="p">,</span> <span class="k">if</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">user_id</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">gender</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">gender</span><span class="p">)</span> <span class="k">as</span> <span class="n">gender_num</span> 
+  <span class="p">,</span> <span class="k">if</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">user_id</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">age</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">age</span><span class="p">)</span> <span class="k">as</span> <span class="n">age</span> 
+  <span class="p">,</span> <span class="k">if</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">user_id</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">source</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">source</span><span class="p">)</span> <span class="k">as</span> <span class="n">source</span> 
+  <span class="p">,</span> <span class="k">if</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">user_id</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">os</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">os</span><span class="p">)</span> <span class="k">as</span> <span class="n">os</span> 
+  <span class="p">,</span> <span class="k">if</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">user_id</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">country</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">country</span><span class="p">)</span> <span class="k">as</span> <span class="n">country</span> 
+  <span class="p">,</span> <span class="k">if</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">user_id</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">city</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">city</span><span class="p">)</span> <span class="k">as</span> <span class="n">city</span> 
+  <span class="p">,</span> <span class="n">multiIf</span><span class="p">(</span><span class="n">gender_num</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;female&#39;</span><span class="p">,</span> <span class="n">gender_num</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;male&#39;</span><span class="p">,</span> <span class="s1">&#39;unknown&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">gender</span> 
+  <span class="p">,</span> <span class="n">multiIf</span><span class="p">(</span><span class="n">age</span> <span class="o">&lt;</span> <span class="mi">25</span><span class="p">,</span> <span class="s1">&#39; &lt;25&#39;</span> <span class="p">,</span> <span class="n">age</span> <span class="n">between</span> <span class="mi">25</span> <span class="ow">and</span> <span class="mi">40</span><span class="p">,</span> <span class="s1">&#39;25-40&#39;</span> <span class="p">,</span> <span class="n">age</span> <span class="n">between</span> <span class="mi">41</span> <span class="ow">and</span> <span class="mi">55</span><span class="p">,</span> <span class="s1">&#39;41-55&#39;</span> <span class="p">,</span> <span class="n">age</span> <span class="o">&gt;=</span> <span class="mi">55</span><span class="p">,</span> <span class="s1">&#39;55+&#39;</span> <span class="p">,</span> <span class="s1">&#39;unknown&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">age_group</span> 
+  <span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">posts</span>
+  <span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">views</span>
+  <span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">likes</span>
+  <span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">ctr</span>
+  <span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">messages</span>
+  <span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">receivers</span>
+  <span class="n">FROM</span> <span class="p">(</span>
+    <span class="n">SELECT</span>
+      <span class="n">user_id</span>
+      <span class="p">,</span> <span class="n">toStartOfHour</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="k">as</span> <span class="n">date</span>
+      <span class="p">,</span> <span class="n">uniq</span><span class="p">(</span><span class="n">post_id</span><span class="p">)</span> <span class="k">as</span> <span class="n">posts</span>
+      <span class="p">,</span> <span class="n">countIf</span><span class="p">(</span><span class="n">action</span> <span class="o">=</span> <span class="s1">&#39;view&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">views</span>
+      <span class="p">,</span> <span class="n">countIf</span><span class="p">(</span><span class="n">action</span> <span class="o">=</span> <span class="s1">&#39;like&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">likes</span>
+      <span class="p">,</span> <span class="n">likes</span> <span class="o">/</span> <span class="n">views</span> <span class="k">as</span> <span class="n">ctr</span>
+      <span class="p">,</span> <span class="nb">any</span><span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="k">as</span> <span class="n">source</span>
+      <span class="p">,</span> <span class="nb">any</span><span class="p">(</span><span class="n">gender</span><span class="p">)</span> <span class="k">as</span> <span class="n">gender</span>
+      <span class="p">,</span> <span class="nb">any</span><span class="p">(</span><span class="n">age</span><span class="p">)</span> <span class="k">as</span> <span class="n">age</span>
+      <span class="p">,</span> <span class="nb">any</span><span class="p">(</span><span class="n">os</span><span class="p">)</span> <span class="k">as</span> <span class="n">os</span>
+      <span class="p">,</span> <span class="nb">any</span><span class="p">(</span><span class="n">country</span><span class="p">)</span> <span class="k">as</span> <span class="n">country</span>
+      <span class="p">,</span> <span class="nb">any</span><span class="p">(</span><span class="n">city</span><span class="p">)</span> <span class="k">as</span> <span class="n">city</span>
+    <span class="n">FROM</span> 
+      <span class="n">feed_actions</span> 
+    <span class="n">WHERE</span> 
+      <span class="n">toDate</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="n">between</span> <span class="s1">&#39;2025-08-21&#39;</span> <span class="ow">and</span> <span class="s1">&#39;2025-08-27&#39;</span>
+    <span class="n">GROUP</span> <span class="n">BY</span> 
+      <span class="n">user_id</span>
+      <span class="p">,</span> <span class="n">date</span>
+    <span class="p">)</span> <span class="n">f</span>
+    <span class="n">FULL</span> <span class="n">JOIN</span> <span class="p">(</span>
+    <span class="n">SELECT</span>
+      <span class="n">user_id</span>
+      <span class="p">,</span> <span class="n">toStartOfHour</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="k">as</span> <span class="n">date</span>
+      <span class="p">,</span> <span class="n">count</span><span class="p">(</span><span class="n">receiver_id</span><span class="p">)</span> <span class="k">as</span> <span class="n">messages</span>
+      <span class="p">,</span> <span class="n">uniq</span><span class="p">(</span><span class="n">receiver_id</span><span class="p">)</span> <span class="k">as</span> <span class="n">receivers</span>
+      <span class="p">,</span> <span class="nb">any</span><span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="k">as</span> <span class="n">source</span>
+      <span class="p">,</span> <span class="nb">any</span><span class="p">(</span><span class="n">gender</span><span class="p">)</span> <span class="k">as</span> <span class="n">gender</span>
+      <span class="p">,</span> <span class="nb">any</span><span class="p">(</span><span class="n">age</span><span class="p">)</span> <span class="k">as</span> <span class="n">age</span>
+      <span class="p">,</span> <span class="nb">any</span><span class="p">(</span><span class="n">os</span><span class="p">)</span> <span class="k">as</span> <span class="n">os</span>
+      <span class="p">,</span> <span class="nb">any</span><span class="p">(</span><span class="n">country</span><span class="p">)</span> <span class="k">as</span> <span class="n">country</span>
+      <span class="p">,</span> <span class="nb">any</span><span class="p">(</span><span class="n">city</span><span class="p">)</span> <span class="k">as</span> <span class="n">city</span>
+    <span class="n">FROM</span> 
+      <span class="n">message_actions</span>  
+    <span class="n">WHERE</span> 
+      <span class="n">toDate</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="n">between</span> <span class="s1">&#39;2025-08-21&#39;</span> <span class="ow">and</span> <span class="s1">&#39;2025-08-27&#39;</span>
+    <span class="n">GROUP</span> <span class="n">BY</span> 
+      <span class="n">user_id</span>
+      <span class="p">,</span> <span class="n">date</span>      
+    <span class="p">)</span> <span class="n">m</span> <span class="n">ON</span> <span class="n">f</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">user_id</span> <span class="ow">and</span> <span class="n">f</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">date</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Users by Dimensions</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> 
+  <span class="n">multiIf</span><span class="p">(</span>
+      <span class="n">f</span><span class="o">.</span><span class="n">user_id</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">m</span><span class="o">.</span><span class="n">user_id</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;both&#39;</span>
+      <span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">user_id</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">m</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;feed&#39;</span>
+      <span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">m</span><span class="o">.</span><span class="n">user_id</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;messenger&#39;</span>
+      <span class="p">,</span> <span class="s1">&#39;unknown&#39;</span>
+  <span class="p">)</span> <span class="k">as</span> <span class="n">segment</span>
+  <span class="p">,</span> <span class="k">if</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">user_id</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">date</span><span class="p">)</span> <span class="k">as</span> <span class="n">date</span> 
+  <span class="p">,</span> <span class="k">if</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">user_id</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">user_id</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">user_id</span><span class="p">)</span> <span class="k">as</span> <span class="n">user_id</span> 
+  <span class="p">,</span> <span class="k">if</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">user_id</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">gender</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">gender</span><span class="p">)</span> <span class="k">as</span> <span class="n">gender_num</span> 
+  <span class="p">,</span> <span class="k">if</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">user_id</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">age</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">age</span><span class="p">)</span> <span class="k">as</span> <span class="n">age</span> 
+  <span class="p">,</span> <span class="k">if</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">user_id</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">source</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">source</span><span class="p">)</span> <span class="k">as</span> <span class="n">source</span> 
+  <span class="p">,</span> <span class="k">if</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">user_id</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">os</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">os</span><span class="p">)</span> <span class="k">as</span> <span class="n">os</span> 
+  <span class="p">,</span> <span class="k">if</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">user_id</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">country</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">country</span><span class="p">)</span> <span class="k">as</span> <span class="n">country</span> 
+  <span class="p">,</span> <span class="k">if</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">user_id</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">city</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">city</span><span class="p">)</span> <span class="k">as</span> <span class="n">city</span> 
+  <span class="p">,</span> <span class="n">multiIf</span><span class="p">(</span><span class="n">gender_num</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;female&#39;</span><span class="p">,</span> <span class="n">gender_num</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;male&#39;</span><span class="p">,</span> <span class="s1">&#39;unknown&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">gender</span> 
+  <span class="p">,</span> <span class="n">multiIf</span><span class="p">(</span><span class="n">age</span> <span class="o">&lt;</span> <span class="mi">25</span><span class="p">,</span> <span class="s1">&#39; &lt;25&#39;</span> <span class="p">,</span> <span class="n">age</span> <span class="n">between</span> <span class="mi">25</span> <span class="ow">and</span> <span class="mi">40</span><span class="p">,</span> <span class="s1">&#39;25-40&#39;</span> <span class="p">,</span> <span class="n">age</span> <span class="n">between</span> <span class="mi">41</span> <span class="ow">and</span> <span class="mi">55</span><span class="p">,</span> <span class="s1">&#39;41-55&#39;</span> <span class="p">,</span> <span class="n">age</span> <span class="o">&gt;=</span> <span class="mi">55</span><span class="p">,</span> <span class="s1">&#39;55+&#39;</span> <span class="p">,</span> <span class="s1">&#39;unknown&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">age_group</span> 
+  <span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">posts</span>
+  <span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">views</span>
+  <span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">likes</span>
+  <span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">ctr</span>
+  <span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">messages</span>
+  <span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">receivers</span>
+  <span class="n">FROM</span> <span class="p">(</span>
+    <span class="n">SELECT</span>
+      <span class="n">user_id</span>
+      <span class="p">,</span> <span class="n">toDate</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="k">as</span> <span class="n">date</span>
+      <span class="p">,</span> <span class="n">uniq</span><span class="p">(</span><span class="n">post_id</span><span class="p">)</span> <span class="k">as</span> <span class="n">posts</span>
+      <span class="p">,</span> <span class="n">countIf</span><span class="p">(</span><span class="n">action</span> <span class="o">=</span> <span class="s1">&#39;view&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">views</span>
+      <span class="p">,</span> <span class="n">countIf</span><span class="p">(</span><span class="n">action</span> <span class="o">=</span> <span class="s1">&#39;like&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">likes</span>
+      <span class="p">,</span> <span class="n">likes</span> <span class="o">/</span> <span class="n">views</span> <span class="k">as</span> <span class="n">ctr</span>
+      <span class="p">,</span> <span class="nb">any</span><span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="k">as</span> <span class="n">source</span>
+      <span class="p">,</span> <span class="nb">any</span><span class="p">(</span><span class="n">gender</span><span class="p">)</span> <span class="k">as</span> <span class="n">gender</span>
+      <span class="p">,</span> <span class="nb">any</span><span class="p">(</span><span class="n">age</span><span class="p">)</span> <span class="k">as</span> <span class="n">age</span>
+      <span class="p">,</span> <span class="nb">any</span><span class="p">(</span><span class="n">os</span><span class="p">)</span> <span class="k">as</span> <span class="n">os</span>
+      <span class="p">,</span> <span class="nb">any</span><span class="p">(</span><span class="n">country</span><span class="p">)</span> <span class="k">as</span> <span class="n">country</span>
+      <span class="p">,</span> <span class="nb">any</span><span class="p">(</span><span class="n">city</span><span class="p">)</span> <span class="k">as</span> <span class="n">city</span>
+    <span class="n">FROM</span> 
+      <span class="n">feed_actions</span> 
+    <span class="n">WHERE</span> <span class="n">date</span> <span class="o">&gt;=</span> <span class="n">toDate</span><span class="p">(</span><span class="s1">&#39;2025-08-01&#39;</span><span class="p">)</span>
+      <span class="n">AND</span> <span class="n">date</span> <span class="o">&lt;</span> <span class="n">toDate</span><span class="p">(</span><span class="s1">&#39;2025-09-01&#39;</span><span class="p">)</span>
+    <span class="n">GROUP</span> <span class="n">BY</span> 
+      <span class="n">user_id</span>
+      <span class="p">,</span> <span class="n">date</span>
+    <span class="p">)</span> <span class="n">f</span>
+    <span class="n">FULL</span> <span class="n">JOIN</span> <span class="p">(</span>
+    <span class="n">SELECT</span>
+      <span class="n">user_id</span>
+      <span class="p">,</span> <span class="n">toDate</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="k">as</span> <span class="n">date</span>
+      <span class="p">,</span> <span class="n">count</span><span class="p">(</span><span class="n">receiver_id</span><span class="p">)</span> <span class="k">as</span> <span class="n">messages</span>
+      <span class="p">,</span> <span class="n">uniq</span><span class="p">(</span><span class="n">receiver_id</span><span class="p">)</span> <span class="k">as</span> <span class="n">receivers</span>
+      <span class="p">,</span> <span class="nb">any</span><span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="k">as</span> <span class="n">source</span>
+      <span class="p">,</span> <span class="nb">any</span><span class="p">(</span><span class="n">gender</span><span class="p">)</span> <span class="k">as</span> <span class="n">gender</span>
+      <span class="p">,</span> <span class="nb">any</span><span class="p">(</span><span class="n">age</span><span class="p">)</span> <span class="k">as</span> <span class="n">age</span>
+      <span class="p">,</span> <span class="nb">any</span><span class="p">(</span><span class="n">os</span><span class="p">)</span> <span class="k">as</span> <span class="n">os</span>
+      <span class="p">,</span> <span class="nb">any</span><span class="p">(</span><span class="n">country</span><span class="p">)</span> <span class="k">as</span> <span class="n">country</span>
+      <span class="p">,</span> <span class="nb">any</span><span class="p">(</span><span class="n">city</span><span class="p">)</span> <span class="k">as</span> <span class="n">city</span>
+    <span class="n">FROM</span> 
+      <span class="n">message_actions</span>  
+    <span class="n">WHERE</span> <span class="n">date</span> <span class="o">&gt;=</span> <span class="n">toDate</span><span class="p">(</span><span class="s1">&#39;2025-08-01&#39;</span><span class="p">)</span>
+      <span class="n">AND</span> <span class="n">date</span> <span class="o">&lt;</span> <span class="n">toDate</span><span class="p">(</span><span class="s1">&#39;2025-09-01&#39;</span><span class="p">)</span>
+    <span class="n">GROUP</span> <span class="n">BY</span> 
+      <span class="n">user_id</span>
+      <span class="p">,</span> <span class="n">date</span>      
+    <span class="p">)</span> <span class="n">m</span> <span class="n">ON</span> <span class="n">f</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">user_id</span> <span class="ow">and</span> <span class="n">f</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">date</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id2">
+<h3>3.3.2 Dashboard Implementation<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<p>Based on the written queries, a dashboard report was created in Superset.</p>
+<p>Screenshots of the dashboard are provided below.</p>
+<img alt="" src="../../_images/user_dropoff_part_1.png" />
+<img alt="" src="../../_images/user_dropoff_part_2.png" />
+<img alt="" src="../../_images/user_dropoff_part_3.png" />
+<img alt="" src="../../_images/user_dropoff_part_4.png" />
+<img alt="" src="../../_images/user_dropoff_part_5.png" />
+</section>
+</section>
+<section id="users-decomposition">
+<h2>3.4 Users Decomposition<a class="headerlink" href="#users-decomposition" title="Link to this heading">#</a></h2>
+<section id="id3">
+<h3>3.4.1 SQL Queries<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<p>We will write SQL queries to the product database to build the charts.</p>
+<p><strong>Feed Users Decomposition</strong></p>
+<p>Simple method: user is “new” in any week where they have their first activity in our dataset</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">WITH</span> <span class="n">user_stats</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="n">SELECT</span> 
+    <span class="n">user_id</span>
+    <span class="p">,</span> <span class="n">groupUniqArray</span><span class="p">(</span><span class="n">toMonday</span><span class="p">(</span><span class="n">time</span><span class="p">))</span> <span class="k">as</span> <span class="n">user_weeks</span>
+    <span class="p">,</span> <span class="n">arrayJoin</span><span class="p">(</span><span class="n">user_weeks</span><span class="p">)</span> <span class="k">as</span> <span class="n">week_start</span>
+  <span class="n">FROM</span> 
+    <span class="n">feed_actions</span>  
+  <span class="n">GROUP</span> <span class="n">BY</span> 
+    <span class="n">user_id</span>
+<span class="p">)</span>
+<span class="p">,</span> <span class="n">retained_and_new_users</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="n">SELECT</span> 
+    <span class="n">week_start</span> <span class="k">as</span> <span class="n">current_week</span>
+    <span class="p">,</span> <span class="n">uniqExactIf</span><span class="p">(</span><span class="n">user_id</span><span class="p">,</span> <span class="n">has</span><span class="p">(</span><span class="n">user_weeks</span><span class="p">,</span> <span class="n">addWeeks</span><span class="p">(</span><span class="n">week_start</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)))</span> <span class="k">as</span> <span class="n">retained_users</span>
+    <span class="p">,</span> <span class="n">uniqExact</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span> <span class="o">-</span> <span class="n">retained_users</span> <span class="k">as</span> <span class="n">new_users</span>
+  <span class="n">FROM</span> 
+    <span class="n">user_stats</span>
+  <span class="n">GROUP</span> <span class="n">BY</span> 
+    <span class="n">week_start</span>
+<span class="p">)</span>
+<span class="p">,</span> <span class="n">gone_users</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="n">SELECT</span> 
+    <span class="n">addWeeks</span><span class="p">(</span><span class="n">week_start</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">as</span> <span class="n">current_week</span>
+    <span class="p">,</span> <span class="o">-</span><span class="n">uniqExactIf</span><span class="p">(</span><span class="n">user_id</span><span class="p">,</span> <span class="n">NOT</span> <span class="n">has</span><span class="p">(</span><span class="n">user_weeks</span><span class="p">,</span> <span class="n">current_week</span><span class="p">))</span> <span class="k">as</span> <span class="n">gone_users</span>
+  <span class="n">FROM</span> 
+    <span class="n">user_stats</span>   
+  <span class="n">GROUP</span> <span class="n">BY</span> 
+    <span class="n">week_start</span>    
+<span class="p">)</span>
+<span class="n">SELECT</span> 
+  <span class="n">rn</span><span class="o">.</span><span class="n">current_week</span>
+  <span class="p">,</span> <span class="n">rn</span><span class="o">.</span><span class="n">new_users</span>
+  <span class="p">,</span> <span class="n">rn</span><span class="o">.</span><span class="n">retained_users</span>
+  <span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">gone_users</span>
+<span class="n">FROM</span> 
+  <span class="n">retained_and_new_users</span> <span class="n">rn</span>
+  <span class="n">LEFT</span> <span class="n">JOIN</span> <span class="n">gone_users</span> <span class="n">g</span> <span class="n">ON</span> <span class="n">rn</span><span class="o">.</span><span class="n">current_week</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">current_week</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Advanced method: user is only “new” in their absolute first week across entire history</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">WITH</span> <span class="n">feed_weekly</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="n">SELECT</span> 
+    <span class="n">user_id</span>
+    <span class="p">,</span> <span class="n">toMonday</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="k">as</span> <span class="n">week_start</span>
+  <span class="n">FROM</span> 
+    <span class="n">feed_actions</span>
+  <span class="n">GROUP</span> <span class="n">BY</span> 
+    <span class="n">user_id</span>
+    <span class="p">,</span> <span class="n">week_start</span>
+<span class="p">)</span>
+<span class="p">,</span> <span class="n">user_first_week</span> <span class="n">AS</span> <span class="p">(</span>
+    <span class="n">SELECT</span> 
+      <span class="n">user_id</span>
+      <span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">week_start</span><span class="p">)</span> <span class="k">as</span> <span class="n">first_week</span>
+    <span class="n">FROM</span> 
+      <span class="n">feed_weekly</span>
+    <span class="n">GROUP</span> <span class="n">BY</span> 
+      <span class="n">user_id</span>
+<span class="p">)</span>
+<span class="p">,</span> <span class="n">week_stats</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="n">SELECT</span>  
+    <span class="n">fw</span><span class="o">.</span><span class="n">week_start</span>
+    <span class="p">,</span> <span class="n">uniq</span><span class="p">(</span><span class="n">fw</span><span class="o">.</span><span class="n">user_id</span><span class="p">)</span> <span class="k">as</span> <span class="n">active_users</span>
+    <span class="p">,</span> <span class="n">uniqIf</span><span class="p">(</span><span class="n">fw</span><span class="o">.</span><span class="n">user_id</span><span class="p">,</span> <span class="n">fw</span><span class="o">.</span><span class="n">week_start</span> <span class="o">=</span> <span class="n">ufw</span><span class="o">.</span><span class="n">first_week</span><span class="p">)</span> <span class="k">as</span> <span class="n">new_users</span>
+  <span class="n">FROM</span> 
+    <span class="n">feed_weekly</span> <span class="n">fw</span>
+    <span class="n">JOIN</span> <span class="n">user_first_week</span> <span class="n">ufw</span> <span class="n">USING</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+  <span class="n">GROUP</span> <span class="n">BY</span> 
+    <span class="n">fw</span><span class="o">.</span><span class="n">week_start</span>
+<span class="p">)</span>
+<span class="p">,</span> <span class="n">week_stats_cum</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="n">SELECT</span> 
+    <span class="n">week_start</span>
+    <span class="p">,</span> <span class="n">new_users</span>
+    <span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">new_users</span><span class="p">)</span> <span class="n">OVER</span> <span class="p">(</span><span class="n">ORDER</span> <span class="n">BY</span> <span class="n">week_start</span> <span class="n">ROWS</span> <span class="n">BETWEEN</span> <span class="n">UNBOUNDED</span> <span class="n">PRECEDING</span> <span class="n">AND</span> <span class="mi">1</span> <span class="n">PRECEDING</span><span class="p">)</span> <span class="k">as</span> <span class="n">new_users_cum_before</span>
+    <span class="p">,</span> <span class="n">active_users</span> <span class="o">-</span> <span class="n">new_users</span> <span class="k">as</span> <span class="n">retained_users</span>
+  <span class="n">FROM</span> 
+    <span class="n">week_stats</span>
+<span class="p">)</span>
+<span class="n">SELECT</span> 
+  <span class="n">week_start</span>
+  <span class="p">,</span> <span class="n">new_users</span>
+  <span class="p">,</span> <span class="n">retained_users</span>
+  <span class="p">,</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="p">(</span><span class="n">new_users_cum_before</span> <span class="o">-</span> <span class="n">retained_users</span><span class="p">)</span> <span class="k">as</span> <span class="n">gone_users</span>
+<span class="n">FROM</span> 
+  <span class="n">week_stats_cum</span>  
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Messenger Users Decomposition</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">WITH</span> <span class="n">mess_weekly</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="n">SELECT</span> 
+    <span class="n">user_id</span>
+    <span class="p">,</span> <span class="n">toMonday</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="k">as</span> <span class="n">week_start</span>
+  <span class="n">FROM</span> 
+    <span class="n">message_actions</span> 
+  <span class="n">GROUP</span> <span class="n">BY</span> 
+    <span class="n">user_id</span>
+    <span class="p">,</span> <span class="n">week_start</span>
+<span class="p">)</span>
+<span class="p">,</span> <span class="n">user_first_week</span> <span class="n">AS</span> <span class="p">(</span>
+    <span class="n">SELECT</span> 
+      <span class="n">user_id</span>
+      <span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">week_start</span><span class="p">)</span> <span class="k">as</span> <span class="n">first_week</span>
+    <span class="n">FROM</span> 
+      <span class="n">mess_weekly</span>
+    <span class="n">GROUP</span> <span class="n">BY</span> 
+      <span class="n">user_id</span>
+<span class="p">)</span>
+<span class="p">,</span> <span class="n">week_stats</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="n">SELECT</span>  
+    <span class="n">fw</span><span class="o">.</span><span class="n">week_start</span>
+    <span class="p">,</span> <span class="n">uniq</span><span class="p">(</span><span class="n">fw</span><span class="o">.</span><span class="n">user_id</span><span class="p">)</span> <span class="k">as</span> <span class="n">active_users</span>
+    <span class="p">,</span> <span class="n">uniqIf</span><span class="p">(</span><span class="n">fw</span><span class="o">.</span><span class="n">user_id</span><span class="p">,</span> <span class="n">fw</span><span class="o">.</span><span class="n">week_start</span> <span class="o">=</span> <span class="n">ufw</span><span class="o">.</span><span class="n">first_week</span><span class="p">)</span> <span class="k">as</span> <span class="n">new_users</span>
+  <span class="n">FROM</span> 
+    <span class="n">mess_weekly</span> <span class="n">fw</span>
+    <span class="n">JOIN</span> <span class="n">user_first_week</span> <span class="n">ufw</span> <span class="n">USING</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+  <span class="n">GROUP</span> <span class="n">BY</span> 
+    <span class="n">fw</span><span class="o">.</span><span class="n">week_start</span>
+<span class="p">)</span>
+<span class="p">,</span> <span class="n">week_stats_cum</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="n">SELECT</span> 
+    <span class="n">week_start</span>
+    <span class="p">,</span> <span class="n">new_users</span>
+    <span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">new_users</span><span class="p">)</span> <span class="n">OVER</span> <span class="p">(</span><span class="n">ORDER</span> <span class="n">BY</span> <span class="n">week_start</span> <span class="n">ROWS</span> <span class="n">BETWEEN</span> <span class="n">UNBOUNDED</span> <span class="n">PRECEDING</span> <span class="n">AND</span> <span class="mi">1</span> <span class="n">PRECEDING</span><span class="p">)</span> <span class="k">as</span> <span class="n">new_users_cum_before</span>
+    <span class="p">,</span> <span class="n">active_users</span> <span class="o">-</span> <span class="n">new_users</span> <span class="k">as</span> <span class="n">retained_users</span>
+  <span class="n">FROM</span> 
+    <span class="n">week_stats</span>
+<span class="p">)</span>
+<span class="n">SELECT</span> 
+  <span class="n">week_start</span>
+  <span class="p">,</span> <span class="n">new_users</span>
+  <span class="p">,</span> <span class="n">retained_users</span>
+  <span class="p">,</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="p">(</span><span class="n">new_users_cum_before</span> <span class="o">-</span> <span class="n">retained_users</span><span class="p">)</span> <span class="k">as</span> <span class="n">gone_users</span>
+<span class="n">FROM</span> 
+  <span class="n">week_stats_cum</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Both Services Users Decomposition</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">WITH</span> <span class="n">feed_weekly</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="n">SELECT</span> 
+    <span class="n">user_id</span>
+    <span class="p">,</span> <span class="n">toMonday</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="k">as</span> <span class="n">week_start</span>
+  <span class="n">FROM</span> 
+    <span class="n">feed_actions</span>
+  <span class="n">GROUP</span> <span class="n">BY</span> 
+    <span class="n">user_id</span>
+    <span class="p">,</span> <span class="n">week_start</span>
+<span class="p">)</span>
+<span class="p">,</span> <span class="n">mess_weekly</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="n">SELECT</span> 
+    <span class="n">user_id</span>
+    <span class="p">,</span> <span class="n">toMonday</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="k">as</span> <span class="n">week_start</span>
+  <span class="n">FROM</span> 
+    <span class="n">message_actions</span> 
+  <span class="n">GROUP</span> <span class="n">BY</span> 
+    <span class="n">user_id</span>
+    <span class="p">,</span> <span class="n">week_start</span>
+<span class="p">)</span>
+<span class="p">,</span> <span class="n">both_weekly</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="n">SELECT</span> 
+    <span class="n">f</span><span class="o">.</span><span class="n">user_id</span>
+    <span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">week_start</span>
+  <span class="n">FROM</span> 
+    <span class="n">feed_weekly</span> <span class="n">f</span>
+    <span class="n">JOIN</span> <span class="n">mess_weekly</span> <span class="n">m</span> <span class="n">ON</span> <span class="n">f</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">user_id</span> <span class="ow">and</span> <span class="n">f</span><span class="o">.</span><span class="n">week_start</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">week_start</span>
+<span class="p">)</span>
+<span class="p">,</span> <span class="n">user_first_week</span> <span class="n">AS</span> <span class="p">(</span>
+    <span class="n">SELECT</span> 
+      <span class="n">user_id</span>
+      <span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">week_start</span><span class="p">)</span> <span class="k">as</span> <span class="n">first_week</span>
+    <span class="n">FROM</span> 
+      <span class="n">both_weekly</span>
+    <span class="n">GROUP</span> <span class="n">BY</span> 
+      <span class="n">user_id</span>
+<span class="p">)</span>
+<span class="p">,</span> <span class="n">week_stats</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="n">SELECT</span>  
+    <span class="n">bw</span><span class="o">.</span><span class="n">week_start</span>
+    <span class="p">,</span> <span class="n">uniq</span><span class="p">(</span><span class="n">bw</span><span class="o">.</span><span class="n">user_id</span><span class="p">)</span> <span class="k">as</span> <span class="n">active_users</span>
+    <span class="p">,</span> <span class="n">uniqIf</span><span class="p">(</span><span class="n">bw</span><span class="o">.</span><span class="n">user_id</span><span class="p">,</span> <span class="n">bw</span><span class="o">.</span><span class="n">week_start</span> <span class="o">=</span> <span class="n">ufw</span><span class="o">.</span><span class="n">first_week</span><span class="p">)</span> <span class="k">as</span> <span class="n">new_users</span>
+  <span class="n">FROM</span> 
+    <span class="n">both_weekly</span> <span class="n">bw</span>
+    <span class="n">JOIN</span> <span class="n">user_first_week</span> <span class="n">ufw</span> <span class="n">USING</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+  <span class="n">GROUP</span> <span class="n">BY</span> 
+    <span class="n">bw</span><span class="o">.</span><span class="n">week_start</span>
+<span class="p">)</span>
+<span class="p">,</span> <span class="n">week_stats_cum</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="n">SELECT</span> 
+    <span class="n">week_start</span>
+    <span class="p">,</span> <span class="n">new_users</span>
+    <span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">new_users</span><span class="p">)</span> <span class="n">OVER</span> <span class="p">(</span><span class="n">ORDER</span> <span class="n">BY</span> <span class="n">week_start</span> <span class="n">ROWS</span> <span class="n">BETWEEN</span> <span class="n">UNBOUNDED</span> <span class="n">PRECEDING</span> <span class="n">AND</span> <span class="mi">1</span> <span class="n">PRECEDING</span><span class="p">)</span> <span class="k">as</span> <span class="n">new_users_cum_before</span>
+    <span class="p">,</span> <span class="n">active_users</span> <span class="o">-</span> <span class="n">new_users</span> <span class="k">as</span> <span class="n">retained_users</span>
+  <span class="n">FROM</span> 
+    <span class="n">week_stats</span>
+<span class="p">)</span>
+<span class="n">SELECT</span> 
+  <span class="n">week_start</span>
+  <span class="p">,</span> <span class="n">new_users</span>
+  <span class="p">,</span> <span class="n">retained_users</span>
+  <span class="p">,</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="p">(</span><span class="n">new_users_cum_before</span> <span class="o">-</span> <span class="n">retained_users</span><span class="p">)</span> <span class="k">as</span> <span class="n">gone_users</span>
+<span class="n">FROM</span> 
+  <span class="n">week_stats_cum</span>  
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Only Feed Users Decomposition</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">WITH</span> <span class="n">feed_weekly</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="n">SELECT</span> 
+    <span class="n">user_id</span>
+    <span class="p">,</span> <span class="n">toMonday</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="k">as</span> <span class="n">week_start</span>
+  <span class="n">FROM</span> 
+    <span class="n">feed_actions</span>
+  <span class="n">GROUP</span> <span class="n">BY</span> 
+    <span class="n">user_id</span>
+    <span class="p">,</span> <span class="n">week_start</span>
+<span class="p">)</span>
+<span class="p">,</span> <span class="n">mess_weekly</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="n">SELECT</span> 
+    <span class="n">user_id</span>
+    <span class="p">,</span> <span class="n">toMonday</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="k">as</span> <span class="n">week_start</span>
+  <span class="n">FROM</span> 
+    <span class="n">message_actions</span> 
+  <span class="n">GROUP</span> <span class="n">BY</span> 
+    <span class="n">user_id</span>
+    <span class="p">,</span> <span class="n">week_start</span>
+<span class="p">)</span>
+<span class="p">,</span> <span class="n">only_feed_weekly</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="n">SELECT</span> 
+    <span class="n">f</span><span class="o">.</span><span class="n">user_id</span>
+    <span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">week_start</span>
+  <span class="n">FROM</span> 
+    <span class="n">feed_weekly</span> <span class="n">f</span>
+    <span class="n">ANTI</span> <span class="n">JOIN</span> <span class="n">mess_weekly</span> <span class="n">m</span> <span class="n">ON</span> <span class="n">f</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">user_id</span> <span class="ow">and</span> <span class="n">f</span><span class="o">.</span><span class="n">week_start</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">week_start</span>
+<span class="p">)</span>
+<span class="p">,</span> <span class="n">user_first_week</span> <span class="n">AS</span> <span class="p">(</span>
+    <span class="n">SELECT</span> 
+      <span class="n">user_id</span>
+      <span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">week_start</span><span class="p">)</span> <span class="k">as</span> <span class="n">first_week</span>
+    <span class="n">FROM</span> 
+      <span class="n">only_feed_weekly</span>
+    <span class="n">GROUP</span> <span class="n">BY</span> 
+      <span class="n">user_id</span>
+<span class="p">)</span>
+<span class="p">,</span> <span class="n">week_stats</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="n">SELECT</span>  
+    <span class="n">fw</span><span class="o">.</span><span class="n">week_start</span>
+    <span class="p">,</span> <span class="n">uniq</span><span class="p">(</span><span class="n">fw</span><span class="o">.</span><span class="n">user_id</span><span class="p">)</span> <span class="k">as</span> <span class="n">active_users</span>
+    <span class="p">,</span> <span class="n">uniqIf</span><span class="p">(</span><span class="n">fw</span><span class="o">.</span><span class="n">user_id</span><span class="p">,</span> <span class="n">fw</span><span class="o">.</span><span class="n">week_start</span> <span class="o">=</span> <span class="n">ufw</span><span class="o">.</span><span class="n">first_week</span><span class="p">)</span> <span class="k">as</span> <span class="n">new_users</span>
+  <span class="n">FROM</span> 
+    <span class="n">only_feed_weekly</span> <span class="n">fw</span>
+    <span class="n">JOIN</span> <span class="n">user_first_week</span> <span class="n">ufw</span> <span class="n">USING</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+  <span class="n">GROUP</span> <span class="n">BY</span> 
+    <span class="n">fw</span><span class="o">.</span><span class="n">week_start</span>
+<span class="p">)</span>
+<span class="p">,</span> <span class="n">week_stats_cum</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="n">SELECT</span> 
+    <span class="n">week_start</span>
+    <span class="p">,</span> <span class="n">new_users</span>
+    <span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">new_users</span><span class="p">)</span> <span class="n">OVER</span> <span class="p">(</span><span class="n">ORDER</span> <span class="n">BY</span> <span class="n">week_start</span> <span class="n">ROWS</span> <span class="n">BETWEEN</span> <span class="n">UNBOUNDED</span> <span class="n">PRECEDING</span> <span class="n">AND</span> <span class="mi">1</span> <span class="n">PRECEDING</span><span class="p">)</span> <span class="k">as</span> <span class="n">new_users_cum_before</span>
+    <span class="p">,</span> <span class="n">active_users</span> <span class="o">-</span> <span class="n">new_users</span> <span class="k">as</span> <span class="n">retained_users</span>
+  <span class="n">FROM</span> 
+    <span class="n">week_stats</span>
+<span class="p">)</span>
+<span class="n">SELECT</span> 
+  <span class="n">week_start</span>
+  <span class="p">,</span> <span class="n">new_users</span>
+  <span class="p">,</span> <span class="n">retained_users</span>
+  <span class="p">,</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="p">(</span><span class="n">new_users_cum_before</span> <span class="o">-</span> <span class="n">retained_users</span><span class="p">)</span> <span class="k">as</span> <span class="n">gone_users</span>
+<span class="n">FROM</span> 
+  <span class="n">week_stats_cum</span>  
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Only Messenger Users Decomposition</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">WITH</span> <span class="n">feed_weekly</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="n">SELECT</span> 
+    <span class="n">user_id</span>
+    <span class="p">,</span> <span class="n">toMonday</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="k">as</span> <span class="n">week_start</span>
+  <span class="n">FROM</span> 
+    <span class="n">feed_actions</span>
+  <span class="n">GROUP</span> <span class="n">BY</span> 
+    <span class="n">user_id</span>
+    <span class="p">,</span> <span class="n">week_start</span>
+<span class="p">)</span>
+<span class="p">,</span> <span class="n">mess_weekly</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="n">SELECT</span> 
+    <span class="n">user_id</span>
+    <span class="p">,</span> <span class="n">toMonday</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="k">as</span> <span class="n">week_start</span>
+  <span class="n">FROM</span> 
+    <span class="n">message_actions</span> 
+  <span class="n">GROUP</span> <span class="n">BY</span> 
+    <span class="n">user_id</span>
+    <span class="p">,</span> <span class="n">week_start</span>
+<span class="p">)</span>
+<span class="p">,</span> <span class="n">only_mess_weekly</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="n">SELECT</span> 
+    <span class="n">m</span><span class="o">.</span><span class="n">user_id</span>
+    <span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">week_start</span>
+  <span class="n">FROM</span> 
+    <span class="n">mess_weekly</span> <span class="n">m</span>
+    <span class="n">ANTI</span> <span class="n">JOIN</span> <span class="n">feed_weekly</span> <span class="n">f</span> <span class="n">ON</span> <span class="n">f</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">user_id</span> <span class="ow">and</span> <span class="n">f</span><span class="o">.</span><span class="n">week_start</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">week_start</span>
+<span class="p">)</span>
+<span class="p">,</span> <span class="n">user_first_week</span> <span class="n">AS</span> <span class="p">(</span>
+    <span class="n">SELECT</span> 
+      <span class="n">user_id</span>
+      <span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">week_start</span><span class="p">)</span> <span class="k">as</span> <span class="n">first_week</span>
+    <span class="n">FROM</span> 
+      <span class="n">only_mess_weekly</span>
+    <span class="n">GROUP</span> <span class="n">BY</span> 
+      <span class="n">user_id</span>
+<span class="p">)</span>
+<span class="p">,</span> <span class="n">week_stats</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="n">SELECT</span>  
+    <span class="n">omw</span><span class="o">.</span><span class="n">week_start</span>
+    <span class="p">,</span> <span class="n">uniq</span><span class="p">(</span><span class="n">omw</span><span class="o">.</span><span class="n">user_id</span><span class="p">)</span> <span class="k">as</span> <span class="n">active_users</span>
+    <span class="p">,</span> <span class="n">uniqIf</span><span class="p">(</span><span class="n">omw</span><span class="o">.</span><span class="n">user_id</span><span class="p">,</span> <span class="n">omw</span><span class="o">.</span><span class="n">week_start</span> <span class="o">=</span> <span class="n">ufw</span><span class="o">.</span><span class="n">first_week</span><span class="p">)</span> <span class="k">as</span> <span class="n">new_users</span>
+  <span class="n">FROM</span> 
+    <span class="n">only_mess_weekly</span> <span class="n">omw</span>
+    <span class="n">JOIN</span> <span class="n">user_first_week</span> <span class="n">ufw</span> <span class="n">USING</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+  <span class="n">GROUP</span> <span class="n">BY</span> 
+    <span class="n">omw</span><span class="o">.</span><span class="n">week_start</span>
+<span class="p">)</span>
+<span class="p">,</span> <span class="n">week_stats_cum</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="n">SELECT</span> 
+    <span class="n">week_start</span>
+    <span class="p">,</span> <span class="n">new_users</span>
+    <span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">new_users</span><span class="p">)</span> <span class="n">OVER</span> <span class="p">(</span><span class="n">ORDER</span> <span class="n">BY</span> <span class="n">week_start</span> <span class="n">ROWS</span> <span class="n">BETWEEN</span> <span class="n">UNBOUNDED</span> <span class="n">PRECEDING</span> <span class="n">AND</span> <span class="mi">1</span> <span class="n">PRECEDING</span><span class="p">)</span> <span class="k">as</span> <span class="n">new_users_cum_before</span>
+    <span class="p">,</span> <span class="n">active_users</span> <span class="o">-</span> <span class="n">new_users</span> <span class="k">as</span> <span class="n">retained_users</span>
+  <span class="n">FROM</span> 
+    <span class="n">week_stats</span>
+<span class="p">)</span>
+<span class="n">SELECT</span> 
+  <span class="n">week_start</span>
+  <span class="p">,</span> <span class="n">new_users</span>
+  <span class="p">,</span> <span class="n">retained_users</span>
+  <span class="p">,</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="p">(</span><span class="n">new_users_cum_before</span> <span class="o">-</span> <span class="n">retained_users</span><span class="p">)</span> <span class="k">as</span> <span class="n">gone_users</span>
+<span class="n">FROM</span> 
+  <span class="n">week_stats_cum</span>  
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id4">
+<h3>3.4.2 Dashboard Implementation<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<p>Based on the written queries, a dashboard report was created in Superset.</p>
+<p>Screenshots of the dashboard are provided below.</p>
+<img alt="" src="../../_images/user_decomposition_part_1.png" />
+<img alt="" src="../../_images/user_decomposition_part_2.png" />
+</section>
+</section>
+<section id="general-conclusion">
+<h2>3.5 General Conclusion<a class="headerlink" href="#general-conclusion" title="Link to this heading">#</a></h2>
+<p><strong>Implementation Summary:</strong></p>
+<ul class="simple">
+<li><p><strong>Retention Analysis Completed:</strong> Conducted comprehensive cohort analysis of advertising campaign users versus organic users</p></li>
+<li><p><strong>User Segmentation Identified:</strong> Segmented and analyzed users who experienced news feed access issues</p></li>
+<li><p><strong>Root Cause Investigation:</strong> Identified common characteristics and potential technical factors behind the audience drop</p></li>
+<li><p><strong>User Lifecycle Tracking Implemented:</strong> Built ClickHouse query and Superset visualization for monitoring New, Retained, and Churned user cohorts</p></li>
+<li><p><strong>Data Products Delivered:</strong> Created Superset dashboards for ongoing monitoring of retention patterns and user engagement issues</p></li>
+<li><p><strong>Goal Achieved:</strong> Provided data-driven insights that enabled marketing to optimize campaign strategies and engineering to address critical technical issues</p></li>
+</ul>
+<p><strong>Main Conclusion:</strong></p>
+<ul class="simple">
+<li><p>Advertising Campaign Analysis</p>
+<ul>
+<li><p>Campaign successfully attracted large volume of new users, significantly exceeding previous acquisition rates</p></li>
+<li><p>Initial engagement metrics showed no significant difference from organic users</p></li>
+<li><p>Critical Issue: Day-1 retention rate for campaign users was substantially lower than historical Friday cohorts</p></li>
+</ul>
+</li>
+<li><p>Audience Drop Investigation</p>
+<ul>
+<li><p>Significant drop in feed engagement occurred on August 24th</p></li>
+<li><p>Affected Areas: Moscow, St. Petersburg, Yekaterinburg, Novosibirsk showed concentrated impact</p></li>
+<li><p>Isolated Issue: Messenger functionality remained unaffected in these cities</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>Key Recommendation:</strong></p>
+<ul class="simple">
+<li><p>Implement more targeted advertising based on analysis of existing active user profiles rather than broad audience targeting</p></li>
+<li><p>Investigate technical infrastructure in affected regions and implement redundancy measures to prevent future service disruptions</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../2_product_dashboard/2_product_dashboard.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">2. Product Dashboard</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../4_ab_testing/4_ab_testing.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">4. A/B Testing</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-description">3.1 Data Description</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#marketing-campaign-analysis">3.2 Marketing Campaign Analysis</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sql-queries">3.2.1 SQL Queries</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#hypothesis-validation">3.2.1.1 Hypothesis Validation</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#profile-of-advertising-campaign-users">3.2.1.2 Profile of Advertising Campaign Users</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#metrics-on-the-first-day">3.2.1.3 Metrics on the First Day</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#retention-analysis">3.2.1.4 Retention Analysis</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#cohort-analysis-of-other-metrics">3.2.1.5 Cohort Analysis of Other Metrics</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dashboard-implementation">3.2.2 Dashboard Implementation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#user-drop-off-analysis">3.3 User Drop-off Analysis</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">3.3.1 SQL Queries</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">3.3.2 Dashboard Implementation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#users-decomposition">3.4 Users Decomposition</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">3.4.1 SQL Queries</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">3.4.2 Dashboard Implementation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-conclusion">3.5 General Conclusion</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Pavel Grigoryev
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025, Pavel Grigoryev.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

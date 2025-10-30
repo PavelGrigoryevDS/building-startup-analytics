@@ -1,2 +1,4 @@
-.env
-__pycache__
+/docs/
+dashboard.ipynb
+.$Scheme.drawio.bkp
+Scheme.drawio

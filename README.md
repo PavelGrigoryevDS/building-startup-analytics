@@ -128,7 +128,7 @@ The analysis uses data from the product database in ClickHouse, which consists o
 
 ### 1. Building Analytical Database
 
-[📓 View Notebook with Full Analysis](./building_startup_analytics/1_data_infrastructure/analytical_database.ipynb)
+[📓 View Notebook with Full Analysis](./building_startup_analytics/1_data_infrastructure/1_analytical_database.ipynb)
 
 **Context:**
 
@@ -164,7 +164,7 @@ The analysis uses data from the product database in ClickHouse, which consists o
 
 ### 2. Product Dashboard
 
-[📓 View Notebook with Full Analysis](./building_startup_analytics/2_product_dashboard/product_dashboard.ipynb)
+[📓 View Notebook with Full Analysis](./building_startup_analytics/2_product_dashboard/2_product_dashboard.ipynb)
 
 [👉 Feed & Messenger Performance Dashboard](https://datalens.yandex/w5blxgwqvb4uh)
 
@@ -220,7 +220,7 @@ Here are the key screenshots of the implemented dashboard:
 
 ### 3. Product Metric Deep Dive
 
-[📓 View Notebook with Full Analysis](./building_startup_analytics/3_metric_deep_dive/metric_deep_dive.ipynb)
+[📓 View Notebook with Full Analysis](./building_startup_analytics/3_metric_deep_dive/3_metric_deep_dive.ipynb)
 
 **Context:**
 
@@ -306,7 +306,7 @@ To conduct a deep dive analysis addressing three critical business questions:
 
 ### 4. A/B Testing
 
-[📓 View Notebook with Full Analysis](./building_startup_analytics/4_ab_testing/ab_testing.ipynb)
+[📓 View Notebook with Full Analysis](./building_startup_analytics/4_ab_testing/4_ab_testing.ipynb)
 
 **Context:**
 
@@ -365,7 +365,7 @@ For Hypothesis 2:
 
 ### 5. Metric Forecasting
 
-[📓 View Notebook with Full Analysis](./building_startup_analytics/5_metric_forecasting/metric_forecasting.ipynb)
+[📓 View Notebook with Full Analysis](./building_startup_analytics/5_metric_forecasting/5_metric_forecasting.ipynb)
 
 **Context:**
 
@@ -435,7 +435,7 @@ Strategic Recommendations
 
 ### 6. Automated Daily Reports
 
-[📓 View Notebook with Full Analysis](./building_startup_analytics/6_automated_reporting/automated_reporting.ipynb)
+[📓 View Notebook with Full Analysis](./building_startup_analytics/6_automated_reporting/6_automated_reporting.ipynb)
 
 **Context:**
 
@@ -480,7 +480,7 @@ Strategic Recommendations
 
 ### 7. Alert System
 
-[📓 View Notebook with Full Analysis](./building_startup_analytics/7_anomaly_detection/alert_system.ipynb)
+[📓 View Notebook with Full Analysis](./building_startup_analytics/7_anomaly_detection/7_alert_system.ipynb)
 
 **Context:**
 

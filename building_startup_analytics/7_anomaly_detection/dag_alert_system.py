@@ -257,7 +257,7 @@ def alert_system():
                     ⚠️ Deviation: {deviation_from_bound:.1f}% {direction} range
                     📅 {deviation_from_yesterday}
                     ↔️ Expected range: {value_format.format(last_lower_bound)} - {value_format.format(last_upper_bound)}
-                    📈 [Go To Dash](https://superset.lab.karpov.courses/superset/dashboard/7569/)
+                    📈 [Go To Dash](link-to-dash)
                     🕵️ @alert_jedis @avengers_analytics
                 """)
                 
